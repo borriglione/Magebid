@@ -71,7 +71,7 @@ Ext.EventManager.onDocumentReady(function() {
 	tree.on('check', function(node) {
 	    if(node.attributes.checked) {
             categoryAdd(node.id);
-	    } else {
+	    } else {		    
             categoryRemove(node.id);
 	    }
 	}, tree);
@@ -196,14 +196,14 @@ function categoryAdd(id) {
     $('ebay-category-1').value = id;
 }
 function categoryRemove(id) {    
-    $('ebay-category-1').value = '';
+	if ($('ebay-category-1').value == id) $('ebay-category-1').value = '';
 }
 
 function categoryAdd2(id) {
     $('ebay-category-2').value = id;
 }
 function categoryRemove2(id) {
-    $('ebay-category-2').value = id;
+	if ($('ebay-category-2').value == id) $('ebay-category-2').value = '';
 }
 
 </script>
