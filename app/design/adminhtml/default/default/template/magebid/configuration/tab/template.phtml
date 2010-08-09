@@ -1,0 +1,38 @@
+<div class="content-header">
+    <h3 class="icon-head head-products"><?php echo $this->getHeaderText() ?></h3>
+</div>
+
+
+    
+	<div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Import') ?></h4>
+    </div>
+    <fieldset id="catalog">
+            <table cellspacing="0" class="form-list">
+                <tbody>
+                    <?php foreach ($this->getCatalogData() as $_item): ?>
+                    <tr>
+                        <td class="label"><label><?php echo $_item['label'] ?></label></td>
+                        <td class="value">
+                            <?php foreach ($_item['buttons'] as $_button): ?>
+                                <?php $clickAction = 'importAction(this)'; ?>
+                                <?php if (isset($_button['warning']) && $_button['warning']): ?>
+                                    <?php $clickAction = "if (confirm('".addslashes($_button['warning'])."')) {{$clickAction}}"; ?>
+                                <?php endif; ?>
+                                <button <?php if (!isset($_button['disabled']) || !$_button['disabled']):?>onclick="<?php echo $clickAction; ?>"<?php endif; ?> id="<?php echo $_button['name'] ?>" type="button" class="scalable <?php if (isset($_button['disabled']) && $_button['disabled']):?>disabled<?php endif; ?>" style=""><span><?php echo $_button['action'] ?></span></button>
+                                <?php if (isset($_button['comment'])): ?> <br /> <small><?php echo $_button['comment']; ?></small> <?php endif; ?>
+                            <?php endforeach; ?>
+                        </td>
+                        <td><small>&nbsp;</small></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+     </fieldset>	
+
+
+<script type="text/javascript">
+    var configForm = new varienForm('configuration_edit_import_form');
+</script>	
+
+<?php echo $this->getChildHtml('grid') ?>

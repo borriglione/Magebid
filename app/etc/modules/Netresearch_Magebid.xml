@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Netresearch_Magebid>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Netresearch_Magebid>
+    </modules>
+</config>

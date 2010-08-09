@@ -1,0 +1,210 @@
+<p><?php echo Mage::helper('magebid')->__('Please select only one category and a category which has no child categories anymore'); ?></p>
+
+<table>
+	<tr>
+		<td>
+			<div class="entry-edit" style="width:350px;">
+			    <div class="entry-edit-head">
+			        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('magebid')->__('Ebay Category 1') ?></h4>
+			    </div>
+			    <fieldset id="grop_fields">
+			        <input type="hidden" name="ebay_category_1" id="ebay-category-1" value="<?php echo $this->getEbayCategory('ebay_category_1') ?>">
+			        <div id="ebay-categories-1" class="tree"></div>
+			    </fieldset>
+			</div>			
+		</td>
+		<td>
+			<div class="entry-edit" style="width:350px;">
+			    <div class="entry-edit-head">
+			        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('magebid')->__('Ebay Category 2') ?></h4>
+			    </div>
+			    <fieldset id="grop_fields">
+			        <input type="hidden" name="ebay_category_2" id="ebay-category-2" value="<?php echo $this->getEbayCategory('ebay_category_2') ?>">
+			        <div id="ebay-categories-2" class="tree"></div>
+			    </fieldset>
+			</div>					
+		</td>		
+	</tr>
+</table>
+
+<?php ?>
+
+
+<script type="text/javascript">
+	
+Ext.EventManager.onDocumentReady(function() {
+    var categoryLoader = new Ext.tree.TreeLoader({
+       dataUrl: '<?php echo $this->getLoadTreeUrl()?>'
+    });
+	
+    categoryLoader.createNode = function(config) {
+        config.uiProvider = Ext.tree.CheckboxNodeUI;
+        var node;
+        if (config.children && !config.children.length) {
+            delete(config.children);
+            node = new Ext.tree.AsyncTreeNode(config);
+
+        } else {
+            node = new Ext.tree.TreeNode(config);
+        }
+        return node;
+    };
+
+    categoryLoader.on("beforeload", function(treeLoader, node) {
+        treeLoader.baseParams.category = node.attributes.id;
+    });
+
+    categoryLoader.on("load", function(treeLoader, node, config) {
+        varienWindowOnload();
+    });
+
+    var tree = new Ext.tree.TreePanel('ebay-categories-1', {
+        animate:false,
+        loader: categoryLoader,
+        enableDD:false,
+        containerScroll: true,
+		rootUIProvider: Ext.tree.CheckboxNodeUI,
+		selModel: new Ext.tree.CheckNodeMultiSelectionModel(),
+		rootVisible: true,
+	});
+
+	tree.on('check', function(node) {
+	    if(node.attributes.checked) {
+            categoryAdd(node.id);
+	    } else {
+            categoryRemove(node.id);
+	    }
+	}, tree);
+
+	// set the root node
+    var root = new Ext.tree.TreeNode({
+        text: 'eBay',
+        draggable:false,
+        id:1,
+		disabled: false,
+        uiProvider: Ext.tree.CheckboxNodeUI
+    });
+
+	tree.setRootNode(root);
+	bildCategoryTree(root, <?php echo $this->getEbayTreeJson('ebay_category_1') ?>);
+    tree.addListener('click', categoryClick.createDelegate(this));
+
+    // render the tree
+    tree.render();
+    root.expand();
+});
+
+function bildCategoryTree(parent, config){
+    if (!config) return null;
+
+    if (parent && config && config.length){
+        for (var i = 0; i < config.length; i++){
+            config[i].uiProvider = Ext.tree.CheckboxNodeUI;
+            var node;
+            var _node = Object.clone(config[i]);
+            if (_node.children && !_node.children.length) {
+                delete(_node.children);
+                node = new Ext.tree.AsyncTreeNode(_node);
+
+            } else {
+                node = new Ext.tree.TreeNode(config[i]);
+            }
+            parent.appendChild(node);
+            node.loader = node.getOwnerTree().loader;
+            if(config[i].children){
+                bildCategoryTree(node, config[i].children);
+            }
+        }
+    }
+}
+
+
+Ext.EventManager.onDocumentReady(function() {
+    var categoryLoader = new Ext.tree.TreeLoader({
+       dataUrl: '<?php echo $this->getLoadTreeUrl()?>'
+    });
+	
+    categoryLoader.createNode = function(config) {
+        config.uiProvider = Ext.tree.CheckboxNodeUI;
+        var node;
+        if (config.children && !config.children.length) {
+            delete(config.children);
+            node = new Ext.tree.AsyncTreeNode(config);
+
+        } else {
+            node = new Ext.tree.TreeNode(config);
+        }
+        return node;
+    };
+
+    categoryLoader.on("beforeload", function(treeLoader, node) {
+        treeLoader.baseParams.category = node.attributes.id;
+    });
+
+    categoryLoader.on("load", function(treeLoader, node, config) {
+        varienWindowOnload();
+    });
+
+    var tree = new Ext.tree.TreePanel('ebay-categories-2', {
+        animate:false,
+        loader: categoryLoader,
+        enableDD:false,
+        containerScroll: true,
+		rootUIProvider: Ext.tree.CheckboxNodeUI,
+		selModel: new Ext.tree.CheckNodeMultiSelectionModel(),
+	});
+
+	tree.on('check', function(node) {
+	    if(node.attributes.checked) {
+            categoryAdd2(node.id);
+	    } else {
+            categoryRemove2(node.id);
+	    }
+	}, tree);
+
+	// set the root node
+    var root = new Ext.tree.TreeNode({
+        text: 'eBay',
+        draggable:false,
+        id:'1',
+        uiProvider: Ext.tree.CheckboxNodeUI
+    });
+
+	tree.setRootNode(root);
+	bildCategoryTree(root, <?php echo $this->getEbayTreeJson('ebay_category_2') ?>);
+    tree.addListener('click', categoryClick.createDelegate(this));
+
+    // render the tree
+    tree.render();
+    root.expand();
+});
+
+
+
+
+
+
+
+function categoryClick(node, e){
+    if (node.disabled) {
+        return;
+    }
+    node.getUI().check(!node.getUI().checked())
+    varienElementMethods.setHasChanges(Event.element(e), e);
+};
+function categoryAdd(id) {	
+    $('ebay-category-1').value = id;
+}
+function categoryRemove(id) {    
+    $('ebay-category-1').value = '';
+}
+
+function categoryAdd2(id) {
+    $('ebay-category-2').value = id;
+}
+function categoryRemove2(id) {
+    $('ebay-category-2').value = id;
+}
+
+</script>
+

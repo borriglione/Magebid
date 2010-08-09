@@ -1,0 +1,116 @@
+#magebid_container
+{
+	width:100%;
+	background-color:#ccc;
+	font-family:Arial,Helvetica,sans-serif;
+}
+
+#magebid_inner_container
+{
+    width:800px;
+	margin-left:200px;  
+	padding-top:10px; 
+	padding-bottom:10px; 
+}
+
+#magebid_store_header,
+#magebid_store_main,
+#magebid_store_footer
+{		
+        width:100%;
+        background-color:#fff;
+}
+
+#magebid_store_main
+{
+	padding-top:10px;
+}
+
+.magebid_description
+{
+	padding:0 30px 10px 0px;
+}
+
+#magebid_search
+{
+	padding:5px 0px 4px 0px;
+}
+
+#magebid_search .search_desc
+{
+	font-size:13px;
+}
+
+#magebid_store_main td
+{
+    vertical-align:top;
+}
+
+#magebid_store_main h1
+{
+    font-size:20px;
+}
+
+p
+{
+	text-align:justify;
+}
+
+p.short_desc
+{
+	color:#333;
+	
+}
+
+#magebid_main_image
+{
+	height:500px;
+	width:370px;
+}
+
+#magebid_main_image img
+{
+	max-height:490px;
+}
+
+
+#magebid_store_footer 
+{
+    text-align:center;
+	padding-bottom:10px;
+}
+
+#magebid_store_footer .magebid_info_list li
+{
+    display:inline;
+    margin:0px 10px 0 10px;
+}
+
+#magebid_store_footer .magebid_info_list li a
+{
+    text-decoration:none;
+    color:#00889A;
+}
+
+#magebid_list_images
+{
+    text-align:center;
+    margin-top:20px;
+}
+
+#magebid_list_images a
+{
+	float:left;
+	display:block;
+	width:85px;
+	height:135px;
+	border: 1px solid #ccc;
+	margin-left:10px;
+	padding:10px; 
+}
+
+#magebid_list_images img
+{
+    width:80px;       
+	border:none;
+} 

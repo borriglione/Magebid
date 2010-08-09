@@ -1,0 +1,94 @@
+<?php $_htmlId      = $this->getElement()->getHtmlId()?>
+<?php $_htmlClass   = $this->getElement()->getClass()?>
+<?php $_htmlName    = $this->getElement()->getName()?>
+<?php $_allowEdit    = $this->getAllowEdit()?>
+
+<tr>
+    <td class="label"><?php echo Mage::helper('magebid')->__('Shipping Methods') ?></td>
+    <td colspan="10" class="grid shipping">
+    <table cellspacing="0" class="data border" id="mapping_shipping_table">
+        <col width="200" />
+        <col width="200" />
+        <?php if ($_allowEdit): ?><col width="150" /><?php endif; ?>
+        <thead>
+            <tr class="headings">
+                <th><?php echo Mage::helper('magebid')->__('eBay Shipping Methods') ?></th>
+                <th><?php echo Mage::helper('magebid')->__('Magento Shipping Methods') ?></th>
+                 <?php if ($_allowEdit): ?><th class="last"><?php echo Mage::helper('catalog')->__('Action') ?></th><?php endif; ?>
+            </tr>
+            <tr id="<?php echo $_htmlId ?>_add_template" class="template no-display">
+                <td>
+                <?php if (count($this->geteBayShippingMethods())>0): ?>
+                <select disabled="no-template" class="<?php echo $_htmlClass ?> ebay_shipping required-entry" name="<?php echo $_htmlName ?>[__index__][ebay_shipping_method]" id="ebay_shipping_method_row___index___shipping_methods">
+                    <?php foreach ($this->geteBayShippingMethods() as $_shippingCode=>$_shippingDescription): ?>
+                    <option value="<?php echo $_shippingCode ?>"><?php echo htmlspecialchars($_shippingDescription) ?></option>
+                    <?php endforeach ?>
+                </select>
+                <?php endif; ?>
+                </td>
+                <td>
+	            <select  disabled="no-template" class="<?php echo $_htmlClass ?> magento_shipping required-entry" name="<?php echo $_htmlName ?>[__index__][magento_shipping_method]" id="magento_shipping_method_row___index___shipping_methods">
+	                    <?php foreach ($this->getMagentoShippingMethods() as $_shippingCode=>$_shippingDescription): ?>
+	                    <option value="<?php echo $_shippingCode ?>"><?php echo htmlspecialchars($_shippingDescription) ?></option>
+	                    <?php endforeach ?>
+	             </select>
+                </td>
+                <?php if ($_allowEdit): ?><td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[__index__][delete]" class="delete" disabled="no-template" value="" /><button title="Delete Shipping Mapping" class="scalable delete icon-btn delete-shipping-method" onclick="shippingMethodControl.deleteItem(event);return false"><span>Delete</span></button></td><?php endif; ?>
+            </tr>
+        </thead>
+		 <?php if ($_allowEdit): ?>
+        <tfoot>
+            <tr>
+               <td colspan="3" class="a-right"><?php echo $this->getAddButtonHtml() ?></td>
+            </tr>
+        </tfoot>
+		<?php endif; ?>
+        <tbody id="<?php echo $_htmlId ?>_container">
+        </tbody>
+    </table>
+	
+	
+<script type="text/javascript">
+//<![CDATA[
+    var shippingMethodControl = {
+        template : new Template('<tr>' + $('<?php echo $_htmlId ?>_add_template').innerHTML.replace(/__index__/g, '#{index}').replace(/ disabled="?no-template"?/g, '').replace(/ disabled/g, '').replace(/="'([^']*)'"/g, '="$1"') + '</tr>'),
+        itemsCount : 0,
+        deleteButton: false,
+        addItem  : function () {
+            var data = {};
+            data.ebay_shipping = '';
+            data.magento_shipping = '';
+            data.index = this.itemsCount++;
+            if(arguments.length == 2) {
+                data.ebay_shipping      = arguments[0];
+                data.magento_shipping      = arguments[1];
+            }
+            Element.insert($('<?php echo $_htmlId ?>_container'), {'bottom':this.template.evaluate(data)});
+            $('ebay_shipping_method_row_'+data.index+'_shipping_methods').value = data.ebay_shipping;
+			$('magento_shipping_method_row_'+data.index+'_shipping_methods').value = data.magento_shipping;
+        },
+        disableElement: function(elem) {
+            elem.disabled = true
+            elem.addClassName('disabled');
+        },
+        deleteItem : function(event) {
+            var tr = Event.findElement(event, 'tr');
+            if (tr) {
+				//Element.remove(tr);
+                Element.select(tr, '.delete').each(function(elem){elem.value='1'});
+                Element.select(tr, ['input', 'select']).each(function(elem){elem.hide()});
+                Element.hide(tr);
+                Element.addClassName(tr, 'no-display template');					
+            }
+        }
+    }
+    <?php foreach ($this->getValues() as $_item): ?>
+    shippingMethodControl.addItem('<?php echo $_item['ebay'] ?>', '<?php echo $_item['magento'] ?>');
+	<?php endforeach; ?>
+	
+
+//]]>
+</script>
+	
+</td>
+</tr>

@@ -1,0 +1,10 @@
+<?php echo $this->getChildHtml('form') ?>
+<?php echo $this->getBlockHtml('formkey')?>
+
+<script type="text/javascript">
+function importAction(button)
+    {
+        $('task_action').value = button.id;
+        $('configuration_form').submit();
+}
+</script>

@@ -1,0 +1,102 @@
+<div class="content-header">
+    <h3 class="icon-head head-products"><?php echo $this->getHeaderText() ?></h3>
+    <p class="content-buttons form-buttons">
+      <?php echo $this->getChildHtml('update_all_button') ?>
+    </p>
+</div>
+
+<div id="end_item_option_container" class="entry-edit hide">
+	<div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('End Item Reason') ?></h4>
+    </div>
+    <fieldset id="end_item_reasons">
+            <table cellspacing="0" class="form-list">
+                <tbody>
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Reason') ?></label></td>
+                        <td class="value">
+                        <?php $reason_options = $this->getEndItemReasons();?>	
+		                <select name="select_item_reason" id="select_item_reason">
+		                    <?php foreach ($reason_options as $reason_key => $reason_value): ?>
+		                   	 <option value="<?php echo $reason_key ?>"><?php echo $reason_value ?></option>
+		                    <?php endforeach ?>
+		                </select>							
+                        </td>
+                        <td><small>&nbsp;</small></td>
+                    </tr>
+                </tbody>
+            </table>
+     </fieldset>		
+</div>
+
+<?php echo $this->getChildHtml('grid') ?>
+
+
+
+<script type="text/javascript">
+<!--
+function show_end_item(event)
+{
+	var select_box = $('magebidAuctionList_massaction-select');	
+	if (select_box.getValue() == 'end')
+	{
+		Element.removeClassName('end_item_option_container', 'hide');
+		add_reason_to_form();
+	}			 
+	else
+	{
+		Element.addClassName('end_item_option_container', 'hide');
+		remove_reason_from_form();
+	}
+}
+
+function add_reason_to_form()
+{
+	var reason_value = $('select_item_reason').getValue();
+	var reason_input = new Element("input", { id: 'reason_input',name: 'reason',value: reason_value,type: 'hidden'});
+	$('magebidAuctionList_massaction-form').insert(reason_input);
+}
+
+function remove_reason_from_form()
+{
+	if ($('reason_input') != null) $('reason_input').remove();
+}
+
+function change_reason_value()
+{
+	var reason_value = $('select_item_reason').getValue();
+	$('reason_input').setValue(reason_value);
+}
+
+
+
+Event.observe('magebidAuctionList_massaction-select', 'change', show_end_item);
+Event.observe('select_item_reason', 'change', change_reason_value);
+
+//Popup Window 
+var Popup = {
+  open: function(options)
+  {
+    this.options = {
+      url: '#',
+      width: screen.width*0.9,
+      height: screen.height*0.9,
+	  scrollbars:'yes',
+    }
+    Object.extend(this.options, options || {});
+    window.open(this.options.url, '', 'width='+this.options.width+',height='+this.options.height+',scrollbars='+this.options.scrollbars);
+  }
+}
+
+
+
+-->
+</script>	
+
+<style type="text/css">
+.hide
+{
+	display:none;
+}	
+</style>
+

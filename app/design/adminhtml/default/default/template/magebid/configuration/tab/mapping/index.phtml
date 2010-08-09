@@ -1,0 +1,7 @@
+<div class="content-header">
+    <h3 class="icon-head head-products"><?php echo $this->getHeaderText() ?></h3>
+	<?php $button = $this->getSaveButton();?>
+    <p class="content-buttons form-buttons"><button onclick="<?php echo $button['clickAction']; ?>" id="<?php echo $button['name'] ?>" type="button" class="scalable" style=""><span><?php echo $button['action'] ?></span></button>
+</div>
+
+<?php echo $this->getFormHtml(); ?>
