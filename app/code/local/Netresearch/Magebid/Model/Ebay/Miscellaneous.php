@@ -56,5 +56,39 @@ class Netresearch_Magebid_Model_Ebay_Miscellaneous extends Mage_Core_Model_Abstr
 			return false;
 		}
 	}	
+	
+	public function getCategoriesFeatures()
+	{
+		//Check Category Features Version
+		$res = $this->_handler->getCategoryFeatures();
+		
+		//Daily Log
+		Mage::getModel('magebid/daily_log')->logCall();			
+		
+		//If Version in Magebid is older then Version in Ebay -> Update
+		if (Mage::getSingleton('magebid/configuration')->getCategoryFeaturesVersion()<$res->CategoryVersion)
+		{
+			if ($res = $this->_handler->getCategoryFeatures('ReturnAll'))
+			{				
+				//Daily Log
+				Mage::getModel('magebid/daily_log')->logCall();					
+				
+				//Set current version
+				//Mage::getSingleton('magebid/configuration')->setCategoryFeaturesVersion($res->CategoryVersion);
+				return $res;
+			}
+		}
+		else
+		{
+			Mage::getSingleton('adminhtml/session')
+	               ->addSuccess(Mage::helper('magebid')
+	               ->__('Your Category Features are already up to date'));			
+			return false;
+		}		
+		
+
+		
+		return true;
+	}		
 }
 ?>

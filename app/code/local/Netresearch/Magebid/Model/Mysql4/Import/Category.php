@@ -26,5 +26,28 @@ class Netresearch_Magebid_Model_Mysql4_Import_Category extends Mage_Core_Model_M
 
         return $this;		 			
 	}
+	
+	public function setAllConditionsToNull()
+	{	
+	    try {
+            $this->_getWriteAdapter()->update(
+                $this->getMainTable(),array('condition_enabled'=>NULL)   
+            );
+            
+            $this->_getWriteAdapter()->commit();
+        } 
+        catch (Exception $e) {
+            $this->_getWriteAdapter()->rollBack();
+        }		
+	}
+	
+    public function deleteAll()
+    {
+    	$write = $this->_getWriteAdapter();     
+            
+        $write->delete($this->getMainTable(),
+                $write->quoteInto($this->getMainTable().'.magebid_import_category_id>?', 0)
+        );  
+    }	
 }
 ?>

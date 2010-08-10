@@ -52,6 +52,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 						$active_tab = "store_category";
 					break;														
 
+					case 'import_category_features':
+						$this->_importCategoryFeatures();
+						$active_tab = "category_features";
+					break;						
+					
 					case 'import_return_policies':
 						$this->_importPolicies();
 						$active_tab = "policy";
@@ -109,6 +114,16 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 		               ->__('%d Store Categories were successfully imported',$number_imported));				
 		}
 	}		
+	
+	protected function _importCategoryFeatures()
+	{
+		if (Mage::getModel('magebid/import_category_features')->importCategoryFeatures())
+		{			
+			Mage::getSingleton('adminhtml/session')
+		               ->addSuccess(Mage::helper('magebid')
+		               ->__(' Category Features were successfully imported'));				
+		}	
+	}
 	
 	protected function _importPolicies()
 	{

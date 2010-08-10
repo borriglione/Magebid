@@ -117,7 +117,16 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Edit_Tab_Profile extends Mage_
 			'values'	=> Mage::getSingleton('magebid/auction_type')->getAllAuctionTypesOptions(),	
 			'required'	=> true,
         ));		
-		
+        
+        $fieldset->addField('condition_id', 'select', array(
+            'name'      => 'condition_id',
+            'title'     => Mage::helper('magebid')->__('Condition'),
+            'label'     => Mage::helper('magebid')->__('Condition'),
+			'required'	=> false,
+			'values'	=> Mage::getSingleton('magebid/import_category_features')->getAvailableConditions(Mage::registry('frozen_magebid')->getData('ebay_category_1')),
+			'note'		=> Mage::helper('magebid')->__('Please select a category to choose this value'),
+        ));	        
+        
         $form->setValues(Mage::registry('frozen_magebid')->getData());		
         //$form->setUseContainer(true);
         $this->setForm($form);

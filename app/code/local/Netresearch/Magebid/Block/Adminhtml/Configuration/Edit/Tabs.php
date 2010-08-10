@@ -6,7 +6,7 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tabs extends Mage_A
         parent::__construct();		
         $this->setId('magebid_configuration_edit_tabs');
         $this->setDestElementId('configuration_form');
-        $this->setTitle(Mage::helper('magebid')->__('Configuration'));
+        $this->setTitle(Mage::helper('magebid')->__('Configuration'));        
     }
 
     protected function _beforeToHtml()
@@ -54,7 +54,14 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tabs extends Mage_A
             'title'     => Mage::helper('magebid')->__('Store Categories'),
             'content'   => $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_store_category')->toHtml(),
 			'active'	=> ($active_tab=='store_category') ? true : false,
-        ));	  		
+        ));	  	
+
+		$this->addTab('category_features', array(
+            'label'     => Mage::helper('magebid')->__('Category Features'),
+            'title'     => Mage::helper('magebid')->__('Category Features'),
+            'content'   => $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_categoryFeatures')->toHtml(),
+			'active'	=> ($active_tab=='category') ? true : false,
+        ));	          
 		
 		$this->addTab('policy', array(
             'label'     => Mage::helper('magebid')->__('Return Policies'),
@@ -69,6 +76,7 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tabs extends Mage_A
             'content'   => $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_mapping')->toHtml(),
 			'active'	=> ($active_tab=='mapping') ? true : false,
         ));	 	
+        
         
 		$this->addTab('dailyLog', array(
             'label'     => Mage::helper('magebid')->__('Daily Log'),

@@ -59,7 +59,10 @@
 					</import_policy>						
 					<import_category>
 						<table>magebid_import_category</table>
-					</import_category>						
+					</import_category>		
+					<import_category_features>
+						<table>magebid_import_category_features</table>
+					</import_category_features>										
                     <transaction_status>
                         <table>magebid_transaction_status</table>
                     </transaction_status>	

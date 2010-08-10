@@ -22,16 +22,8 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 			return false;
 		}
 	
-		//If there are some categories
-		if (count($ebay_categories->CategoryArray)>0)
-		{
-			//delete all existing categories
-			$collection = $this->getCollection();
-			$collection->addFieldToFilter('store','0');	 
-			foreach ($collection as $colItem){
-			       $colItem->delete();
-			} 		
-		}
+		//If there are some categories, delete them
+		$this->getResource()->deleteAll();	
 		
 		//Add the new categories
 		foreach ($ebay_categories->CategoryArray as $category)
@@ -49,12 +41,7 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		}	
 		
 		return count($ebay_categories->CategoryArray);
-	}
-	
-	protected function _setSelectedCat()
-	{
-		
-	}
+	}	
 	
 	public function buildTree($selected_cat)
 	{

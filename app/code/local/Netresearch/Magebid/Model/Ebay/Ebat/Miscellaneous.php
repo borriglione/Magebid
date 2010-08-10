@@ -81,5 +81,32 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		
 		return $res;		
 	}	
+	
+	public function getCategoryFeatures($detail_level = '')
+	{
+		//Build Request
+		$req = new GetCategoryFeaturesRequestType();
+		if ($detail_level!="") $req->setDetailLevel('ReturnAll');
+		$req->setViewAllNodes(1);
+		
+		//$req->setCategoryID(9355);
+		
+		//Submit Request
+		$res = $this->_sessionproxy->GetCategoryFeatures($req);
+		
+		//Wort with response
+		if ($res->Ack == 'Success')
+		{
+			Mage::getModel('magebid/log')->logSuccess("import","Category Features",var_export($req,true));
+			return $res;
+		}
+		else
+		{
+			Mage::getModel('magebid/log')->logError("import","Category Features",var_export($req,true),var_export($res,true));
+			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
+		}			
+		
+		return $res;				
+	}
 }
 ?>

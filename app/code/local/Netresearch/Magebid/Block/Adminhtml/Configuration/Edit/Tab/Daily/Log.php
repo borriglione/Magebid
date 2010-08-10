@@ -1,5 +1,5 @@
 <?php
-class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Daily_log extends Mage_Adminhtml_Block_Widget
+class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Daily_log extends Mage_Adminhtml_Block_Widget_Form
 {	
     public function __construct()
     {

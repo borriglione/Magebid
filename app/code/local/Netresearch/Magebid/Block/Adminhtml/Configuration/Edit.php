@@ -7,6 +7,9 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit extends Mage_Adminh
         parent::__construct();
         $this->setTemplate('magebid/configuration/index.phtml');
         $this->setTitle('Configuration');
+        
+        $this->_blockGroup = 'magebid';		
+        $this->_mode = 'edit';       
     }
 	
     public function initForm()

@@ -25,9 +25,24 @@ class Netresearch_Magebid_Model_Configuration extends Mage_Core_Model_Abstract
 	
 	public function setCategoryVersion($version)
 	{
+		if ($version=="") return false;
+	
 		$data = array('key'=>'category_version','value'=>$version);
-		if ($version!="") $this->load('category_version','key')->addData($data)->save();
+		$this->load('category_version','key')->addData($data)->save();
 	}	
+	
+	public function getCategoryFeaturesVersion()
+	{
+		return $this->load('category_features_version','key')->getValue();
+	}	
+	
+	public function setCategoryFeaturesVersion($version)
+	{
+		if ($version=="") return false;
+			
+		$data = array('key'=>'category_features_version','value'=>$version);
+		$this->load('category_features_version','key')->addData($data)->save();
+	}
 	
 	public function getLastSellerEvent()
 	{
