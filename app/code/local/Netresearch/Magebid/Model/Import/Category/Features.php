@@ -59,7 +59,7 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 			try
 			{
 				$data = array(				
-					'key' => 'Condition',
+					'key_id' => 'Condition',
 					'value_id' => $condition->ID,
 					'value_display_name' => Mage::helper('coding')->encodePrepareDb($condition->DisplayName),
 					'category_id' => $category->CategoryID
@@ -78,23 +78,60 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 	{
 		$avaiable_conditions = array();
 	
-		//If by default, no category is selected
-		if ($ebay_category_id)
+		//Get Conditions
+		if ($condition_enabled = $this->_getConditionEnabled($ebay_category_id) && ($ebay_category_id!=0))
 		{
-			array_unshift($avaiable_conditions, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please Select --')));
-			return $avaiable_conditions;
+			$avaiable_conditions = $this->_getConditions($ebay_category_id);
 		}
-		 
 		
-		
-	
-		
-		$avaiable_conditions[] = array('value'=>500,'label'=>"Future New");
-		$avaiable_conditions[] = array('value'=>1000,'label'=>"New");
-		$avaiable_conditions[] = array('value'=>2000,'label'=>"Used");
-		
-		
+		array_unshift($avaiable_conditions, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please Select --')));
 		return $avaiable_conditions;
 	}
+	
+	protected function _getConditionEnabled($ebay_category_id)
+	{
+		$import_category = Mage::getModel('magebid/import_category')->load($ebay_category_id,'category_id');
+		if (!is_null($import_category->getConditionEnabled()))
+		{
+			if ($import_category->getConditionEnabled()==1) return true;
+			if ($import_category->getConditionEnabled()==0) return false;
+		}
+		else if (($import_category->getCategoryLevel()==1) && is_null($import_category->getConditionEnabled()))
+		{
+			return false;
+		}
+		else if (is_null($import_category->getConditionEnabled()))
+		{
+			return $this->_getConditionEnabled($import_category->getCategoryParentId());
+		}
+	}
+	
+	protected function _getConditions($ebay_category_id)
+	{
+		//Get Collection
+		$collection = parent::getCollection();
+		$collection->addFieldToFilter('category_id',$ebay_category_id);
+		$collection->addFieldToFilter('key_id','Condition');
+		$collection->setOrder('value_id','asc');
+		$collection->load();
+		
+		//Load Intance of Category
+		$import_category = Mage::getModel('magebid/import_category')->load($ebay_category_id,'category_id');
+		
+		if (count(($collection->getItems())==0) && ($import_category->getCategoryLevel()!=1))
+		{			
+			return $this->_getConditions($import_category->getCategoryParentId());
+		}
+		else if ((count($collection->getItems())==0) && ($import_category->getCategoryLevel()==1))
+		{
+			return array();
+		}
+		else if (count($collection->getItems())>0)
+		{
+			
+			return $collection->toOptionArray();
+		}
+	}
+	
 }
 ?>

@@ -9,6 +9,10 @@ class Netresearch_Magebid_Model_Mysql4_Import_Category_Features_Collection exten
         parent::_construct();
         $this->_init('magebid/import_category_features');
 	}	
-	
+
+	public function toOptionArray()
+	{
+		return parent::_toOptionArray('value_id','value_display_name');
+	}	
 }
 ?>
