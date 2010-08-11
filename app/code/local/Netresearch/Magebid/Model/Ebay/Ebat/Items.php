@@ -152,7 +152,8 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
         $item->setLocation($this->_auction_data['location']);        
         $item->setDispatchTimeMax($this->_auction_data['dispatch_time']); 
         $item->setDescription(Mage::helper('coding')->exportEncodeHtml($this->_auction_data['auction_description']));		
-		return $item;	
+		$item->setConditionID($this->_auction_data['condition_id']);
+        return $item;	
 	}
 	
 	protected function _setPrimaryCategorie()

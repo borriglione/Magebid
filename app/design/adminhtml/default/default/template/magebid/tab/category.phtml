@@ -208,9 +208,14 @@ function categoryClick(node, e){
 };
 function categoryAdd(id) {	
     $('ebay-category-1').value = id;
+    resetConditions(id);
 }
 function categoryRemove(id) {    
-	if ($('ebay-category-1').value == id) $('ebay-category-1').value = '';
+	if ($('ebay-category-1').value == id)
+	{
+		 $('ebay-category-1').value = '';
+         unsetConditions();
+	}
 }
 
 function categoryAdd2(id) {
@@ -218,6 +223,39 @@ function categoryAdd2(id) {
 }
 function categoryRemove2(id) {
 	if ($('ebay-category-2').value == id) $('ebay-category-2').value = '';
+}
+
+function resetConditions(ebay_category_id)
+{
+	var conditions_reset_url = '<?php echo $this->getCategoryFeaturesUrl()?>' + 'category_id/'+ebay_category_id+'/';
+	
+    request = new Ajax.Request(
+    		conditions_reset_url,
+            {
+             method:'get',
+             onSuccess: function(transport) {
+				var conditions_array = transport.responseText.evalJSON();
+				updateConditionsInputField(conditions_array);
+    		  }
+             }
+        );	
+}
+
+function updateConditionsInputField(conditions_array)
+{
+	unsetConditions();
+	for (var i=0;i<conditions_array.length;i++)
+	{
+		$('condition_id').options[i] = new Option(conditions_array[i]['label'], conditions_array[i]['value']);
+	}
+}
+
+function unsetConditions()
+{
+	for (var i=$('condition_id').length;i>=0;i--)
+	{
+		$('condition_id').options[i] = null;
+	}
 }
 
 </script>

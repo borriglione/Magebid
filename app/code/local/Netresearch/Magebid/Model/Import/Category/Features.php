@@ -84,7 +84,7 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 			$avaiable_conditions = $this->_getConditions($ebay_category_id);
 		}
 		
-		array_unshift($avaiable_conditions, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please Select --')));
+		//array_unshift($avaiable_conditions, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please Select --')));
 		return $avaiable_conditions;
 	}
 	

@@ -275,7 +275,14 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
             $this->getLayout()->createBlock('magebid/adminhtml_auction_edit_tab_category')
                 ->getEbayChildTreeJson($this->getRequest()->getParam('category'))
         );
-    }		
+    }	
+    
+    public function categoryFeaturesJsonAction()
+    {
+    	$ebay_category_id = $this->getRequest()->getParam('category_id', false);
+    	$conditions = Mage::getModel('magebid/import_category_features')->getAvailableConditions($ebay_category_id);
+        $this->getResponse()->setBody(Zend_Json::encode($conditions));	
+    }      	
 }
 
 ?>

@@ -96,9 +96,7 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_New_Tab_Profile extends Mage_A
             'label'     => Mage::helper('magebid')->__('Dispatch Time'),
 			'required'	=> true,	
 			'note'		=> Mage::helper('magebid')->__('Days'),			
-        ));				
-		
-		
+        ));	
 		
         $fieldset->addField('is_image', 'select', array(
             'name'      => 'is_image',
@@ -114,9 +112,15 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_New_Tab_Profile extends Mage_A
             'label'     => Mage::helper('magebid')->__('Auction Type'),
 			'values'	=> Mage::getSingleton('magebid/auction_type')->getAllAuctionTypesOptions(),	
 			'required'	=> true,
-        ));		
-		
-      
+        ));				
+        
+        $fieldset->addField('condition_id', 'select', array(
+            'name'      => 'condition_id',
+            'title'     => Mage::helper('magebid')->__('Condition'),
+            'label'     => Mage::helper('magebid')->__('Condition'),
+			'required'	=> false,
+			'note'		=> Mage::helper('magebid')->__('Please select a category to choose this value'),
+        ));	           
 				
         //$form->setUseContainer(true);
         $this->setForm($form);

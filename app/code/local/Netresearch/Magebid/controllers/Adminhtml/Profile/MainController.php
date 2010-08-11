@@ -15,7 +15,6 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
 
     public function newAction() // Create new element
     {
-
 		$this->loadLayout()
         ->_addContent($this->getLayout()
            ->createBlock('magebid/adminhtml_profile_new'));
@@ -154,8 +153,14 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
             $this->getLayout()->createBlock('magebid/adminhtml_profile_edit_tab_store_category')
                 ->getEbayChildTreeJson($this->getRequest()->getParam('category'))
         );
-    }		
-	
+    }	    
+    
+    public function categoryFeaturesJsonAction()
+    {
+    	$ebay_category_id = $this->getRequest()->getParam('category_id', false);
+    	$conditions = Mage::getModel('magebid/import_category_features')->getAvailableConditions($ebay_category_id);
+        $this->getResponse()->setBody(Zend_Json::encode($conditions));	
+    }  
 }
 
 ?>

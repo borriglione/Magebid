@@ -40,6 +40,10 @@ class Netresearch_Magebid_Block_Adminhtml_Abstract_Tree extends Mage_Adminhtml_B
         $json = Zend_Json::encode(isset($rootArray['children']) ? $rootArray['children'] : array());
         return $json;		
 	}	
-
+	
+    public function getCategoryFeaturesUrl()
+    {
+        return $this->getUrl('*/*/categoryFeaturesJson');
+	}
 }
 ?>
