@@ -1,29 +1,69 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Export
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
-{
-	protected $_product_id;
-	protected $_ebay_settings;
-	protected $_product;
-	protected $_auction;
+{	
+    /**
+     * Processed Profile data, with all predefined settings to create an auction
+     * @var array
+     */		
+	protected $_processed_profile_data;
 	
+    /**
+     * Product
+     * @var Mage_Catalog_Model_Product object
+     */		
+	protected $_product;	
+	
+    /**
+     * Construct
+     *
+     * @return void
+     */		
 	protected function _construct()
     {
         $this->_init('magebid/export');
     }	
 	
+    /**
+     * Load Product Instance for the current saved auction
+     *
+     * @return void
+     */		    
 	public function setProduct($id)
 	{
-		$this->_product_id = $id;
 		$this->_product = Mage::getModel('catalog/product');
-		if ($this->_ebay_settings['store']!="" && $this->_ebay_settings!=0) $this->_product->setStoreId($this->_ebay_settings['store']);				
+		if ($this->_processed_profile_data['store']!="")
+		{
+			$this->_product->setStoreId($this->_processed_profile_data['store']);				
+		}
 		$this->_product->load($id);
 	}
 	
+    /**
+     * Return Magento GMT Datetime
+     *
+     * @return string
+     */		
 	public function getDateTime()
 	{
 		return Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');
 	}
 	
+    /**
+     * Return the formated Date (Converts DB-Date-Format |Y-m-d H:i:s| into the Magento Date format, f.e. 18.08.2010 17:54:03)
+     * 
+     * @param string $date Database Datetime Format
+     * 
+     * @return string
+     */			
 	public function formatDateTime($date)
 	{
 		$format = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM);
@@ -32,6 +72,14 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
 		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}	
 	
+    /**
+     * Return the caluclated end-date of an auction
+     * 
+     * @param string $start_date Start-Date of the auction
+     * @param int $life_time Lifetime of the auction in days
+     * 
+     * @return string
+     */		
 	public function getEndDate($start_date,$life_time)
 	{
 		$time = Mage::getModel('core/date')->timestamp($start_date);
@@ -39,11 +87,23 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
 		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}
 	
+    /**
+     * Assign the processed profile auction settings
+     *
+     * @param array $ebay_settings Magento Request Data
+     *
+     * @return void
+     */			
 	public function setEbaySettings($ebay_settings)
 	{
-		$this->_ebay_settings = $ebay_settings;		
+		$this->_processed_profile_data = $ebay_settings;		
 	}	
-	
+
+    /**
+     * Main Function to prepare the auction to store it in the database
+     *
+     * @return void
+     */		
 	public function prepareAuction()
 	{
 		//Prepare Auction Details Data
@@ -59,96 +119,125 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
 		$this->_prepareTaxRate();
 		
 		//Save auction Details
-		$magebid_auction_details = Mage::getModel('magebid/auction_detail')->setData($this->_ebay_settings)->save();		
-		$this->_ebay_settings['magebid_auction_detail_id'] = $magebid_auction_details->getId();
+		$magebid_auction_details = Mage::getModel('magebid/auction_detail')->setData($this->_processed_profile_data)->save();		
+		$this->_processed_profile_data['magebid_auction_detail_id'] = $magebid_auction_details->getId();
 		
 		//Prepare Auction Data
 		$this->_prepareAuctionData();
 		
 		//Save main auction
-		$this->_auction = Mage::getModel('magebid/auction')->setData($this->_ebay_settings)->save();				
+		Mage::getModel('magebid/auction')->setData($this->_processed_profile_data)->save();				
 	}
 	
-	
+    /**
+     * Prepare the auction details data to store it in the database
+     *
+     * @return void
+     */		
 	protected function _prepareAuctionDetailsData()
 	{
 		//calculate Auction Life Time
-		if (empty($this->_ebay_settings['start_date']))
+		if (empty($this->_processed_profile_data['start_date']))
 		{
-			unset($this->_ebay_settings['start_date']);
-			unset($this->_ebay_settings['end_date']);			
+			unset($this->_processed_profile_data['start_date']);
+			unset($this->_processed_profile_data['end_date']);			
 		}	
 		
-		$this->_ebay_settings['life_time'] = $this->_ebay_settings['duration'];		
+		$this->_processed_profile_data['life_time'] = $this->_processed_profile_data['duration'];		
 
 	}
 	
+    /**
+     * Prepare the product data
+     *
+     * @return void
+     */			
 	protected function _prepareProductData()
 	{	
 		//Set auction detail infos
-		$this->_ebay_settings['auction_name'] = $this->_product->getName();
+		$this->_processed_profile_data['auction_name'] = $this->_product->getName();
 		
 		//Set auction infos
-		$this->_ebay_settings['product_id'] = $this->_product->getId();
-		$this->_ebay_settings['product_sku'] = $this->_product->getSku();		
+		$this->_processed_profile_data['product_id'] = $this->_product->getId();
+		$this->_processed_profile_data['product_sku'] = $this->_product->getSku();		
 		
 		//Build Description
 		$template_renderer = Mage::getModel('magebid/template_renderer');
 		$template_renderer->setProduct($this->_product);
-		$this->_ebay_settings['auction_description'] = $template_renderer->generateDescription(
-												$this->_ebay_settings['header_templates_id'],
-												$this->_ebay_settings['main_templates_id'],
-												$this->_ebay_settings['footer_templates_id']
+		$this->_processed_profile_data['auction_description'] = $template_renderer->generateDescription(
+												$this->_processed_profile_data['header_templates_id'],
+												$this->_processed_profile_data['main_templates_id'],
+												$this->_processed_profile_data['footer_templates_id']
 												);
 	}
-	
+
+    /**
+     * Prepare the auction data to store it in the database
+     *
+     * @return void
+     */			
 	protected function _prepareAuctionData()
 	{
 		//Set time
-		$this->_ebay_settings['date_created'] = $this->getDateTime();
+		$this->_processed_profile_data['date_created'] = $this->getDateTime();
 		
 		//Set Magebid Status
-		$this->_ebay_settings['magebid_ebay_status_id'] = Mage::getSingleton('magebid/auction')->getEbayStatusCreated();		
+		$this->_processed_profile_data['magebid_ebay_status_id'] = Netresearch_Magebid_Model_Auction::AUCTION_STATUS_CREATED;		
 	}
-	
+
+    /**
+     * Prepare the price data to store it in the database
+     *
+     * @return void
+     */		
 	protected function _preparePriceData()
 	{
 		//Start Price
-		$this->_ebay_settings['start_price'] = $this->_getPrice('start_price');		
+		$this->_processed_profile_data['start_price'] = $this->_getPrice('start_price');		
 		
 		//Fixed Price
-		$this->_ebay_settings['fixed_price'] = $this->_getPrice('fixed_price');
+		$this->_processed_profile_data['fixed_price'] = $this->_getPrice('fixed_price');
 	}
 	
+    /**
+     * Prepare the tax data to store it in the database
+     *
+     * @return void
+     */		
 	protected function _prepareTaxRate()
 	{
-		if ($this->_ebay_settings['vat_percent'])
+		if ($this->_processed_profile_data['vat_percent'])
 		{
 			//get product tax rate
 			$tax_rate = $this->_product->getTaxPercent();
-			$this->_ebay_settings['vat_percent'] = $tax_rate;			
+			$this->_processed_profile_data['vat_percent'] = $tax_rate;			
 		}
 		else
 		{
-			$this->_ebay_settings['vat_percent'] = 0;
+			$this->_processed_profile_data['vat_percent'] = 0;
 		}
 	}	
 	
+    /**
+     * Calculate the auction price
+     *
+     * @return void
+     */		
 	protected function _getPrice($field)
 	{
 		//Extract text-string-parts
-		$first_char = substr($this->_ebay_settings[$field],0,1);
-		$last_char = substr($this->_ebay_settings[$field],-1);			
+		$first_char = substr($this->_processed_profile_data[$field],0,1);
+		$last_char = substr($this->_processed_profile_data[$field],-1);			
 		
 		if ($first_char=="+" || $first_char=="-") //relative price
 		{
 			//Get product-price
-			//$product_price = $this->_product->getFinalPrice($this->_ebay_settings['store']);
+			//$product_price = $this->_product->getFinalPrice($this->_processed_profile_data['store']);
 			$product_price = Mage::helper('tax')->getPrice($this->_product, $this->_product->getFinalPrice(), true);
 			
 			if ($last_char=="%") //percentage
 			{
-				$price_val = substr($this->_ebay_settings[$field],1,-1); //percentage change
+				$price_val = substr($this->_processed_profile_data[$field],1,-1); //percentage change
 				if ($first_char=="-" && $price_val!=0)
 				{
 					$product_price = $product_price-($product_price/100*$price_val); 
@@ -160,7 +249,7 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
 			}
 			else 
 			{
-				$price_val = substr($this->_ebay_settings[$field],1);
+				$price_val = substr($this->_processed_profile_data[$field],1);
 				
 				if ($first_char=="-")
 				{
@@ -176,7 +265,7 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
 		}
 		else //absolute price
 		{			
-			return $this->_ebay_settings[$field];			
+			return $this->_processed_profile_data[$field];			
 		}		
 	}
 }

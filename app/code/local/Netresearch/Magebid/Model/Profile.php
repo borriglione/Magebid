@@ -1,11 +1,30 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Profile
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     protected function _construct()
     {
         $this->_init('magebid/profile');
     }	
 	
+    /**
+     * Return Profile Collection with joined relations
+     *
+     * @return object
+     */	     
 	public function getCollection()
 	{
 		$collection = parent::getCollection();	
@@ -13,6 +32,11 @@ class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 		return $collection;
 	}	
 	
+    /**
+     * Method creates an array with yes/no options for the new/edit-view
+     *
+     * @return array
+     */	   	
 	public function getYesNoTypes()
 	{
 		$yes_no_options = array(
@@ -25,6 +49,11 @@ class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 		return $yes_no_options;			
 	}
 	
+    /**
+     * Method creates an array with the possible durations for the new/edit-view
+     *
+     * @return array
+     */	 
 	public function getDurationOptions()
 	{
 		$duration_options = array(
@@ -36,10 +65,14 @@ class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 				);
 		array_unshift($duration_options, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please select --')));	
 		
-		return $duration_options;	
-				
+		return $duration_options;
 	}
 	
+    /**
+     * Method creates an array with the possible Hit Counter Styles for the new/edit-view
+     *
+     * @return array
+     */	 
 	public function getHitCounterStyles()
 	{
 		$hit_counter_options = array(
@@ -52,10 +85,15 @@ class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 				);
 		array_unshift($hit_counter_options, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please select --')));	
 		
-		return $hit_counter_options;	
-				
+		return $hit_counter_options;					
 	}	
 
+    /**
+     * Method creates an array with all profiles 
+     * Used in the creation-process of an auction
+     *
+     * @return array
+     */	 	
 	public function getAllProfileOptions()
 	{
 		$collection = parent::getCollection();	
@@ -64,6 +102,11 @@ class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 		return $collection;
 	}	
 	
+    /**
+     * Method creates an array with the possible Listing Enhancements for the new/edit-view
+     *
+     * @return array
+     */	 	
 	public function getListingEnhancements()
 	{
 		$listing_enhancement_options = array(
@@ -78,7 +121,6 @@ class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 				array('value'=>'ProPackPlusBundle','label'=>Mage::helper('magebid')->__('ProPackPlusBundle')),
 				array('value'=>'ValuePackBundle','label'=>Mage::helper('magebid')->__('ValuePackBundle')),				
 				);
-
 		array_unshift($listing_enhancement_options, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- None --')));
 
 		return $listing_enhancement_options;		

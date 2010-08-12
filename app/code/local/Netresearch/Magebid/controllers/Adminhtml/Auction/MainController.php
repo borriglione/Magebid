@@ -166,7 +166,7 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
                     $auction = Mage::getModel('magebid/auction')->load($id);			
 
                     //If the auction is not active
-                    if ($auction->getMagebidEbayStatusId()!=$auction->getEbayStatusCreated())
+                    if ($auction->getMagebidEbayStatusId()!=Netresearch_Magebid_Model_Auction::AUCTION_STATUS_CREATED)
                     {
 						//Set error message
 						Mage::getSingleton('adminhtml/session')->addError(
@@ -211,7 +211,7 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
                     $auction = Mage::getModel('magebid/auction')->load($id);	
                     
                     //If the auction is not active
-                    if ($auction->getMagebidEbayStatusId()!=$auction->getEbayStatusActive())
+                    if ($auction->getMagebidEbayStatusId()!=Netresearch_Magebid_Model_Auction::AUCTION_STATUS_ACTIVE)
                     {
 						//Set error message
 						Mage::getSingleton('adminhtml/session')->addError(
@@ -221,7 +221,7 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 					else if (Mage::getModel('magebid/ebay_items')->endItem($auction->getEbayItemId(),$reason))
 					{
 					    //Set item status to finished
-						$data['magebid_ebay_status_id'] = $auction->getEbayStatusFinished();
+						$data['magebid_ebay_status_id'] = Netresearch_Magebid_Model_Auction::AUCTION_STATUS_FINISHED;
 						$auction->addData($data)->save();
 						
 						//Set success message

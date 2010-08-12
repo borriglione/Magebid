@@ -1,16 +1,54 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Template_Renderer
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
 {	
+    /**
+     * Product
+     * @var Mage_Catalog_Model_Product object
+     */		
 	protected $_product;	
+
+    /**
+     * Search Array for the preg_replace-function of the Magebid Templating System
+     * @var array
+     */		
 	protected $_search_array = array();	
+	
+    /**
+     * Replace Array for the preg_replace-function of the Magebid Templating System
+     * @var array
+     */			
 	protected $_replace_array = array();	
 		
-		
+    /**
+     * Construct
+     *
+     * @return void
+     */			
 	protected function _construct()
     {
         $this->_init('magebid/template_renderer');
     }	
 	
+    /**
+     * Generates the eBay Auction Description
+     * 
+     * This functions renders head,main and footer templates and merges them to the auction description
+     * 
+     * @param int $header_templates_id DB magebid_templates_id
+     * @param int $main_templates_id DB magebid_templates_id
+     * @param int $footer_templates_id DB magebid_templates_id
+     * 
+     * @return string
+     */		    
 	public function generateDescription($header_templates_id,$main_templates_id,$footer_templates_id)
 	{
 		//Render Main Template
@@ -31,6 +69,15 @@ class Netresearch_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstra
 		return $description;		
 	}
 	
+    /**
+     * Rendering templates
+     * 
+     * This functions renders the template and search/replace the placehlders with the values
+     * 
+     * @param string $template Template with placeholders
+     * 
+     * @return string
+     */			
 	protected function _renderTemplates($template)
 	{
 		//For every product attribut
@@ -63,6 +110,14 @@ class Netresearch_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstra
 		return $template;					
 	}
 	
+    /**
+     * Search/Replace of product image placeholders
+     * 
+     * This functions creates the entries of the search/replace-array of the image placeholders 
+     * and the Image Paths of the Magento Products
+     * 
+     * @return void
+     */		
 	protected function _createImageTags()
 	{
 		//For every product attribut
@@ -90,6 +145,13 @@ class Netresearch_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstra
 		}	
 	}	
 	
+    /**
+     * Search/Replace of placeholders and store-paths
+     * 
+     * This functions creates the entries of the search/replace-array of often used store paths
+     * 
+     * @return void
+     */		
 	protected function _createStoreTags()
 	{
 		//Product Media URL
@@ -115,7 +177,11 @@ class Netresearch_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstra
 					
 	}
 	
-	
+    /**
+     * Assign Product Instance for the current product
+     *
+     * @return void
+     */		 	
 	public function setProduct($_product)
 	{
 		$this->_product = $_product;

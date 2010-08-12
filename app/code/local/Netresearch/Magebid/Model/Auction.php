@@ -1,24 +1,53 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Auction
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 {
-	//Ebay Time
-	protected $_ebaytime;
-
-	//Ebay Status Status
-	protected $status_created = 0;
-	protected $status_prepared = 1;
-	protected $status_active = 2;
-	protected $status_finished = 3;
+    /**
+     * Auction Status for created Auctions
+     * @const int
+     */	
+	const AUCTION_STATUS_CREATED = 0;
 	
-	const EBAY_STATUS_PREPARED = 1;
-	const EBAY_STATUS_ACTIVE = 2;
+    /**
+     * Auction Status for prepared Auctions
+     * @const int
+     */		
+	const AUCTION_STATUS_PREPARED = 1;
 	
+    /**
+     * Auction Status for active Auctions
+     * @const int
+     */			
+	const AUCTION_STATUS_ACTIVE = 2;	
 	
+    /**
+     * Auction Status for finished Auctions
+     * @const int
+     */		
+	const AUCTION_STATUS_FINISHED = 3;
+	
+    /**
+     * Construct
+     *
+     * @return void
+     */		
 	protected function _construct()
     {
         $this->_init('magebid/auction');
     }	
 	
+    /**
+     * Get Transaction Collection
+     * @return object
+     */    
 	public function getCollection()
 	{
 		$collection = parent::getCollection();	
@@ -26,27 +55,40 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		return $collection;
 	}	
 	
-	public function ebayUpdate($mapped_item = array())
+    /**
+     * Update the auction details data and check if the status ob the auction has changed
+     * 
+     * @param array $ebay_item_information ebatns response data
+     *
+     * @return void
+     */	 
+	public function ebayUpdate($ebay_item_information)
 	{
-		//if status is aktiv
-		if ($this->getMagebidEbayStatusId()==$this->getEbayStatusCreated() || $this->getMagebidEbayStatusId()==$this->getEbayStatusFinished()) return;
+		//if status is active
+		if ($this->getMagebidEbayStatusId()==self::AUCTION_STATUS_CREATED || $this->getMagebidEbayStatusId()==self::AUCTION_STATUS_FINISHED)
+			 return false;
 		
 		//Get eBay-Item-Data
-		if (empty($mapped_item)) $mapped_item = Mage::getModel('magebid/ebay_items')->getEbayItem($this->getEbayItemId()); 		
+		//if (empty($auction_item)) $auction_item = Mage::getModel('magebid/ebay_items')->getEbayItem($this->getEbayItemId()); 		
 
 		//Update auction details
 		$magebid_auction_detail = Mage::getModel('magebid/auction_detail')->load($this->getMagebidAuctionDetailId());
-		$magebid_auction_detail->addData($mapped_item);		
+		$magebid_auction_detail->addData($ebay_item_information);		
 	    $magebid_auction_detail->save();
 		$this->load($this->getId()); //reload
 		
 		//Check Auction-Status
-		$this->_checkStatus($magebid_auction_detail,$mapped_item);			
-		
-		//Try to generate new Transactions for this item		
-		//$this->_checkForNewTransactions($mapped_item);
+		$this->_checkStatus($magebid_auction_detail,$auction_item);			
 	}	
 	
+    /**
+     * Check the response from eBay and change the status if necessary
+     * 
+     * @param Netresearch_Magebid_Auction_Detail $magebid_auction_detail Magento Auction Detail Object
+     * @param array $ebay_item_information ebatns response data
+     *
+     * @return void
+     */	 	
 	protected function _checkStatus($magebid_auction_detail,$ebay_item_information)
 	{
 		//Set special flag to don't change payment and shipping method
@@ -56,35 +98,33 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		if ($ebay_item_information['ListingStatus']=='Completed')
 		{
 			//Set Status to finished
-			$data['magebid_ebay_status_id'] = $this->getEbayStatusFinished();
+			$data['magebid_ebay_status_id'] = self::AUCTION_STATUS_FINISHED;
 			$this->addData($data)->save();	
 			
 			//Log
 			Mage::getModel('magebid/log')->logSuccess("auction-finished","item ".$this->getEbayItemId(),"","",var_export($ebay_item_information,true));
-			
-			return;
 		}		
 		
 		//if Auction is Active
-		if ($ebay_item_information['ListingStatus']=='Active' && $this->getMagebidEbayStatusId()!=$this->getEbayStatusActive())
+		if ($ebay_item_information['ListingStatus']=='Active' && $this->getMagebidEbayStatusId()!=self::AUCTION_STATUS_ACTIVE)
 		{	
 			//Set Status to active
-			$data['magebid_ebay_status_id'] = $this->getEbayStatusActive();
+			$data['magebid_ebay_status_id'] = self::AUCTION_STATUS_ACTIVE;
 			$this->addData($data)->save();
-			return;
-		}					
-			
+		}			
 	}
 	
+    /**
+     * Export Auction to eBay and change the status of the auction in magebid to active
+     *
+     * @return array|boolean Returns response array of the ebay request or false if the call failed
+     */	 		
 	public function ebayExport()
 	{			
-		if ($this->getMagebidEbayStatusId==0)
-		{
-			$auction_id = $this->getId();
-			$data = $this->getData();
-			
+		if ($this->getMagebidEbayStatusId==self::AUCTION_STATUS_CREATED)
+		{		
 			//Add Item to Ebay and get response
-			if ($response = Mage::getModel('magebid/ebay_items')->addEbayItem($data))
+			if ($response = Mage::getModel('magebid/ebay_items')->addEbayItem($this->getData()))
 			{
 				//Set special flag to don't change payment and shipping method
 				$response['request_type'] = 'export';
@@ -92,38 +132,18 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 				//Save auction (set ebay_item_id and status)
 				$this->addData($response)->save();	
 				
-				//Update this auction and get detailed informations
-				//$this->load($auction_id)->ebayUpdate();	
-				
 				return $response;
-			}
-			else
-			{
-				return false;
-			}			
+			}		
 		}	
-	}
-	
-	public function getEbayStatusCreated()
-	{
-		return $this->status_created;
-	}
 		
-	public function getEbayStatusPrepared()
-	{
-		return $this->status_prepared;
-	}
-
-	public function getEbayStatusActive()
-	{
-		return $this->status_active;
+		return false;
 	}
 	
-	public function getEbayStatusFinished()
-	{
-		return $this->status_finished;
-	}
-	
+    /**
+     * Return possible reasons for ending an auction
+     *
+     * @return array 
+     */	 		
 	public function getEndItemOptions()
 	{
 		$options = array(
@@ -138,6 +158,11 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		return $options;
 	}
 	
+    /**
+     * Return the different ebay status for an auction
+     *
+     * @return array 
+     */	 		
 	public function getEbayStatusOptions()
 	{
 		$data = array();
@@ -151,6 +176,14 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		return $data;		
 	}	
 	
+    /**
+     * Call eBay LastSellerTransactions and updates/created new transactions
+     * 
+     * This function calls LastSellerTransactions and tries to update/create the transactions
+     * After this tryCreateMultipleItemOrders will be executed to create Multiple Item Orders
+     *
+     * @return boolean 
+     */	 	
 	public function updateTransactions()
 	{
 		//Get Start/End Time
@@ -164,7 +197,7 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		foreach ($transactions as $raw_transaction)
 		{
 			//if transaction status is Incomplete
-			Mage::getModel('magebid/transaction')->ebayUpdateNew($raw_transaction);			
+			Mage::getModel('magebid/transaction')->saveOrUpdate($raw_transaction);			
 		}
 		
 		//Set Time for this Update

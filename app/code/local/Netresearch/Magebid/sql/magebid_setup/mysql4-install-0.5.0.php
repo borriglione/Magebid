@@ -1,4 +1,13 @@
 <?php
+/**
+ * Netresearch MySql-Installer
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 
 $installer = $this;
 

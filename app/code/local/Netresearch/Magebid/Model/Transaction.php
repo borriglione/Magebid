@@ -1,13 +1,5 @@
 <?php
 /**
- * @category  Netresearch
- * @package   Netresearch_Magebid
- * @author    André Herrn <andre.herrn@netresearch.de>
- * @copyright 2010 André Herrn
- * @link      http://www.magebid.de/
- */
-
-/**
  * Netresearch_Magebid_Model_Transaction
  *
  * @category  Netresearch
@@ -49,7 +41,6 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		$collection->joinFields();	
 		return $collection;
 	}		
-	
 	
     /**
      * Prepare Transaction Data to save it in the database
@@ -104,7 +95,6 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		return Mage::helper('coding')->encodeArray($transaction_array);
 	}
 	
-	
     /**
      * Prepare Transaction User Data to save it in the database
      * The Information comes from the eBay Call
@@ -120,6 +110,7 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		//Get the transaction-id
 		$transaction_user_array['magebid_transaction_id'] = $this->getId();		
 		
+		//Set eMail-Adress of the buyer
 		$transaction_user_array['buyer_email'] = $raw_transaction->Buyer->Email;
 		
 		//Set Billing/Registration Information
@@ -141,66 +132,81 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		return Mage::helper('coding')->encodeArray($transaction_user_array);
 	}		
 	
-	public function ebayUpdateNew($raw_transaction)
+    /**
+     * Main Method for save (create or update) an eBay Transaction
+     * 
+     * If the transaction is not already existing and complete, create one
+     * If the transaction is incomplete, update it
+     * 
+     * @param object $raw_transaction Raw transaction information (eBay Call) from ebay
+     * 
+     * @return boolean
+     */			
+	public function saveOrUpdate($raw_transaction)
 	{
 		//get ebay_item_id
 		$ebay_item_id = $raw_transaction->Item->ItemID;
 
 		//get (if existing) transaction_id
+		//if there is no transaction_id existing, it is a single quantity item or an bid-auction
 		if ($raw_transaction->TransactionID!="") $ebay_transaction_id = $raw_transaction->TransactionID;
 		
-		//Try to load the transaction
+		//Try to load the transaction by transaction_id or item_id
 		if (isset($ebay_transaction_id)) $this->load($ebay_transaction_id,'ebay_transaction_id');
 		else $this->load($ebay_item_id,'ebay_item_id');
 
-		//If an order was created already for a transaction
-		if ($this->getCompleteStatus()=='Complete') return false;
-		if ($this->getOrderCreated()==1) return false;
-		
 		//Load auction
 		$auction = Mage::getModel('magebid/auction')->load($ebay_item_id,'ebay_item_id');
+		
+		//Return false for the following conditions 
+		if ($this->getCompleteStatus()=='Complete') return false; //If the order-information is already complete
+		if ($this->getOrderCreated()==1) return false; //If an order was created already for a transaction
 		if (!$auction->getId()) return false; //If aution data is not existing for this transaction
 		
-		//Add Information of the ebay auction
+		//Assign Information of the ebay auction
 		$this->_auction_data = $auction->getData();
 
-		if ($this->getId()>0) //Existing Transaction
-		{
-			//prepare transaction data
-			$data = $this->_prepareTransactionData($raw_transaction);
-			$this->addData($data)->save();
-			
-			//prepare transaction user data
-			$data = $this->_prepareTransactionUserData($raw_transaction);
-			Mage::getModel('magebid/transaction_user')->load($this->getMagebidTransactionUserId())->addData($data)->save();			
+		//prepare transaction data and save it
+		$data = $this->_prepareTransactionData($raw_transaction);
+		$this->addData($data)->save();		
 		
+		//prepare transaction user data and save it
+		$data = $this->_prepareTransactionUserData($raw_transaction);
+		Mage::getModel('magebid/transaction_user')->load($this->getMagebidTransactionUserId())->addData($data)->save();			
+				
+		
+		 //If it is an existing Transaction->Update
+		if ($this->getId()>0)
+		{
 	        Mage::getSingleton('adminhtml/session')->addSuccess(
 	                    Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully updated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
 		}
-		else //new transaction
+		else //if it is a new transaction
 		{
-			//prepare transaction data
-			$data = $this->_prepareTransactionData($raw_transaction);
-			$this->addData($data)->save();
-			
-			//prepare transaction user data
-			$data = $this->_prepareTransactionUserData($raw_transaction);
-			Mage::getModel('magebid/transaction_user')->load($this->getMagebidTransactionUserId())->addData($data)->save();			
-		
 	        Mage::getSingleton('adminhtml/session')->addSuccess(
 	                    Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully generated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
 		}		
 		
-		//Try to create order
-		$this->_tryCreateOrder();		
+		//Try to create a Magento Order
+		$this->_tryCreateOrder();	
+
+		return true;
 	}
 	
+    /**
+     * Method to check if there is a new single item order to create
+     * 
+     * If the transaction is complete, the order not already created and consists only of one item->create it
+     * Save the Magento Order ID to the transaction and set a success-message
+     * 
+     * @return boolean
+     */		
 	protected function _tryCreateOrder()
 	{		
-		//if checkout_status is complete and if it is a single-item order		
+		//if checkout_status is complete, not already created and if it is a single-item order		
 		if ($this->getCompleteStatus()=='Complete' && $this->getOrderCreated()==0 && $this->getEbayOrderId()=='')
 		{
-			if ($order = Mage::getModel('magebid/order_create')->createImportOrder($this->load($this->getId())));
+			if ($order = Mage::getModel('magebid/order_create')->createImportOrder($this->load($this->getId())))
 			{
 				//Get order_id
 				$order_id = $order->getIncrementId();				
@@ -215,32 +221,45 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
                 );	
 				
 				//Check if order state should be changed
-				Mage::getSingleton('magebid/order_status')->setEbayStatus($order,$order->getStatus());  							
+				Mage::getSingleton('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 
+
+				return true;
 			}
+			else return false;
 		}			
 	}
 
+    /**
+     * Method to check if there is a new multiple item order to create
+     * 
+     * If the ebay order is complete and not already created
+     * Save the Magento Order ID to the transaction and set a success-message
+     * 
+     * @return boolean
+     */		
 	public function tryCreateMultipleItemOrders()
 	{	
-		//Get different ebay_order_ids which are not transformed into magento orders
+		//Get different eBay Orders which are not transformed into magento orders
 		$orders = $this->getResource()->getDifferentOrders();
 		
 		//For every order which is completed in ebay but not already created in Magento
 		foreach ($orders as $order)
 		{
-			//get every multiple orders
+			//get every transaction for an ebay_order_id 
 			$transactions = $this->getCollection();
 			$transactions->addFieldToFilter('ebay_order_id', $order['ebay_order_id']);		
 			$transactions->load();
 			
+			//If a Magento Order can be created
 			if ($order = Mage::getModel('magebid/order_create')->createImportOrder($transactions->getItems()))
 			{
-				//Get order_id
+				//Get new order_id
 				$order_id = $order->getIncrementId();				
 				
 				//Set "order created" on transaction
 				$data = array('order_created'=>1,'order_id'=>$order_id);	
 
+				//Save this status for every transaction
 				foreach ($transactions as $transaction)
 				{
 					$transaction->addData($data)->save();   
@@ -252,39 +271,12 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 				}				
 				
 				//Check if order state should be changed
-				Mage::getSingleton('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 		
+				Mage::getSingleton('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 	
+
+				return true;
 			}	
+			else return false;
 		}
 	}
-	
-	protected function _setTransactionStatus()
-	{		
-		return $this->getTransactionStatusWait();
-	}
-	
-	public function getTransactionStatusWait()
-	{
-		return $this->status_wait;
-	}
-	
-	public function getTransactionStatusPaid()
-	{
-		return $this->status_paid;
-	}
-	
-	public function getTransactionStatusSend()
-	{
-		return $this->status_send;
-	}
-	
-	public function getTransactionStatusReviewed()
-	{
-		return $this->status_reviewed;
-	}			
-	
-	public function getTransactionStatusClosed()
-	{
-		return $this->status_closed;
-	}			
 }
 ?>

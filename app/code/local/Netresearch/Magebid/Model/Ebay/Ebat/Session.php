@@ -58,7 +58,6 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstra
 		'site-id'=>Mage::getSingleton('magebid/setting')->getEbaySiteId(),
 		'app-mode'=>Mage::getSingleton('magebid/setting')->getAppMode(),
 		'use-http-compression'=>'0',
-		//'token-mode'=>Mage::getSingleton('magebid/setting')->getTokenMode(),
 		'token-mode'=>1,
 		'token'=>Mage::getSingleton('magebid/setting')->getToken(),
 		'use_standard_logger'=>0

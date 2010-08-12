@@ -20,12 +20,9 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 	
 	public function saveAction()
 	{
-		$data = $this->getRequest()->getPost();	
-		
+		$data = $this->getRequest()->getPost();			
 		$active_tab = "shipping";		
-		
-		
-		
+
 		try
 		{		   
 			if (isset($data['task_action']))

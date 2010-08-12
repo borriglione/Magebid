@@ -41,7 +41,7 @@ class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 		
 		if ($response = $this->_handler->addEbayItem($auction_data,$gallery_images))
 		{
-			$response['magebid_ebay_status_id'] = Mage::getSingleton('magebid/auction')->getEbayStatusActive();
+			$response['magebid_ebay_status_id'] = Netresearch_Magebid_Model_Auction::AUCTION_STATUS_ACTIVE;
 			return $response;
 		}
 		else
