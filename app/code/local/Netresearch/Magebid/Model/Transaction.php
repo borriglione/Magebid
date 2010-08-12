@@ -19,10 +19,10 @@
 class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 {	
     /**
-     * Data of an Auction in Magento
+     *  Auction-Data
      * @var array
      */	
-	protected $_auction_data;
+	protected $_auction_data = array();
 	
     /**
      * Status String of an completed Order in eBay
@@ -152,14 +152,18 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		//Try to load the transaction
 		if (isset($ebay_transaction_id)) $this->load($ebay_transaction_id,'ebay_transaction_id');
 		else $this->load($ebay_item_id,'ebay_item_id');
-		
+
 		//If an order was created already for a transaction
-		if ($this->getCompleteStatus()=='Complete') return;
-		if ($this->getOrderCreated()==1) return;
+		if ($this->getCompleteStatus()=='Complete') return false;
+		if ($this->getOrderCreated()==1) return false;
+		
+		//Load auction
+		$auction = Mage::getModel('magebid/auction')->load($ebay_item_id,'ebay_item_id');
+		if (!$auction->getId()) return false; //If aution data is not existing for this transaction
 		
 		//Add Information of the ebay auction
-		$this->_auction_data = Mage::getModel('magebid/auction')->load($ebay_item_id,'ebay_item_id')->getData();
-		
+		$this->_auction_data = $auction->getData();
+
 		if ($this->getId()>0) //Existing Transaction
 		{
 			//prepare transaction data
@@ -194,7 +198,7 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 	protected function _tryCreateOrder()
 	{		
 		//if checkout_status is complete and if it is a single-item order		
-		if ($this->getCompleteStatus()=='Complete' && $this->getOrderCreated()==0)
+		if ($this->getCompleteStatus()=='Complete' && $this->getOrderCreated()==0 && $this->getEbayOrderId()=='')
 		{
 			if ($order = Mage::getModel('magebid/order_create')->createImportOrder($this->load($this->getId())));
 			{
