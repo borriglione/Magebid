@@ -1,20 +1,47 @@
 <?php
+
 //include ebay lib
 require_once('lib/ebat_669/setincludepath.php');
 require_once 'EbatNs_Environment.php';		
 
-
+/**
+ * Netresearch_Magebid_Model_Ebay_Ebat_Transaction
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Abstract
 {
+    /**
+     * Session-Proxy to send Calls to eBay
+     * @var object EbatNs_ServiceProxy
+     */	
 	protected $_sessionproxy;
-	protected $_old_error_level;
-	protected $_auction_data;
-	protected $_ebay_item;
-	protected $_image_data;
 	
-	//Pagination
+    /**
+     * Old error_reporting()-level
+     * @var int
+     */	
+	protected $_old_error_level;
+	
+    /**
+     * Pagination-Number | 100 entries per page
+     * @var int
+     */	
 	protected $_entries_per_page = 100;	
 	
+    /**
+     * Construct
+     * 
+     * Save current error_reporting()-level
+     * Set error-reporting to 0
+     * Define session-Proxy
+     *
+     * @return void
+     */	
 	protected function _construct()
     {
         $this->_init('magebid/ebay_ebat_transaction');	
@@ -27,7 +54,14 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 		//get Sessionproxy
 		$this->_sessionproxy = Mage::getModel('magebid/ebay_ebat_session')->getMagebidConnection();	
     }	
-	
+    
+    /**
+     * Destruct
+     * 
+     * Reset old error_reporting()-level
+     *
+     * @return void
+     */	
 	protected function _destruct() 
 	{
 		//enable old Error_Reporting

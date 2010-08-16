@@ -1,19 +1,47 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Import_Category
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 {
+    /**
+     * 0-origin ebay categories / 1-ebay store categories
+     * @var int
+     */		
     protected $_ebay_store_flag = 0;	
 	
+    /**
+     * Construct
+     *
+     * @return void
+     */	
 	protected function _construct()
     {
         $this->_init('magebid/import_category');
     }		
 	
+    /**
+     * Set Ebay Store Flag
+     *
+     * @return object This
+     */	
 	public function setEbayStoreFlag()
 	{
 		$this->_ebay_store_flag = 1;
 		return $this;
 	}	
 	
+    /**
+     * Main Function to import categories
+     *
+     * @return boolean|int If import fails return false, else return the number of imported categories
+     */		
 	public function importEbayCategories()
 	{
 		//get all categories
@@ -38,12 +66,21 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 			
 			//save
 			$this->setData($data)->save();
-		}	
-		
+		}			
 		return count($ebay_categories->CategoryArray);
 	}	
 	
-	public function buildTree($selected_cat)
+    /**
+     * Build Category Tree
+     * 
+     * If $selected_cat isn't set, building CategoryTree from the root
+     * else build CategoryTree recursive
+     * 
+     * @param int $selected_cat Category_id
+     *
+     * @return array 
+     */		
+	public function buildTree($selected_cat = 0)
 	{
 		$cat_array = array();
 		
@@ -65,12 +102,17 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		return $cat_array;		
 	}	
 	
-	public function buildChildTree($category_id)
-	{
-		return $this->_addChildren($category_id);						
-	}
-	
-	protected function _addChildren($parent_cat_id,$checked_cat = '')
+    /**
+     * Add children categories
+     * 
+	 * Get all children to a given $parent_cat_id
+     * 
+     * @param int $parent_cat_id Category_id
+     * @param int $checked_cat Category_id 
+     *
+     * @return array
+     */		
+	protected function _addChildren($parent_cat_id,$checked_cat = 0)
 	{
 		$collection = $this->getCollection();
 		
@@ -107,7 +149,7 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 									
 						if ($checked==1) $children[$lauf]['checked'] = true;
 						if ($checked==1) $children[$lauf]['expanded'] = true;	
-						if ($this->_checkChildren($colItem->getCategoryId())!='') $children[$lauf]['children'] = array();								
+						if ($this->_checkChildren($colItem->getCategoryId())) $children[$lauf]['children'] = array();								
 									
 						$lauf++;				  	
 				  }		
@@ -116,7 +158,13 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		if (count($children)>0) return $children; else return '';
 	}
 	
-	
+    /**
+     * Check if child-categories to a given $parent_cat_id are existing
+     * 
+     * @param int $parent_cat_id Category_id
+     *
+     * @return boolean
+     */	
 	protected function _checkChildren($parent_cat_id)
 	{
 		$collection = $this->getCollection();
@@ -125,9 +173,17 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		//Check if it is a eBay Store Tree
 		if ($this->_ebay_store_flag==1) $collection->addFieldToFilter('store',1);			
 				
-		if ($collection->count()>0) return array(); else return '';		
+		if ($collection->count()>0) return true; else return false;		
 	}
 	
+    /**
+     * Calculating path for the category-tree
+     * 
+     * @param object $cat Magebid Import Category
+     * @param string $path
+     *
+     * @return string
+     */	
 	protected function _buildPath($cat,$path = '')
 	{
 		if ($cat->getCategoryLevel()==1)
@@ -144,6 +200,14 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		return $path;
 	}
 	
+    /**
+     * Building a resursive Category Tree by a given child category
+     * 
+     * @param int $selected_cat Magebid Import Category ID
+     * @param array $cats Categories which were already constructed by this resursive Method
+     *
+     * @return array
+     */	
 	protected function _buildRecursiveTree($selected_cat,$cats = array())
 	{
 		//Get selected cat node
@@ -153,7 +217,7 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		}
 		else
 		{
-			$cat = $this->loadByStore($selected_cat,'category_id');
+			$cat = $this->loadByStore($selected_cat);
 		}		
 		
 		$parent_id = $cat->getCategoryParentId();
@@ -228,9 +292,16 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		return $cats;
 	}
 	
-    public function loadByStore($id, $field=null)
+    /**
+     * Get a ebay store category
+     * 
+     * @param int $id Magebid Import Category ID
+     *
+     * @return object
+     */	
+    public function loadByStore($id)
     {
-		$this->_getResource()->loadByStore($this, $id, $field);
+		$this->_getResource()->loadByStore($this, $id);
         $this->_afterLoad();
         $this->setOrigData();
         return $this;

@@ -1,11 +1,32 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Mysql4_Auction
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     protected function _construct()
     {
         $this->_init('magebid/auction', 'magebid_auction_id');
     }	
 
+    /**
+     * When loading the auction, load shipping,payment and listing_enhancement too
+     * 
+     * @param object $object
+     *
+     * @return object
+     */	   
     protected function _afterLoad(Mage_Core_Model_Abstract $object)
     {
         //Load payment		
@@ -50,7 +71,12 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 
         return parent::_afterLoad($object);
     }	
-	
+
+    /**
+     * Manipulating Load SQL, Join Table ebay_status,auction_details and auction_type
+     *
+     * @return void
+     */    
     protected function _getLoadSelect($field, $value, $object)
     {
         $select = parent::_getLoadSelect($field, $value, $object);
@@ -64,20 +90,17 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
                 $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')				 
  		       ->join(
                 array('mat' => $this->getTable('magebid/auction_type')), 
-                $this->getMainTable().'.magebid_auction_type_id = mat.magebid_auction_type_id');
- 		  /*     
-			   ->joinLeft(
-                array('mht' => $this->getTable('magebid/templates')), 
-				$this->getMainTable().'.header_templates_id = mht.magebid_templates_id',
-				array('header_template_name'=>'mht.content_name'))
-			   ->joinLeft(
-				array('mft' => $this->getTable('magebid/templates')), 
-				 $this->getMainTable().'.footer_templates_id = mft.magebid_templates_id',
-				 array('footer_template_name'=>'mft.content_name'));	*/			 
-		 							     
+                $this->getMainTable().'.magebid_auction_type_id = mat.magebid_auction_type_id');		 							     
         return $select;
     }	
 	
+    /**
+     * After deleting the auction data, delete the shipping,payment and listing_enhancement too
+     * 
+     * @param object $object Profile Object
+     *
+     * @return void
+     */		    
 	protected function _afterDelete(Mage_Core_Model_Abstract $object)
 	{
 			//Delete Shipping
@@ -96,7 +119,13 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 	        Mage::getModel('magebid/auction_detail')->setId($object->getMagebidAuctionDetailId())->delete();				
 	}	
 	
-	
+    /**
+     * After saving aution, save shipping and payment methods as well
+     * 
+     * @param object $object Profile Object
+     *
+     * @return void
+     */	    	
     public function save(Mage_Core_Model_Abstract $object)
     {    	
 		$this->beginTransaction();
@@ -131,7 +160,14 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 			throw($e);
 		}		
 	}
-	
+
+    /**
+     * Save Payment Methods for auction
+     * 
+     * @param object $object Auction Object
+     *
+     * @return void
+     */	 		
 	protected function _savePayment($object)
 	{
 			//Delete old payment
@@ -161,6 +197,13 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 			}	
 	}
 	
+    /**
+     * Save Shipping Methods for auction
+     * 
+     * @param object $object Auction Object
+     *
+     * @return void
+     */	 	
 	protected function _saveShipping($object)
 	{
 			//Delete old Shipping
@@ -188,6 +231,13 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 			}		
 	}
 	
+    /**
+     * Save Listing Enhancements (Layoutoptionen)
+     * 
+     * @param object $object Auction Object
+     *
+     * @return object
+     */	 		
     protected function _afterSave(Mage_Core_Model_Abstract $object)
     {
         $condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
@@ -205,8 +255,17 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		}
 
         return parent::_afterSave($object);
-    }				
-	
+    }	
+    			
+    /**
+     * Prepare Start-Date and End-Date for auction detail data
+     * 
+     * Possibility of wrong behaviour, see Jira NRMB-91
+     * 
+     * @param object $object Auction Object
+     *
+     * @return void
+     */	 		
 	protected function _prepareAuctionDetailsData($object)
 	{
 		//calculate Auction Life Time
@@ -227,6 +286,15 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		}		
 	}
 	
+    /**
+     * Format Date Time 
+     * 
+     * Candidate for moving this function into the Magebid Helper
+     * 
+     * @param string $date
+     *
+     * @return string
+     */		
 	protected function _formatDateTime($date)
 	{
 		$format = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM);
@@ -235,6 +303,14 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}	
 	
+    /**
+     * Calculating End Date
+     * 
+     * @param string $start_date
+     * @param int life_time In days 
+     *
+     * @return string
+     */			
 	protected function _getEndDate($start_date,$life_time)
 	{
 		$time = Mage::getModel('core/date')->timestamp($start_date);
@@ -242,6 +318,13 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}	
 	
+    /**
+     * Get different statused from the table ebay_status
+     * 
+     * Delete candidate, see NRME89
+     * 
+     * @return array
+     */			
 	public function getEbayStatuses()
 	{
         $select = $this->_getReadAdapter()->select()
@@ -253,6 +336,11 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		}	 	
 	}		
 
+    /**
+     * Get oldest Start-Date, used for the eBay-Call getSellerList
+     * 
+     * @return string
+     */		
 	public function getOldestStartDate()
 	{
 		$select = $this->_getReadAdapter()
@@ -262,7 +350,7 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		    ->join(
                 array('mad' => $this->getTable('magebid/auction_detail')), 
                 $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')	                          	
-            ->where('magebid_ebay_status_id = ?',Netresearch_Magebid_Model_Auction::EBAY_STATUS_ACTIVE)
+            ->where('magebid_ebay_status_id = ?',Netresearch_Magebid_Model_Auction::AUCTION_STATUS_ACTIVE)
             ->group('magebid_ebay_status_id'); 
        
         $data = $this->_getReadAdapter()->fetchAll($select);

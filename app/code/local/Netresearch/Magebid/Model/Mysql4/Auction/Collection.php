@@ -1,15 +1,31 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Mysql4_Auction_Collection
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Mysql4_Auction_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
 {
-    protected $_magebidTable;
-	protected $_joinFlags = array();
-
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     protected function _construct()
     {
         parent::_construct();
         $this->_init('magebid/auction');
 	}
 	
+    /**
+     * Manipulating SQL: Join ebay_status, auction_details and auction_types
+     *
+     * @return void
+     */	
     public function joinFields()
     {
 		$this->getSelect()

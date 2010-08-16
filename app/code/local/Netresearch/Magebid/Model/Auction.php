@@ -45,7 +45,8 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
     }	
 	
     /**
-     * Get Transaction Collection
+     * Get Auction Collection
+     * 
      * @return object
      */    
 	public function getCollection()

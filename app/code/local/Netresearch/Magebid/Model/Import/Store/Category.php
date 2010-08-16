@@ -1,13 +1,36 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Import_Store_Category
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Import_Store_Category extends Mage_Core_Model_Abstract
 {
+    /**
+     * Count of all imported eBay Store Categories
+     * @var int
+     */		
     protected $_count;	
 	
+    /**
+     * Construct
+     *
+     * @return void
+     */	  
 	protected function _construct()
     {
         $this->_init('magebid/import_category');
     }	
 	
+    /**
+     * Main Function to import ebay store categories
+     *
+     * @return boolean|int If import fails return false, else return the number of imported categories
+     */		   
 	public function importEbayStoreCategories()
 	{		
 		//get all categories
@@ -53,6 +76,11 @@ class Netresearch_Magebid_Model_Import_Store_Category extends Mage_Core_Model_Ab
 		return $this->_count;
 	}
 	
+    /**
+     * set Child eBay Store Categories (Recursive)
+     *
+     * @return void
+     */		
 	protected function _setChildCats($category,$level)
 	{		
 		if (is_array($category->ChildCategory))

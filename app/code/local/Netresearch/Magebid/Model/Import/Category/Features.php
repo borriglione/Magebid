@@ -1,11 +1,30 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Import_Category_Features
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model_Abstract
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
 	protected function _construct()
     {
         $this->_init('magebid/import_category_features');
     }	
 
+    /**
+     * Main Function to import ebay category features
+     *
+     * @return boolean
+     */		
 	public function importCategoryFeatures()
 	{
 		if (!$category_features = Mage::getModel('magebid/ebay_miscellaneous')->getCategoriesFeatures())
@@ -29,6 +48,13 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 		return true;
 	}
 	
+    /**
+     * Save flag 'condition_enabled' in the table 'import_category' is necessary
+     * 
+     * @param object $category 
+     *
+     * @return void
+     */		
 	protected function _saveIfConditionIsUsed($category)
 	{
 		$import_category = Mage::getModel('magebid/import_category')->load($category->CategoryID,'category_id');
@@ -49,6 +75,13 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 		$this->_saveConditions($category);		
 	}
 	
+    /**
+     * Save the detailed conditions in t he table 'import_category_features'
+     *
+     * @param object $category 
+     *
+     * @return void
+     */		
 	protected function _saveConditions($category)
 	{
 		//If not conditions existing, return
@@ -74,6 +107,13 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 		}
 	}
 	
+    /**
+     * Save the detailed conditions in t he table 'import_category_features'
+     *
+     * @param int $ebay_category_id eBay Category ID 
+     *
+     * @return array
+     */	
 	public function getAvailableConditions($ebay_category_id = 0)
 	{
 		$avaiable_conditions = array();
@@ -88,6 +128,13 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 		return $avaiable_conditions;
 	}
 	
+    /**
+     * Get true/false if confitions for an ebay category are existing
+     *
+     * @param int $ebay_category_id eBay Category ID 
+     *
+     * @return boolean
+     */	
 	protected function _getConditionEnabled($ebay_category_id)
 	{
 		$import_category = Mage::getModel('magebid/import_category')->load($ebay_category_id,'category_id');
@@ -106,6 +153,13 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 		}
 	}
 	
+    /**
+     * get the detailed conditions for an ebay category
+     *
+     * @param int $ebay_category_id eBay Category ID 
+     *
+     * @return array
+     */	
 	protected function _getConditions($ebay_category_id)
 	{
 		//Get Collection

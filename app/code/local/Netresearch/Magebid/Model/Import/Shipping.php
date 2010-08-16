@@ -1,16 +1,34 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Import_Shipping
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Import_Shipping extends Mage_Core_Model_Abstract
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     protected function _construct()
     {
         $this->_init('magebid/import_shipping');
     }	
 	
+    /**
+     * Import the avaiable Shipping Methods from eBay
+     *
+     * @return void
+     */	    
 	public function importEbayShippingMethods()
 	{
 		//get all Shipping Methods
 		$ebay_shipping_methods = Mage::getModel('magebid/ebay_miscellaneous')->geteBayDetails('ShippingServiceDetails');
-		
 		
 		//If there are some shipping services
 		if (count($ebay_shipping_methods->ShippingServiceDetails)>0)
@@ -21,9 +39,6 @@ class Netresearch_Magebid_Model_Import_Shipping extends Mage_Core_Model_Abstract
 			       $colItem->delete();
 			} 		
 		}
-		
-		
-		
 		
 		//Add the new Shipping Services
 		foreach ($ebay_shipping_methods->ShippingServiceDetails as $shipping_service)
@@ -42,10 +57,8 @@ class Netresearch_Magebid_Model_Import_Shipping extends Mage_Core_Model_Abstract
 			
 			//save
 			$this->setData($data)->save();
-		}	
-		
+		}			
 		return count($ebay_shipping_methods->ShippingServiceDetails);
-	}
-	
+	}	
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 //include ebay lib
 require_once('lib/ebat_669/setincludepath.php');
 require_once 'EbatNs_Environment.php';		
@@ -6,17 +7,62 @@ require_once 'GetItemRequestType.php';;
 require_once 'AddItemRequestType.php';
 require_once 'EndItemRequestType.php';
 
+/**
+ * Netresearch_Magebid_Model_Ebay_Ebat_Items
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 {
+    /**
+     * Session-Proxy to send Calls to eBay
+     * @var object EbatNs_ServiceProxy
+     */	
 	protected $_sessionproxy;
+	
+    /**
+     * Old error_reporting()-level
+     * @var int
+     */	
 	protected $_old_error_level;
+	
+    /**
+     * Auction-Data for the addItem()-Call
+     * @var array
+     */	
 	protected $_auction_data;
+	
+    /**
+     * ItemType from eBatNs
+     * @var object
+     */	
 	protected $_ebay_item;
+	
+    /**
+     * Gallery-Image Data for the addItem()-Call
+     * @var array
+     */	
 	protected $_image_data;
 	
-	//Pagination
+    /**
+     * Pagination-Number | 100 entries per page
+     * @var int
+     */	
 	protected $_entries_per_page = 100;
 	
+    /**
+     * Construct
+     * 
+     * Save current error_reporting()-level
+     * Set error-reporting to 0
+     * Define session-Proxy
+     *
+     * @return void
+     */	
 	protected function _construct()
     {
         $this->_init('magebid/ebay_ebat_items');	
@@ -29,14 +75,21 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		//get Sessionproxy
 		$this->_sessionproxy = Mage::getModel('magebid/ebay_ebat_session')->getMagebidConnection();	
     }	
-	
+    
+    /**
+     * Destruct
+     * 
+     * Reset old error_reporting()-level
+     *
+     * @return void
+     */	
 	protected function _destruct() 
 	{
 		//enable old Error_Reporting
 		error_reporting($this->_old_error_level);
 	}
 	
-	
+    /*
 	public function getEbayItem($itemid)
 	{
 		$req = new GetItemRequestType(); 
@@ -60,7 +113,16 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			return false;
 		}		
 	}	
+	*/
 	
+    /**
+     * Call to add a new ebay auction
+     * 
+     * @param array $auction_data 
+     * @param array $gallery_images
+     *
+     * @return array|boolean If Call was successful return array, else return false
+     */		
 	public function addEbayItem($auction_data,$gallery_images)
 	{
         //Build request
@@ -99,16 +161,10 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		//set TAX	
 		$this->_setTax();		
 		
-		//print_r($this->_ebay_item);
-		//exit();
-		
 		//Call 
 		$req->setItem($this->_ebay_item);
 		$res = $this->_sessionproxy->AddItem($req);
 
-		//print_r($res);
-		//exit();		
-		
 		if ($res->Ack == 'Success')
 		{
 		   	//Build response
@@ -139,8 +195,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		}		
 	}
 	
-	
-	
+    /**
+     * Set general item informations
+     * 
+     * @return object ItemType
+     */		
 	protected function _setItemParams()
 	{
         $item = new ItemType();
@@ -156,6 +215,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
         return $item;	
 	}
 	
+    /**
+     * Set primary category
+     * 
+     * @return void
+     */		
 	protected function _setPrimaryCategorie()
 	{
         $primaryCategory = new CategoryType();
@@ -163,6 +227,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
         $this->_ebay_item->setPrimaryCategory($primaryCategory);		
 	}
 	
+    /**
+     * Set secondary category
+     * 
+     * @return void
+     */	
 	protected function _setSecondaryCategorie()
 	{
 		$secondaryCategory = new CategoryType();
@@ -170,7 +239,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		$this->_ebay_item->setSecondaryCategory($secondaryCategory);		
 	}	
 
-
+    /**
+     * Set Return Policy
+     * 
+     * @return void
+     */	
 	protected function _setReturnPolicy()
 	{
 		$retpol = new ReturnPolicyType();
@@ -181,6 +254,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		$this->_ebay_item->setReturnPolicy($retpol);		
 	}	
 	
+    /**
+     * Set Shipping Information
+     * 
+     * @return void
+     */	
 	protected function _setShipping()
 	{
 		$ship = new ShippingDetailsType();
@@ -208,6 +286,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		$this->_ebay_item->setShippingDetails($ship);
 	}
 	
+    /**
+     * Set Payment Information
+     * 
+     * @return void
+     */	
 	protected function _setPayment()
 	{
 		$payment_methods = array();
@@ -221,9 +304,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		$this->_ebay_item->setPaymentMethods($payment_methods); 
 	}	
 	
+    /**
+     * Set Image Information
+     * 
+     * @return void
+     */	
 	protected function _setImage()
-	{
-       
+	{       
 	    $picture = new PictureDetailsType();
         
 		if ($this->_auction_data['is_image']==1)
@@ -235,6 +322,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		}        	
 	}
 	
+    /**
+     * Set Auction Type and Price
+     * 
+     * @return void
+     */	
 	protected function _setAuctionTypeAndPrice()
 	{
 		//Regular | Chinese
@@ -244,7 +336,6 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			$this->_ebay_item->setQuantity('1');
 			$this->_ebay_item->setStartPrice($this->_auction_data['start_price']);
 			if ($this->_auction_data['fixed_price']) $this->_ebay_item->setBuyItNowPrice($this->_auction_data['fixed_price']);
-			return;			
 		}
 		
 		//StoreFixPriceItem
@@ -253,10 +344,14 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			$this->_ebay_item->setListingType('FixedPriceItem'); 
 			$this->_ebay_item->setQuantity($this->_auction_data['quantity']);
 			$this->_ebay_item->setStartPrice($this->_auction_data['fixed_price']);
-			return;			
 		}
 	}
 	
+    /**
+     * Set layout informations
+     * 
+     * @return void
+     */	
 	protected function _setLayout()
 	{
 		//Set Hitcounter
@@ -272,6 +367,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		}
 	}
 	
+    /**
+     * Set tax informations
+     * 
+     * @return void
+     */	
 	protected function _setTax()
 	{
 		//Use Tax Table
@@ -286,6 +386,14 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		} 
 	}
 	
+    /**
+     * Call to end an active ebay auction
+     * 
+     * @param int $itemid 
+     * @param string $reason
+     *
+     * @return boolean
+     */		
 	public function endItem($itemid,$reason)
 	{
         //Build request
@@ -308,10 +416,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			//Set Error
 			Mage::getModel('magebid/log')->logError("auction-end","auction ".$itemid,var_export($req,true),var_export($res,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
-			Mage::getSingleton('adminhtml/session')->addError($message);	
+			Mage::getSingleton('adminhtml/session')->addError($message);
+			return false;	
 		}		
 	}
 	
+	/*
 	public function getLastSellerEvents($from,$to)
 	{
         //Build request
@@ -339,7 +449,17 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
 	}
+	*/
 	
+    /**
+     * Call to get current auctions in a defined date-rage
+     * 
+     * @param string $from From-Date 
+     * @param string $to To-Date
+     * @param int $current_page Current Page
+     *
+     * @return boolean
+     */		
 	public function getSellerList($from,$to,$current_page = 1)
 	{
         //Build request
@@ -374,6 +494,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		}			
 	}	
 	
+    /**
+     * Mapping Function for the GetSellerList()-Response
+     * 
+     * @param object $item 
+     *
+     * @return array
+     */	
 	public function mappingItem($item)
 	{
 			$response_array['price_now'] = $item->SellingStatus->CurrentPrice->value;
@@ -390,6 +517,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			return $response_array;
 	}
 	
+    /**
+     * Define Pagination-Settings
+     * 
+     * @param int $current_page 
+     *
+     * @return object PaginationType
+     */	
 	protected function _pageination($current_page = 1)
 	{		
 		//Set Pageination

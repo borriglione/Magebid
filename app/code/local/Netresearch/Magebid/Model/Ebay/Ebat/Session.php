@@ -5,14 +5,31 @@ require_once('lib/ebat_669/setincludepath.php');
 require_once 'EbatNs_Environment.php';		
 require_once 'EbatNs_ServiceProxy.php';
 
-
-
+/**
+ * Netresearch_Magebid_Model_Ebay_Ebat_Session
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstract
 {
     var $connection;
 	private $__params_arr;
+	
+    /**
+     * Session-Proxy to send Calls to eBay
+     * @var object EbatNs_ServiceProxy
+     */	
 	private $__sessionproxy;
 	
+    /**
+     * Construct
+	 *
+     * @return void
+     */	
 	protected function _construct()
     {
         $this->_init('magebid/ebay_ebat_session');

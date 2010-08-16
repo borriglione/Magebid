@@ -1,11 +1,30 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Import_Payment
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Import_Payment extends Mage_Core_Model_Abstract
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     protected function _construct()
     {
         $this->_init('magebid/import_payment');
     }	
-	
+
+    /**
+     * Import the avaiable Payment Methods from eBay
+     *
+     * @return void
+     */	        
 	public function importEbayPaymentMethods()
 	{
 		//get all payment Methods
@@ -32,8 +51,7 @@ class Netresearch_Magebid_Model_Import_Payment extends Mage_Core_Model_Abstract
 			
 			//save
 			$this->setData($data)->save();
-		}	
-		
+		}			
 		return count($ebay_payment_methods->PaymentOptionDetails);
 	}
 	

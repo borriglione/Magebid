@@ -1,9 +1,26 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Model_System_Config_Source_Store
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_System_Config_Source_Store
 {	
+    /**
+     * selected Magento Store View Ids
+     * @var array
+     */		
 	protected $_storeIds;
 	
+    /**
+     * Return the options for the store-selector
+     *
+     * @return array
+     */		
 	public function toOptionArray()
     {
     	$store_array = array();
@@ -27,6 +44,13 @@ class Netresearch_Magebid_Model_System_Config_Source_Store
 		return $store_array;		
     }
 	
+    /**
+     * Return the avaiable stores
+     * 
+     * @param int|object $group
+     *
+     * @return array
+     */	  
     public function getStores($group)
     {
         if (!$group instanceof Mage_Core_Model_Store_Group) {
@@ -43,12 +67,24 @@ class Netresearch_Magebid_Model_System_Config_Source_Store
         return $stores;
     }	
 	
+    /**
+     * set Storeview IDs
+     * 
+     * @param array $storeIds
+     *
+     * @return object
+     */	   
     public function setStoreIds($storeIds)
     {
         $this->_storeIds = $storeIds;
         return $this;
     }
 
+    /**
+     * get Storeview IDs
+     *
+     * @return array
+     */	   
     public function getStoreIds()
     {
         return $this->_storeIds;

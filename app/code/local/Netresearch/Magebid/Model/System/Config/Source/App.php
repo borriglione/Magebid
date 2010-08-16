@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_System_Config_Source_App
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_System_Config_Source_App
 {	
+    /**
+     * Return the option sandbox and production for the magebid system configuration area
+     *
+     * @return array
+     */	
 	public function toOptionArray()
     {
     	$app_mode_array = array();

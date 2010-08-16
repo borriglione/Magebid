@@ -1,11 +1,32 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Mysql4_Shipping
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Mysql4_Profile extends Mage_Core_Model_Mysql4_Abstract
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     protected function _construct()
     {
         $this->_init('magebid/profile/', 'magebid_profile_id');
     }	
 
+    /**
+     * After saving profile, save shipping and payment methods as well
+     * 
+     * @param object $object Profile Object
+     *
+     * @return void
+     */	    
     public function save(Mage_Core_Model_Abstract $object)
     {    	
 		$this->beginTransaction();
@@ -30,6 +51,13 @@ class Netresearch_Magebid_Model_Mysql4_Profile extends Mage_Core_Model_Mysql4_Ab
 		}		
 	}	
 	
+    /**
+     * Save Payment Methods for profile
+     * 
+     * @param object $object Profile Object
+     *
+     * @return void
+     */	 	
 	protected function _savePayment($object)
 	{
 			//Delete old payment
@@ -55,6 +83,13 @@ class Netresearch_Magebid_Model_Mysql4_Profile extends Mage_Core_Model_Mysql4_Ab
 			}	
 	}
 	
+    /**
+     * Save Shipping Methods for profile
+     * 
+     * @param object $object Profile Object
+     *
+     * @return void
+     */	 	
 	protected function _saveShipping($object)
 	{
 			//Delete old Shipping
@@ -82,6 +117,13 @@ class Netresearch_Magebid_Model_Mysql4_Profile extends Mage_Core_Model_Mysql4_Ab
 			}		
 	}	
 	
+    /**
+     * Save Listing Enhancements (Layoutoptionen)
+     * 
+     * @param object $object Profile Object
+     *
+     * @return object
+     */	 	
     protected function _afterSave(Mage_Core_Model_Abstract $object)
     {
         $condition = $this->_getWriteAdapter()->quoteInto('magebid_profile_id = ?', $object->getId());
@@ -102,7 +144,13 @@ class Netresearch_Magebid_Model_Mysql4_Profile extends Mage_Core_Model_Mysql4_Ab
         return parent::_afterSave($object);
     }	
 	
-	
+    /**
+     * After deleting the profile data, delete the shipping,payment and listing_enhancement too
+     * 
+     * @param object $object Profile Object
+     *
+     * @return void
+     */		
 	protected function _afterDelete(Mage_Core_Model_Abstract $object)
 	{
 			//Delete Shipping
@@ -118,6 +166,13 @@ class Netresearch_Magebid_Model_Mysql4_Profile extends Mage_Core_Model_Mysql4_Ab
             $this->_getWriteAdapter()->delete($this->getTable('magebid/listing_enhancement'), $condition);				
 	}	
 	
+    /**
+     * When loading the profile, load shipping,payment and listing_enhancement too
+     * 
+     * @param object $object Profile Object
+     *
+     * @return object
+     */		
     protected function _afterLoad(Mage_Core_Model_Abstract $object)
     {
         //Load payment		

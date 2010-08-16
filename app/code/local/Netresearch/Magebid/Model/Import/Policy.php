@@ -1,17 +1,41 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Import_Policy
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Import_Policy extends Mage_Core_Model_Abstract
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     protected function _construct()
     {
         $this->_init('magebid/import_policy');
     }	
 	
+    /**
+     * Import the eBay Policies
+     *
+     * @return void
+     */	      
 	public function importEbayPolicies()
 	{
 		//Import Return Policy
 		return $this->_importReturnPolicy();
 	}
-	
+
+    /**
+     * Import the eBay Return Policies
+     *
+     * @return void
+     */	    	
 	protected function _importReturnPolicy()
 	{
 		//Import Policies
@@ -64,7 +88,11 @@ class Netresearch_Magebid_Model_Import_Policy extends Mage_Core_Model_Abstract
 		return count($ebay_return_policies->ReturnPolicyDetails->Refund);
 	}
 	
-	
+    /**
+     * Get all Refund Options
+     *
+     * @return array
+     */	  
 	public function getRefundOption()
 	{
 		$collection = $this->getCollection();		
@@ -73,7 +101,12 @@ class Netresearch_Magebid_Model_Import_Policy extends Mage_Core_Model_Abstract
 		array_unshift($collection, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please Select --')));		
 		return $collection;					
 	}	
-	
+
+    /**
+     * Get all Returns Accepted Options
+     *
+     * @return array
+     */	  	
 	public function getReturnsAcceptedOption()
 	{
 		$collection = $this->getCollection();		

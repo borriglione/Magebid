@@ -1,9 +1,26 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Model_Ebay_Items
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 {
+    /**
+     * Handler for Calls to eBay
+     * @var object Netresearch_Magebid_Model_Ebay_Ebat_Items
+     */	
 	protected $_handler;
 	
+    /**
+     * Construct
+     *
+     * @return void
+     */		
 	protected function _construct()
     {
         $this->_init('magebid/ebay_items');
@@ -12,19 +29,22 @@ class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 		$this->_handler = Mage::getModel('magebid/ebay_ebat_items');
 	}
 	
+	/*
 	public function getEbayItem($itemid)
 	{
 		//Daily Log
 		Mage::getModel('magebid/daily_log')->logCall();			
 		
 		return $this->_handler->getEbayItem($itemid);
-	}
+	}*/
 	
-	public function getHandler()
-	{
-		return $this->_handler;
-	}
-	
+    /**
+     * Call to add a new eBay auction
+     * 
+     * @param array $auction_data Auction information
+     *
+     * @return array|boolean If call was successful return response array, else return false
+     */	 
 	public function addEbayItem($auction_data)
 	{
 		$gallery_images = array();
@@ -50,16 +70,14 @@ class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 		}
 	}
 	
-    protected function _getGalleryUrl($product,$image=null)
-    {
-        $params = array('id'=>$product->getId());
-        if ($image) {
-            $params['image'] = $image->getValueId();
-            return $this->getUrl('*/*/gallery', $params);
-        }
-        return $this->getUrl('*/*/gallery', $params);
-    }	
-	
+    /**
+     * Ending an active ebay aucton
+     * 
+     * @param int $itemid ebay-item-id
+     * @param string $reason predefined eBay Reason string
+     *
+     * @return boolean
+     */	 
 	public function endItem($itemid,$reason)
 	{
 		//Daily Log
@@ -69,13 +87,35 @@ class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 		{
 			return true;
 		}
+		else
+		{
+			return false;
+		}
 	}
-	
+
+    /**
+     * get Last Seller Events
+     * 
+     * !Currently not used!->using getSellerTransactions instead
+     * 
+     * @param string $from Start Date
+     * @param string $to End Date
+     *
+     * @return array
+     */	 	
 	public function getLastSellerEvents($from,$to)
 	{
 		return $this->_handler->getLastSellerEvents($from,$to);
 	}	
 	
+    /**
+     * Get all auctions of seller in a defined date-range
+     * 
+     * @param string $from Start Date
+     * @param string $to End Date
+     *
+     * @return array
+     */	 	
 	public function getSellerList($from,$to)
 	{
 		$items = array();

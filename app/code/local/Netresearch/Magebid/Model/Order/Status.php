@@ -1,18 +1,70 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Order_Status
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 {		
+    /**
+     * Magebid Transaction
+     * @var object
+     */		
 	protected $_transaction;
+	
+    /**
+     * Magento Order
+     * @var object
+     */			
 	protected $_order;
+	
+    /**
+     * Magento Order Id
+     * @var int
+     */			
 	protected $_order_id;
+	
+    /**
+     * new Magento Order Status
+     * @var string
+     */			
 	protected $_new_status;
+	
+    /**
+     * Tasks for the eBay Feedback Call
+     * @var array
+     */			
 	protected $_tasks = array();
+	
+    /**
+     * If comments to Magento Orders should made, when status changes in eBay was processed
+     * @var boolean
+     */			
 	protected $_comments_mode = false;
 	
+	
+    /**
+     * Construct
+     *
+     * @return void
+     */		
 	protected function _construct()
     {
         $this->_init('magebid/order_status');
-    }	
-	
+    }		
+    
+    /**
+     * Initial Function
+     * 
+     * @param object $order Magento Order
+     * @param string $new_status New Order Status
+     *
+     * @return void
+     */	    
 	protected function _varSet($order,$new_status)
 	{
 		//Set Order
@@ -46,6 +98,14 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 		}		
 	}
 	
+    /**
+     * Main Function to change the ebay order status
+     * 
+     * @param object $order Magento Order
+     * @param string $new_status New Order Status
+     *
+     * @return void
+     */	  	
 	public function setEbayStatus($order,$new_status)
 	{
 		//Init
@@ -71,6 +131,12 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 		}		
 	}
 	
+	
+    /**
+     * set eBay Order Status as "payment received"
+     * 
+     * @return void
+     */	
 	protected function _setPaymentReceived()
 	{
 		if ($this->_transaction->getPaymentReceived()==0)
@@ -101,6 +167,11 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 		}		
 	}
 	
+    /**
+     * set eBay Order Status as "shipped"
+     * 
+     * @return void
+     */		
 	protected function _setShipped()
 	{
 		if ($this->_transaction->getShipped()==0)
@@ -131,6 +202,11 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 		}			
 	}
 	
+    /**
+     * leave Feedback for eBay User
+     * 
+     * @return void
+     */		
 	protected function _setReviewed()
 	{
 		if ($this->_transaction->getReviewed()==0)

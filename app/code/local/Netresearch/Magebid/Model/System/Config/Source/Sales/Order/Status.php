@@ -1,9 +1,28 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Model_System_Config_Source_Sales_Order_Status
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_System_Config_Source_Sales_Order_Status
 {
+    /**
+     * Order Statuses
+     * @var array
+     */		
     protected $_options;
 	
+    /**
+     * Return the avaiable order statuses
+     * 
+     * @param boolean $isMultiselect if Multiselect for the order status selection is allowed 
+     *
+     * @return array
+     */	      
 	public function toOptionArray($isMultiselect=false)
     {		
 		if (!$this->_options) {

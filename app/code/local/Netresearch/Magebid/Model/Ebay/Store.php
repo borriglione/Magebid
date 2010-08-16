@@ -1,8 +1,26 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Ebay_Store
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Ebay_Store extends Mage_Core_Model_Abstract
 {
+    /**
+     * Handler for Calls to eBay
+     * @var object Netresearch_Magebid_Model_Ebay_Ebat_Store
+     */	
 	protected $_handler;
 	
+    /**
+     * Construct
+     *
+     * @return void
+     */		
 	protected function _construct()
     {
         $this->_init('magebid/ebay_store');
@@ -11,6 +29,11 @@ class Netresearch_Magebid_Model_Ebay_Store extends Mage_Core_Model_Abstract
 		$this->_handler = Mage::getModel('magebid/ebay_ebat_store');
     }		
 	
+    /**
+     * Get all eBay Store Categories
+     *
+     * @return array
+     */		
 	public function geteBayStoreCategories()
 	{
 		//Daily Log

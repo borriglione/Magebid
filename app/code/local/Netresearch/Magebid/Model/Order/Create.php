@@ -1,23 +1,86 @@
 <?php
+/**
+ * Netresearch_Magebid_Model_Order_Create
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_Order_Create
 {
+    /**
+     * All eBay Transactions for this order
+     * @var array
+     */	
 	protected $_transactions = array();
-	protected $_reference_transaction = 0;
 	
+    /**
+     * Magebid Transaction
+     * @var object Netresearch_Magebid_Model_Transaction
+     */		
+	protected $_reference_transaction;
+	
+    /**
+     * Import Store
+     * @var object 
+     */			
 	protected $_store;
-	protected $_customer;
-	protected $_customer_id;
-	protected $_quote;
-	protected $_quote_convert;
-	protected $_order;
-	protected $_order_item;	
-	protected $_multiple_order_item = false;
 	
+    /**
+     * Customer in Magento
+     * @var object 
+     */			
+	protected $_customer;
+	
+    /**
+     * Customer ID in Magento
+     * @var int 
+     */			
+	protected $_customer_id;
+	
+    /**
+     * Checkout Quote
+     * @var object 
+     */		
+	protected $_quote;
+
+	/**
+     * Checkout Quote Convert
+     * @var object 
+     */		
+	protected $_quote_convert;
+	
+	/**
+     * Magento Order
+     * @var object 
+     */		
+	protected $_order;
+	
+	/**
+     * Magento Order Items (Products)
+     * @var array 
+     */			
+	protected $_order_item;	
+	
+    /**
+     * Construct
+     *
+     * @return void
+     */		
 	protected function _construct()
     {
         $this->_init('magebid/order_create');
     }	
     
+    /**
+     * Main Order Create Function
+     * 
+     * @param array $transactions Transactions to create the order
+     *
+     * @return object|boolean
+     */	      
 	public function createImportOrder($transactions)
 	{
 		//Get Transaction
@@ -85,7 +148,6 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
                 Mage::getSingleton('adminhtml/session')->addError(Mage::helper('magebid')->__('Error saving quote').'<br />'.$e->getMessage());
         }		
 		
-		
 		//Create order
 		$this->_createOrder();	
 		
@@ -124,7 +186,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		}			
 	}
 	
-	
+    /**
+     * Create/Update a Magento Customer for the new Order
+     * 
+     * @return void
+     */	      	
 	protected function _createCustomer()
 	{
 		//Check if customer with this mail_adress is allready existing
@@ -157,6 +223,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_customer = $customer;
 	}
 	
+    /**
+     * Return Data to create a new customer
+     * 
+     * @return array
+     */	 	
 	protected function _getCustomerData()
 	{
 		return array(   		
@@ -170,6 +241,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	    );			
 	}
 	
+    /**
+     * Return Data to create a shipping address
+     * 
+     * @return array
+     */		
 	protected function _getCustomerShippingAddressData()
 	{
 		return array(   		
@@ -183,7 +259,12 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 				    		//'fax'		=>		''
 	    );			
 	}
-	
+
+    /**
+     * Return Data to create a billing address
+     * 
+     * @return array
+     */	
 	protected function _getCustomerBillingAddressData()
 	{
 		return array(   		
@@ -198,6 +279,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	    );			
 	}	
 	
+    /**
+     * Return Address object to store it in the database
+     * 
+     * @return object 
+     */		
 	protected function _createCustomerAddress($shipping_address_data)
 	{
 	    				$address = Mage::getModel('customer/address');
@@ -209,7 +295,12 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		    			$address->save();
 						return $address;			
 	}
-	
+
+    /**
+     * Save Billing Address
+     * 
+     * @return void
+     */		
 	protected function _setBillingAddress()
 	{
 		//Set Billing Address
@@ -223,6 +314,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_customer->setDefaultBilling($billing_address->getEntityId());			
 	}
 	
+    /**
+     * Save Shipping Address
+     * 
+     * @return void
+     */			
 	protected function _setShippingAddress()
 	{
 		//Set Shipping Address
@@ -237,6 +333,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_customer->setDefaultShipping($shipping_address->getEntityId());		
 	}
 	
+    /**
+     * Save Billing Address
+     * 
+     * @return void
+     */			
 	protected function _getRawQuoteProducts()
 	{
 		$items = array();		
@@ -248,6 +349,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		return $items;
 	}
 	
+    /**
+     * Save quote Items / Products to assign them to the quote
+     * 
+     * @return void
+     */	
 	protected function _setQuoteProducts()
 	{		
 		//Get Raw Quote Products
@@ -286,6 +392,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		}			
 	}
 	
+    /**
+     * Create the quote
+     * 
+     * @return void
+     */		
 	protected function _createQuote()
 	{		
 		$this->_quote = Mage::getModel('sales/quote')->setStoreId($this->_store->getId());
@@ -294,6 +405,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_quote->getShippingAddress()->importCustomerAddress($this->_customer->getDefaultShippingAddress());	
 	}
 	
+    /**
+     * Create the Order Shipping Method
+     * 
+     * @return void
+     */		
 	protected function _setOrderShippingMethod()
 	{
 		//Check if there is a mapping for the ebay-shipping-methid
@@ -352,6 +468,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_quote->getShippingAddress()->addShippingRate($rate);		
 	}	
 	
+    /**
+     * Create the Order Payment Method
+     * 
+     * @return void
+     */			
 	protected function _setOrderPaymentMethod()
 	{		
 		//Get Mapped Payment Method
@@ -367,6 +488,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_quote->addPayment($this->_quote_payment);	
 	}
 	
+    /**
+     * Create the Order
+     * 
+     * @return void
+     */			
 	protected function _createOrder()
 	{
 		$this->_quote_convert = Mage::getModel('sales/convert_quote');
@@ -376,6 +502,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_order->setShippingAddress($this->_quote_convert->addressToOrderAddress($this->_quote->getShippingAddress()));	
 	}
 	
+    /**
+     * Assign the quote items to the order
+     * 
+     * @return void
+     */			
 	protected function _setOrderProducts()
 	{		
 		//Set every product
@@ -394,6 +525,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		}			
 	}
 	
+    /**
+     * Set a Payment Note to the order comments
+     * 
+     * @return void
+     */			
 	protected function _setOrderNote()
 	{
 		$magebid_note = Mage::helper('magebid')->__('Payment Method: %s',$this->_reference_transaction->getPaymentMethod());
@@ -401,6 +537,11 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		$this->_order->setCustomerNote($magebid_note);		
 	}
 	
+    /**
+     * Check if a mapping for the shipping method is existing
+     * 
+     * @return array|boolean If mapping is existing, return array $data, else return false
+     */			
 	protected function _checkShippingMethodMapping()
 	{
 		$transaction_shipping_method = $this->_reference_transaction->getShippingMethod();
@@ -448,6 +589,13 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 		}		
 	}
 	
+    /**
+     * Check if a mapping for the payment method is existing
+     * 
+     * !Currently not used!
+     * 
+     * @return array|boolean 
+     */		
 	protected function _getMappedPaymentMethod($ebay_payment_method)
 	{
 			$mapping = Mage::getModel('magebid/mapping')->load($ebay_payment_method,'ebay');
