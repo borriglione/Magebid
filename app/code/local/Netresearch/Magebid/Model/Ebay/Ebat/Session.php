@@ -16,7 +16,10 @@ require_once 'EbatNs_ServiceProxy.php';
 */
 class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstract
 {
-    var $connection;
+    /**
+     * Session-Proxy-Parameter-Array for the Class EbatNs_Session
+     * @var array
+     */	  
 	private $__params_arr;
 	
     /**
@@ -36,10 +39,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstra
 		
 		//Set params array
 		$this->_setParamsArray();
-    }	
-	
-	
-	
+    }
+    		
+    /**
+     * Setting Session-Proxy for the eBay-Call
+     *
+     * @return object
+     */	
 	public function getMagebidConnection()
 	{		
 		$session = new EbatNs_Session($this->__params_arr);
@@ -51,39 +57,33 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstra
 		//$this->__sessionproxy->attachLogger(new EbatNs_Logger(true));
 		//$this->__sessionproxy->attachLogger(new EbatNs_Logger(true));
 		return $this->__sessionproxy;					
-	}
+	}	
 	
-	
-	
+    /**
+     * Setting Session-Proxy-Parameters-Array
+     *
+     * @return void
+     */	
 	protected function _setParamsArray()
 	{
-		$params_arr = array(
-		/*
-		'sandbox'=>
-				array(
-					'AppId'=>Mage::getSingleton('magebid/setting')->getSandboxAppKey(),
-					'DevId'=>Mage::getSingleton('magebid/setting')->getSandboxDevKey(),
-					'CertId'=>Mage::getSingleton('magebid/setting')->getSandboxCertId(),
-				),
-		'production'=>
-				array(
-					'AppId'=>Mage::getSingleton('magebid/setting')->getProductionAppKey(),
-					'DevId'=>Mage::getSingleton('magebid/setting')->getProductionDevKey(),
-					'CertId'=>Mage::getSingleton('magebid/setting')->getProductionCertId(),			
-				),
-		*/
+		$this->__params_arr = array(
 		'site-id'=>Mage::getSingleton('magebid/setting')->getEbaySiteId(),
 		'app-mode'=>Mage::getSingleton('magebid/setting')->getAppMode(),
 		'use-http-compression'=>'0',
 		'token-mode'=>1,
 		'token'=>Mage::getSingleton('magebid/setting')->getToken(),
 		'use_standard_logger'=>0
-		);		
-		
-		
-		$this->__params_arr = $params_arr;		
+		);				
 	}	
 	
+    /**
+     * Preparing the Exception-Handling-Error-Message
+     * 
+     * @param object $res Response-Object of the eBay-Call
+     * @param int $ebay_item_id ebay_item_id
+     *
+     * @return string
+     */		
 	public function exceptionHandling($res,$ebay_item_id)
 	{
 		$string = "";

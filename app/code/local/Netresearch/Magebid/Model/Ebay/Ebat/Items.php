@@ -89,32 +89,6 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		error_reporting($this->_old_error_level);
 	}
 	
-    /*
-	public function getEbayItem($itemid)
-	{
-		$req = new GetItemRequestType(); 
-		$req->setItemID($itemid);      				
-		$res = $this->_sessionproxy->GetItem($req);	
-		
-		if ($res->Ack == 'Success')
-		{
-			//Set response array
-			$mapped_item = $this->mappingItem($res->Item);
-									
-			//Log
-			Mage::getModel('magebid/log')->logSuccess("auction-update","auction ".$itemid,var_export($req,true),var_export($res,true));
-							
-			return $mapped_item;				
-		}
-		else
-		{
-			//Log
-			Mage::getModel('magebid/log')->logError("auction-update","auction ".$itemid,var_export($req,true),var_export($res,true));
-			return false;
-		}		
-	}	
-	*/
-	
     /**
      * Call to add a new ebay auction
      * 
@@ -420,36 +394,6 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			return false;	
 		}		
 	}
-	
-	/*
-	public function getLastSellerEvents($from,$to)
-	{
-        //Build request
-		$req = new GetSellerEventsRequestType();	
-
-		//Set Params
-		$req->setModTimeFrom($from);
-		$req->setModTimeTo($to);
-		$req->setDetailLevel('ReturnAll');
-		
-		//Call 
-		$res = $this->_sessionproxy->GetSellerEvents($req);
-
-		
-		if ($res->Ack == 'Success')
-		{
-			Mage::getModel('magebid/log')->logSuccess("seller-events-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
-			return $res;
-		}		
-		else
-		{
-			//Set Error
-			Mage::getModel('magebid/log')->logError("seller-events-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
-			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
-			Mage::getSingleton('adminhtml/session')->addError($message);	
-		}			
-	}
-	*/
 	
     /**
      * Call to get current auctions in a defined date-rage

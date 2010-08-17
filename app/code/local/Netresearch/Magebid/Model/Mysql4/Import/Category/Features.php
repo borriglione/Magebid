@@ -30,7 +30,7 @@ class Netresearch_Magebid_Model_Mysql4_Import_Category_Features extends Mage_Cor
     	$write = $this->_getWriteAdapter();     
             
         $write->delete($this->getMainTable(),
-                $write->quoteInto($this->getMainTable().'.key=?', 'Condition')
+                $write->quoteInto($this->getMainTable().'.key_id=?', 'Condition')
         );  
     }
 }

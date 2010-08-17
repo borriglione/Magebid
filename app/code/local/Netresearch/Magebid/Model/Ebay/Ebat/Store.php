@@ -63,6 +63,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Store extends Mage_Core_Model_Abstract
 		error_reporting($this->_old_error_level);
 	}
 	
+    /**
+     * GetStore-Call to import Store-Eategories
+     *
+     * @return object
+     */		
 	public function getStore()
 	{
 		$req = new GetStoreRequestType();
@@ -78,8 +83,6 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Store extends Mage_Core_Model_Abstract
 			Mage::getModel('magebid/log')->logError("import","Store-Category",var_export($req,true),var_export($res,true));
 			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
 		}			
-		
-		return $res;		
 	}	
 }
 ?>

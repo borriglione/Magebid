@@ -67,15 +67,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		error_reporting($this->_old_error_level);
 	}
 	
-	/*
-	public function getEbayTime()
-	{
-		$req = new GeteBayOfficialTimeRequestType();       				
-		$res = $this->_sessionproxy->GeteBayOfficialTime($req);
-		return $res->Timestamp;	
-	}	
-	*/	
-	
+    /**
+     * GeteBayDetails-Call to import f.e. Shipping and Payment Informations
+     * 
+     * @param string $DetailName Import-Task
+     *
+     * @return object
+     */	
 	public function geteBayDetails($DetailName)
 	{
 		$req = new GeteBayDetailsRequestType();
@@ -92,15 +90,19 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 			Mage::getModel('magebid/log')->logError("import",$DetailName,var_export($req,true),var_export($res,true));
 			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
 		}			
-		
-		return $res;		
 	}
-	
-	public function geteBayCategories($detail_level = '',$limit = '')
+
+    /**
+     * GetCategories-Call to import categories
+     * 
+     * @param boolean $return_all Return all Details
+     *
+     * @return object
+     */		
+	public function geteBayCategories($return_all = false)
 	{
 		$req = new GetCategoriesRequestType();
-		if ($detail_level!="") $req->setDetailLevel('ReturnAll');
-		if ($limit!="") $req->setLevelLimit(0);
+		if ($return_all) $req->setDetailLevel('ReturnAll');
 		$res = $this->_sessionproxy->GetCategories($req);
 		
 		if ($res->Ack == 'Success')
@@ -113,18 +115,21 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 			Mage::getModel('magebid/log')->logError("import","Category",var_export($req,true),var_export($res,true));
 			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
 		}			
-		
-		return $res;		
 	}	
 	
-	public function getCategoryFeatures($detail_level = '')
+    /**
+     * GetCategoryFeatures-Call to import category-features
+     * 
+     * @param boolean $return_all Return all Details
+     *
+     * @return object
+     */		
+	public function getCategoryFeatures($return_all = false)
 	{
 		//Build Request
 		$req = new GetCategoryFeaturesRequestType();
-		if ($detail_level!="") $req->setDetailLevel('ReturnAll');
+		if ($return_all) $req->setDetailLevel('ReturnAll');
 		$req->setViewAllNodes(1);
-		
-		//$req->setCategoryID(9355);
 		
 		//Submit Request
 		$res = $this->_sessionproxy->GetCategoryFeatures($req);
@@ -140,8 +145,6 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 			Mage::getModel('magebid/log')->logError("import","Category Features",var_export($req,true),var_export($res,true));
 			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
 		}			
-		
-		return $res;				
 	}
 }
 ?>

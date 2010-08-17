@@ -70,7 +70,7 @@ class Netresearch_Magebid_Model_Ebay_Miscellaneous extends Mage_Core_Model_Abstr
 		//If Version in Magebid is older then Version in Ebay -> Update
 		if (Mage::getSingleton('magebid/configuration')->getCategoryVersion()<$res->CategoryVersion)
 		{
-			if ($res = $this->_handler->geteBayCategories('ReturnAll',0))
+			if ($res = $this->_handler->geteBayCategories(true))
 			{				
 				//Daily Log
 				Mage::getModel('magebid/daily_log')->logCall();					
@@ -91,7 +91,7 @@ class Netresearch_Magebid_Model_Ebay_Miscellaneous extends Mage_Core_Model_Abstr
     /**
      * get eBay Categories Features Call
      *
-     * @return array|boolean If call was successful return array, else false
+     * @return object|boolean If call was successful return array, else false
      */  
 	public function getCategoriesFeatures()
 	{
@@ -104,13 +104,13 @@ class Netresearch_Magebid_Model_Ebay_Miscellaneous extends Mage_Core_Model_Abstr
 		//If Version in Magebid is older then Version in Ebay -> Update
 		if (Mage::getSingleton('magebid/configuration')->getCategoryFeaturesVersion()<$res->CategoryVersion)
 		{
-			if ($res = $this->_handler->getCategoryFeatures('ReturnAll'))
+			if ($res = $this->_handler->getCategoryFeatures(true))
 			{				
 				//Daily Log
 				Mage::getModel('magebid/daily_log')->logCall();					
 				
 				//Set current version
-				//Mage::getSingleton('magebid/configuration')->setCategoryFeaturesVersion($res->CategoryVersion);
+				Mage::getSingleton('magebid/configuration')->setCategoryFeaturesVersion($res->CategoryVersion);
 				return $res;
 			}
 		}
@@ -121,10 +121,6 @@ class Netresearch_Magebid_Model_Ebay_Miscellaneous extends Mage_Core_Model_Abstr
 	               ->__('Your Category Features are already up to date'));			
 			return false;
 		}		
-		
-
-		
-		return true;
 	}		
 }
 ?>

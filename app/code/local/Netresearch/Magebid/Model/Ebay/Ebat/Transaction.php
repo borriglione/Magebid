@@ -68,27 +68,15 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 		error_reporting($this->_old_error_level);
 	}
 	
-	
-	public function getItemTransactions($itemid,$transaction_id = "")
-	{
-		$req = new GetItemTransactionsRequestType(); 
-		$req->setItemID($itemid);      				
-		if ($transaction_id!="") $req->setTransactionID($transaction_id); 
-		$req->setDetailLevel('ReturnAll'); 
-		$res = $this->_sessionproxy->GetItemTransactions($req);	
-		
-		if ($res->Ack == 'Success')
-		{					
-			Mage::getModel('magebid/log')->logSuccess("transaction-update","itemid ".$itemid." / transaction ".$transaction_id,var_export($req,true),var_export($res,true));
-			return $res;
-		}
-		else
-		{
-			Mage::getModel('magebid/log')->logError("transaction-update","itemid ".$itemid." / transaction ".$transaction_id,var_export($req,true),var_export($res,true));
-			return false;
-		}					
-	}	
-	
+    /**
+     * GetSellerTransactions-Call to get all transaction in a defined data-range
+     * 
+     * @param string $from Start Date
+     * @param string $to End Date
+     * @param int $page Pagination
+     *
+     * @return object
+     */	
 	public function getSellerTransactions($from,$to,$page)
 	{
 		$req = new GetSellerTransactionsRequestType();
@@ -120,7 +108,14 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
 	}
-	
+
+    /**
+     * Define Pagination-Settings
+     * 
+     * @param int $current_page 
+     *
+     * @return object PaginationType
+     */		
 	protected function _pageination($current_page = 1)
 	{		
 		//Set Pageination

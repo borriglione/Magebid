@@ -62,6 +62,14 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Sale extends Mage_Core_Model_Abstract
 		error_reporting($this->_old_error_level);
 	}
 	
+    /**
+     * CompleteSale-Call to five a Feedback about the order-status to eBay
+     * 
+     * @param object $transaction Transaction Object
+     * @param array $tasks Which Feedback to eBay should be given
+     *
+     * @return boolean
+     */		
 	public function setCompleteSale($transaction,$tasks)
 	{
 		$req = new CompleteSaleRequestType();   
