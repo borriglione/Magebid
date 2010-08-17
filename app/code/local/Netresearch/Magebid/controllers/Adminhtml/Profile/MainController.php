@@ -1,9 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Adminhtml_Profile_MainController
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtml_Controller_Action
 {
-    
-	
+    /**
+     * Main/Grid View
+     *
+     * @return void
+     */	 
 	public function indexAction()
     {
         $this->loadLayout()
@@ -12,8 +23,12 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
             ->renderLayout();
     }
 	
-
-    public function newAction() // Create new element
+    /**
+     * Create new item
+     *
+     * @return void
+     */	
+    public function newAction() 
     {
 		$this->loadLayout()
         ->_addContent($this->getLayout()
@@ -23,7 +38,12 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
         $this->renderLayout();
     }     
 
-    public function postAction() // Save element
+    /**
+     * Post Action
+     *
+     * @return void
+     */	 
+    public function postAction()
     {		
          if ($data = $this->getRequest()->getPost()) {         	
             $magebid = Mage::getModel('magebid/profile')->setData($data);
@@ -43,7 +63,11 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
         return;        
     }
 	
-
+    /**
+     * Edit View
+     *
+     * @return void
+     */
 	public function editAction()
 	{
 	    $this->loadLayout();
@@ -53,14 +77,16 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
 	    $this->renderLayout();
 	}
 	
+    /**
+     * Save Item
+     *
+     * @return void
+     */
 	public function saveAction()
 	{
 	    $magebidId = $this->getRequest()->getParam('id', false);
 	    if ($data = $this->getRequest()->getPost())
-		{
-			//print_r($this->getRequest()->getParams());
-			//exit();	       
-		   
+		{		   
 		    $magebid = Mage::getModel('magebid/profile')->load($magebidId)->addData($data);
 			  
 	        try {
@@ -86,7 +112,11 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
 	    $this->_redirectReferer();
 	}
 
-	
+    /**
+     * Delete Item
+     *
+     * @return void
+     */
 	public function deleteAction()
 	{
 	    $magebidId = $this->getRequest()->getParam('id', false);
@@ -108,9 +138,10 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
 	
 
     /**
-     * Get categories fieldset block
+     * View Categories Tab
      *
-     */
+     * @return void
+     */	
     public function categoriesAction()
     {        
 		
@@ -125,14 +156,11 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
         );
     }	
 	
-    public function categoriesJsonAction()
-    {
-        $this->getResponse()->setBody(
-            $this->getLayout()->createBlock('magebid/adminhtml_profile_edit_tab_category')
-                ->getEbayChildTreeJson($this->getRequest()->getParam('category'))
-        );
-    }	
-	
+    /**
+     * View Store Categories Tab
+     *
+     * @return void
+     */	
     public function storeCategoriesAction()
     {        
 		
@@ -146,7 +174,25 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
             $this->getLayout()->createBlock('magebid/adminhtml_profile_edit_tab_store_category')->toHtml()
         );
     }	
-	
+    
+    /**
+     * Return JSON of the category-tree
+     *
+     * @return void
+     */
+    public function categoriesJsonAction()
+    {
+        $this->getResponse()->setBody(
+            $this->getLayout()->createBlock('magebid/adminhtml_profile_edit_tab_category')
+                ->getEbayChildTreeJson($this->getRequest()->getParam('category'))
+        );
+    }	
+        
+    /**
+     * View Store Categories Tab
+     *
+     * @return void
+     */	
     public function storeCategoriesJsonAction()
     {
         $this->getResponse()->setBody(
@@ -155,6 +201,11 @@ class Netresearch_Magebid_Adminhtml_Profile_MainController extends Mage_Adminhtm
         );
     }	    
     
+    /**
+     * Return JSON of the category-features
+     *
+     * @return void
+     */ 
     public function categoryFeaturesJsonAction()
     {
     	$ebay_category_id = $this->getRequest()->getParam('category_id', false);

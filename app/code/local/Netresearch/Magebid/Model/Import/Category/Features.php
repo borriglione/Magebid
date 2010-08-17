@@ -94,7 +94,7 @@ class Netresearch_Magebid_Model_Import_Category_Features extends Mage_Core_Model
 				$data = array(				
 					'key_id' => 'Condition',
 					'value_id' => $condition->ID,
-					'value_display_name' => Mage::helper('coding')->encodePrepareDb($condition->DisplayName),
+					'value_display_name' => Mage::helper('coding')->encodeStringEbayToMagento($condition->DisplayName),
 					'category_id' => $category->CategoryID
 				);
 				

@@ -184,7 +184,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
         $item->setListingDuration('Days_'.$this->_auction_data['life_time']);
         $item->setLocation($this->_auction_data['location']);        
         $item->setDispatchTimeMax($this->_auction_data['dispatch_time']); 
-        $item->setDescription(Mage::helper('coding')->exportEncodeHtml($this->_auction_data['auction_description']));		
+        $item->setDescription(Mage::helper('coding')->encodeStringMagentoToEbay($this->_auction_data['auction_description']));		
 		$item->setConditionID($this->_auction_data['condition_id']);
         return $item;	
 	}
@@ -224,7 +224,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		if (isset($this->_auction_data['refund_option'])) $retpol->setRefundOption($this->_auction_data['refund_option']);
 		if (isset($this->_auction_data['returns_within_option'])) $retpol->setReturnsWithinOption("Days_".$this->_auction_data['returns_within_option']);
 		if (isset($this->_auction_data['returns_accepted_option'])) $retpol->setReturnsAcceptedOption($this->_auction_data['returns_accepted_option']);
-		if (isset($this->_auction_data['returns_description'])) $retpol->setDescription(Mage::helper('coding')->exportEncodeHtml($this->_auction_data['returns_description']));
+		if (isset($this->_auction_data['returns_description'])) $retpol->setDescription(Mage::helper('coding')->encodeStringMagentoToEbay($this->_auction_data['returns_description']));
 		$this->_ebay_item->setReturnPolicy($retpol);		
 	}	
 	

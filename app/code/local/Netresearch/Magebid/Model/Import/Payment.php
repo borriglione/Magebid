@@ -46,7 +46,7 @@ class Netresearch_Magebid_Model_Import_Payment extends Mage_Core_Model_Abstract
 			//Build the data
 			$data = array(
 				'code' => $payment_service->PaymentOption,
-				'description' => Mage::helper('coding')->encodePrepareDb($payment_service->Description),			
+				'description' => Mage::helper('coding')->encodeStringMagentoToEbay($payment_service->Description),			
 				);				
 			
 			//save

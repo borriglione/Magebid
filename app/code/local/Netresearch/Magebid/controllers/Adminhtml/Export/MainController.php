@@ -1,24 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Adminhtml_Export_MainController
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Adminhtml_Export_MainController extends Mage_Adminhtml_Controller_Action
 {   
-    protected $_module = 'magebid';
-    protected $_model  = 'export';
-	
-    /*
-	public function indexAction()
-    {
-        $this->loadLayout();	
-        $this->_addContent($this->getLayout()->createBlock('magebid/adminhtml_auction_main', 'auction'));
-        $this->renderLayout();
-    }
-    */
-	   
-    /*
-     * Select Profile
-     * 
-     * 
-     * */
+    /**
+     * Show Select-Profile form
+     *
+     * @return void
+     */	
     public function newAction()
     {
 		$ids = $this->getRequest()->getParam('product');
@@ -67,11 +63,11 @@ class Netresearch_Magebid_Adminhtml_Export_MainController extends Mage_Adminhtml
     }		
 	
 	
-	/*
-	 * Load Profile
-	 * Prepare Auction Preparation Form
-	 * 
-	 * */
+    /**
+     * Load the Profile and show a form with the pre-filled values of the profile
+     *
+     * @return void
+     */	
     public function massPrepareAction()
     {
         //Get profile_id		
@@ -103,10 +99,13 @@ class Netresearch_Magebid_Adminhtml_Export_MainController extends Mage_Adminhtml
     }		
 	
     
-    /*
+    /**
+     * Prepare all Auctions
      * 
-     * Prepare Auctions
-     */
+     * Prepare! not export. 
+     *
+     * @return void
+     */	
 	public function prepareAllAction()
 	{		
 		$selected_products = Mage::getSingleton('magebid/session')->getSelectedProducts();
@@ -142,9 +141,10 @@ class Netresearch_Magebid_Adminhtml_Export_MainController extends Mage_Adminhtml
 	}	
 	
     /**
-     * Get categories fieldset block
+     * View Categories Tab
      *
-     */
+     * @return void
+     */	
     public function categoriesAction()
     {        
 		
@@ -159,6 +159,11 @@ class Netresearch_Magebid_Adminhtml_Export_MainController extends Mage_Adminhtml
         );
     }	
 	
+    /**
+     * Return JSON of the category-tree
+     *
+     * @return void
+     */
     public function categoriesJsonAction()
     {
         $this->getResponse()->setBody(
@@ -167,6 +172,11 @@ class Netresearch_Magebid_Adminhtml_Export_MainController extends Mage_Adminhtml
         );
     }
     
+    /**
+     * Return JSON of the category-features
+     *
+     * @return void
+     */ 
     public function categoryFeaturesJsonAction()
     {
     	$ebay_category_id = $this->getRequest()->getParam('category_id', false);

@@ -57,7 +57,7 @@ class Netresearch_Magebid_Model_Import_Store_Category extends Mage_Core_Model_Ab
 			$data = array(
 				'category_id' => $category->CategoryID,
 				'category_level' => 1,	
-				'category_name' => Mage::helper('coding')->encodePrepareDb($category->Name),
+				'category_name' => Mage::helper('coding')->encodeStringEbayToMagento($category->Name),
 				'category_parent_id' => $category->CategoryID,		
 				'store'	=> 1
 				);				
@@ -91,7 +91,7 @@ class Netresearch_Magebid_Model_Import_Store_Category extends Mage_Core_Model_Ab
 				$data = array(
 					'category_id' => $sub_category->CategoryID,
 					'category_level' => $level+1,	
-					'category_name' => Mage::helper('coding')->encodePrepareDb($sub_category->Name),
+					'category_name' => Mage::helper('coding')->encodeStringEbayToMagento($sub_category->Name),
 					'category_parent_id' => $category->CategoryID,		
 					'store'	=> 1
 					);				

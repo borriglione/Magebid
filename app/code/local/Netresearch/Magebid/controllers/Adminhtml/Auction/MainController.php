@@ -1,10 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Adminhtml_Auction_MainController
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtml_Controller_Action
 {
-    protected $_module = 'magebid';
-    protected $_model  = 'auction';
-	
+    /**
+     * Main/Grid View
+     *
+     * @return void
+     */	 
 	public function indexAction()
     {
         $magebid_ebay_status_id = $this->getRequest()->getParam('magebid_ebay_status_id', false);
@@ -15,7 +25,12 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
         $this->renderLayout();		
 
     }
-	
+    
+    /**
+     * Edit View
+     *
+     * @return void
+     */	 
 	public function editAction()
 	{
 	    $this->loadLayout();
@@ -25,6 +40,11 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 	    $this->renderLayout();
 	}			
 	
+    /**
+     * Delete item
+     *
+     * @return void
+     */	 
 	public function deleteAction()
 	{
 	    $magebidId = $this->getRequest()->getParam('id', false);
@@ -44,7 +64,11 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 	    $this->_redirectReferer();
 	}	
 	
-	
+    /**
+     * Save Item
+     *
+     * @return void
+     */	 
 	public function saveAction()
 	{
 	    $magebidId = $this->getRequest()->getParam('id', false);
@@ -76,7 +100,11 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 	    $this->_redirectReferer();
 	}	
 		
-	
+    /**
+     * Mass Delete Items
+     *
+     * @return void
+     */	 
 	public function massDeleteAction()
 	{        
         $ids = $this->getRequest()->getParam('id');
@@ -108,18 +136,20 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
         $this->indexAction();			
 	}	
 		
-	
+    /**
+     * Update all active auctions
+     *
+     * @return void
+     */	 
 	public function updateallAction()
 	{
         try 
 		{		
 			//Get Start/End Time
-			//$from = Mage::getSingleton('magebid/configuration')->getLastSellerEvent();
 			$from = Mage::getModel('magebid/auction')->getResource()->getOldestStartDate();
 			$to = Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');			
 			
 			//Make call
-			//$events = Mage::getModel('magebid/ebay_items')->getLastSellerEvents($from,$to);
 			$items = Mage::getModel('magebid/ebay_items')->getSellerList($from,$to);			
 			
 			//For every modified item
@@ -129,9 +159,6 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 				$auction = Mage::getModel('magebid/auction')->load($item['ebay_item_id'],'ebay_item_id');
 				$auction->ebayUpdate($item);
 			}					
-               
-			//Set Time for the this Update (only used for getSellerEvent)
-			//Mage::getSingleton('magebid/configuration')->setLastSellerEvent($now);
 			
 			//Update all transactions
 			Mage::getModel('magebid/auction')->updateTransactions();
@@ -149,6 +176,11 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 		$this->_redirect('*/*/');			
 	}	 
 	
+    /**
+     * Export Auctions to eBay
+     *
+     * @return void
+     */	 
 	public function massExportAction()
 	{
         $ids = $this->getRequest()->getParam('id');
@@ -185,13 +217,15 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 			{
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             }
-        }
-		
+        }		
         $this->indexAction();
-	}
+	}	
 	
-	
-	
+    /**
+     * End eBay Auctions because of different reasons
+     *
+     * @return void
+     */	 
 	public function massEndItemsAction()
 	{		
 		$ids = $this->getRequest()->getParam('id');
@@ -240,7 +274,11 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
         $this->indexAction();
 	}	
 	
-	
+    /**
+     * View eBay-Description-Preview
+     *
+     * @return void
+     */	
 	public function previewEbayDescriptionAction()
 	{
 		if( $this->getRequest()->getParam('id') ) {
@@ -252,9 +290,10 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 	
 	
     /**
-     * Get categories fieldset block
+     * View Categories Tab
      *
-     */
+     * @return void
+     */	
     public function categoriesAction()
     {        
 		
@@ -269,6 +308,11 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
         );
     }	
 	
+    /**
+     * Return JSON of the category-tree
+     *
+     * @return void
+     */
     public function categoriesJsonAction()
     {
         $this->getResponse()->setBody(
@@ -277,6 +321,11 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
         );
     }	
     
+    /**
+     * Return JSON of the category-features
+     *
+     * @return void
+     */ 
     public function categoryFeaturesJsonAction()
     {
     	$ebay_category_id = $this->getRequest()->getParam('category_id', false);

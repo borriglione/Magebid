@@ -1,21 +1,42 @@
 <?php
+/**
+ * Netresearch_Magebid_Helper_Coding_Data
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Helper_Coding_Data extends Mage_Core_Helper_Abstract
 {
-	public function encodePrepareDb($string)
+    /**
+     * Enconding a string to UTF8
+     * 
+     * @param string $string 
+     *
+     * @return string
+     */   
+	public function encodeStringEbayToMagento($string)
 	{
 		return utf8_encode($string);
 	}
 	
+    /**
+     * Enconding a string,array or object to UTF8
+     * 
+     * @param string|array|object $value 
+     *
+     * @return string|array|object
+     */   
 	public function encodeAll($value)
 	{		
 		if (is_object($value))
 		{
 			foreach (get_object_vars($value) as $s_key => $s_value)
 			{
-				Mage::debug($s_key,"-",$s_value);
 				$value->$s_key = $this->encodeAll($s_value);
-			}
-			
+			}			
 			return $value;
 		}
 		elseif (is_array($value))
@@ -23,50 +44,43 @@ class Netresearch_Magebid_Helper_Coding_Data extends Mage_Core_Helper_Abstract
 			foreach ($value as $s_key => $s_value)
 			{
 				$value[$s_key] = $this->encodeAll($s_value);
-			}
-			
+			}			
 			return $value;
 		}
-		else //child
+		else
 		{
-			return utf8_encode($value);
+			return $this->encodeStringEbayToMagento($value);
 		}
 	}
 	
+    /**
+     * Enconding a one-depth-array to UTF-8
+     * 
+     * @param array $array 
+     *
+     * @return array
+     */   
 	public function encodeArray($array)
 	{
-		$return_array = array();
-		
+		$return_array = array();		
 		foreach ($array as $key => $value)
 		{
-			$return_array[$key] = $this->encodePrepareDb($value);
-		}
-		
+			$return_array[$key] = $this->encodeStringEbayToMagento($value);
+		}		
 		return $return_array;
 	}
 	
-	public function exportEncodeHtml($string)
+    /**
+     * Decode UTF-8 to ISO-8859-1
+     * 
+     * @param string $string 
+     *
+     * @return string
+     */  
+	public function encodeStringMagentoToEbay($string)
 	{		
 		return utf8_decode($string);
 	}		
-	
-	public function exportEncodeHtmlArray($array)
-	{
-		$return_array = array();
-		
-		foreach ($array as $key => $value)
-		{
-			$return_array[$key] = htmlentities($value, ENT_QUOTES, 'UTF-8');
-		}
-		
-		return $return_array;
-	}	
-	
-	public function importEncodeString($string)
-	{
-		//return utf8_decode($string);
-		return utf8_encode($string);
-	}
 }
 
 ?>

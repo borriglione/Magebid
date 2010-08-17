@@ -60,7 +60,7 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 			$data = array(
 				'category_id' => $category->CategoryID,
 				'category_level' => $category->CategoryLevel,	
-				'category_name' => Mage::helper('coding')->encodePrepareDb($category->CategoryName),
+				'category_name' => Mage::helper('coding')->encodeStringEbayToMagento($category->CategoryName),
 				'category_parent_id' => $category->CategoryParentID[0],		
 				);				
 			

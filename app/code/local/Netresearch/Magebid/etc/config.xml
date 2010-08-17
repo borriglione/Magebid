@@ -1,4 +1,13 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+ */
+-->
 <config>
     <modules>
         <Netresearch_Magebid>

@@ -1,12 +1,23 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Adminhtml_Configuration_MainController
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Adminhtml_Controller_Action
 {   
+    /**
+     * Main/Grid View
+     *
+     * @return void
+     */	 
 	public function indexAction()
     {
 	    $this->loadLayout();
-		
-		//exit(get_class($this->getLayout()));
 		
         if (!Mage::app()->isSingleStoreMode() && ($switchBlock = $this->getLayout()->getBlock('store_switcher'))) {
             $switchBlock->setDefaultStoreName(Mage::helper('magebid')->__('Default Store'))
@@ -18,6 +29,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 		$this->renderLayout();  
     }
 	
+    /**
+     * Save Item
+     *
+     * @return void
+     */	 
 	public function saveAction()
 	{
 		$data = $this->getRequest()->getPost();			
@@ -60,7 +76,7 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 					break;		
 					
 					case 'import_mapping_settings':
-						$this->_importMappings($data);
+						$this->_saveMappings($data);
 						$active_tab = "mapping";
 					break;							
 				}				
@@ -76,6 +92,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 	   $this->indexAction();
 	}
 	
+    /**
+     * Import Shipping Methods from eBay
+     *
+     * @return void
+     */	 
 	protected function _importShippingMethods()
 	{
 		$number_imported = Mage::getModel('magebid/import_shipping')->importEbayShippingMethods();
@@ -84,6 +105,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 	               ->__('%d Shipping Methods were successfully imported',$number_imported));			
 	}
 	
+    /**
+     * Import Payment Methods from eBay
+     *
+     * @return void
+     */	 
 	protected function _importPaymentMethods()
 	{
 		$number_imported = Mage::getModel('magebid/import_payment')->importEbayPaymentMethods();		
@@ -92,6 +118,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 	               ->__('%d Payment Methods were successfully imported',$number_imported));			
 	}	
 	
+    /**
+     * Import Categories from eBay
+     *
+     * @return void
+     */	 
 	protected function _importCategories()
 	{
 		if ($number_imported = Mage::getModel('magebid/import_category')->importEbayCategories())
@@ -102,6 +133,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 		}		
 	}	
 	
+    /**
+     * Import Store Categories from eBay
+     *
+     * @return void
+     */	 
 	protected function _importStoreCategories()
 	{		
 		if ($number_imported = Mage::getModel('magebid/import_store_category')->importEbayStoreCategories())
@@ -112,6 +148,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 		}
 	}		
 	
+    /**
+     * Import Categories Features from eBay
+     *
+     * @return void
+     */	 
 	protected function _importCategoryFeatures()
 	{
 		if (Mage::getModel('magebid/import_category_features')->importCategoryFeatures())
@@ -122,6 +163,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 		}	
 	}
 	
+    /**
+     * Import Policies from eBay
+     *
+     * @return void
+     */	 
 	protected function _importPolicies()
 	{
 		$number_imported = Mage::getModel('magebid/import_policy')->importEbayPolicies();
@@ -130,7 +176,12 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 	               ->__('Policies were successfully imported'));			
 	}			
 	
-	protected function _importMappings($data)
+    /**
+     * Save Mappings (Shipping)
+     *
+     * @return void
+     */	 
+	protected function _saveMappings($data)
 	{
 		Mage::getModel('magebid/mapping')->saveMapping($data);
 		Mage::getSingleton('adminhtml/session')
@@ -138,6 +189,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
 	               ->__('Mappings were saved'));		
 	}
 
+    /**
+     * View Categories Tab
+     *
+     * @return void
+     */	
     public function categoriesAction()
     {
         $this->getResponse()->setBody(
@@ -145,6 +201,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
         );
     }	
 	
+    /**
+     * View Store Categories Tab
+     *
+     * @return void
+     */	
     public function storeCategoriesAction()
     {
         $this->getResponse()->setBody(
@@ -152,6 +213,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
         );
     }		
 	
+    /**
+     * View Payment Tab
+     *
+     * @return void
+     */	
     public function paymentsAction()
     {
         $this->getResponse()->setBody(
@@ -159,6 +225,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
         );
     }	
 	
+    /**
+     * View Shipping Tab
+     *
+     * @return void
+     */	
     public function shippingsAction()
     {
         $this->getResponse()->setBody(
@@ -166,6 +237,11 @@ class Netresearch_Magebid_Adminhtml_Configuration_MainController extends Mage_Ad
         );
     }		
     
+    /**
+     * View Daily Log Tab
+     *
+     * @return void
+     */	
     public function dailyLogAction()
     {
         $this->getResponse()->setBody(

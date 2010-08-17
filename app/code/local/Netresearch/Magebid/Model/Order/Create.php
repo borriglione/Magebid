@@ -305,7 +305,7 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	{
 		//Set Billing Address
 		$billing_address_data = $this->_getCustomerBillingAddressData();
-	    $billing_address = Mage::helper('order')->_compareCustomerAddress($this->_customer, $billing_address_data);
+	    $billing_address = Mage::helper('order')->compareCustomerAddress($this->_customer, $billing_address_data);
 	    if (!$billing_address)
 		{    			
 	    		$billing_address = $this->_createCustomerAddress($billing_address_data);
@@ -323,7 +323,7 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	{
 		//Set Shipping Address
 		$shipping_address_data = $this->_getCustomerShippingAddressData();
-	    $shipping_address = Mage::helper('order')->_compareCustomerAddress($this->_customer, $shipping_address_data);
+	    $shipping_address = Mage::helper('order')->compareCustomerAddress($this->_customer, $shipping_address_data);
 	    if (!$shipping_address)
 		{    			
 	    		$shipping_address = $this->_createCustomerAddress($shipping_address_data);

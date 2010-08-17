@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Adminhtml_Log_MainController
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Adminhtml_Log_MainController extends Mage_Adminhtml_Controller_Action
 {
+    /**
+     * Main/Grid View
+     *
+     * @return void
+     */	 
 	public function indexAction()
     {
         $this->loadLayout()
@@ -10,6 +24,11 @@ class Netresearch_Magebid_Adminhtml_Log_MainController extends Mage_Adminhtml_Co
 			
     }
 	
+    /**
+     * Edit View
+     *
+     * @return void
+     */	 
 	public function editAction()
 	{
 	    $this->loadLayout();
@@ -18,6 +37,11 @@ class Netresearch_Magebid_Adminhtml_Log_MainController extends Mage_Adminhtml_Co
 	    $this->renderLayout();
 	}
 	
+    /**
+     * Delete item
+     *
+     * @return void
+     */	 
 	public function deleteAction()
 	{
 	    $magebidId = $this->getRequest()->getParam('id', false);
@@ -37,6 +61,11 @@ class Netresearch_Magebid_Adminhtml_Log_MainController extends Mage_Adminhtml_Co
 	    $this->_redirectReferer();
 	}		
 	
+    /**
+     * Mass Delete Items
+     *
+     * @return void
+     */	 
 	public function massDeleteAction()
 	{        
         $ids = $this->getRequest()->getParam('id');
