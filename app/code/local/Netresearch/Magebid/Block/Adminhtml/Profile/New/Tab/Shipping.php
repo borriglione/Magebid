@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Profile_New_Tab_Shipping
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Profile_New_Tab_Shipping extends Mage_Adminhtml_Block_Widget_Form
 {
+    /**
+     * Prepare Form
+     *
+     * @return object
+     */	
     protected function _prepareForm()
     {
         $form = new Varien_Data_Form();		
@@ -14,8 +28,7 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_New_Tab_Shipping extends Mage_
 
         $form->getElement('shipping_method')->setRenderer(
             $this->getLayout()->createBlock('magebid/adminhtml_profile_new_tab_shipping_method')
-        );   	
-       
+        );          
 				
         //$form->setUseContainer(true);
         $this->setForm($form);

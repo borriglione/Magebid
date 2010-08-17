@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tab_Buyer
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tab_Buyer extends Mage_Adminhtml_Block_Widget_Form
 {	
+    /**
+     * Prepare Form
+     *
+     * @return object
+     */	
 	protected function _prepareForm()
     {
         $form = new Varien_Data_Form();
@@ -48,8 +62,7 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tab_Buyer extends Mag
         $auction->addField('registration_country', 'text', array(
             'label' => Mage::helper('magebid')->__('Country'),
 			'disabled'	=> $disabled,
-        ));	  
-       
+        ));	         
 				
         //$form->setUseContainer(true);
         $form->setValues(Mage::registry('frozen_magebid')->getData());

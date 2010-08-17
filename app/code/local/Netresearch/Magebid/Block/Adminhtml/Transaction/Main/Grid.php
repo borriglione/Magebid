@@ -1,10 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-    protected $_module = 'magebid';
-    protected $_model  = 'transaction';
-
+    /**
+     * Construct
+     *
+     * @return void
+     */		
     public function __construct()
     {
         parent::__construct();
@@ -13,7 +23,12 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adm
         $this->setDefaultSort('date_created');
         $this->setDefaultDir('desc');		
     }
-
+    
+    /**
+     * Prepare Collection
+     *
+     * @return object
+     */		
     protected function _prepareCollection()
     {
 		$collection = Mage::getModel('magebid/transaction')->getCollection();		
@@ -21,10 +36,15 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adm
         parent::_prepareCollection();		
     }
 	
+    /**
+     * Prepare Massaction
+     *
+     * @return object
+     */		
     protected function _prepareMassaction()
     {
         
-		$this->setMassactionIdField($this->_model.'_id');
+		$this->setMassactionIdField('magebid_id');
         $this->getMassactionBlock()->setFormFieldName('id');
 
         //$this->getMassactionBlock()->addItem('update', array(
@@ -40,6 +60,11 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adm
         return $this;
     }		
 	
+    /**
+     * Prepare Columns
+     *
+     * @return object
+     */		
     protected function _prepareColumns()
     {
 		$this->addColumn('ebay_transaction_id', array(
@@ -127,18 +152,16 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adm
         return parent::_prepareColumns();
     }
 
+    /**
+     * Return Row-Edit-Url
+     *
+     * @return string
+     */		
     public function getRowUrl($row)
     {
        return $this->getUrl('*/*/edit', array(
             'id' => $row->getMagebidTransactionId(),
         ));
-    }
-	
-	
-    protected function _getStore()
-    {
-        $storeId = (int) $this->getRequest()->getParam('store', 0);
-        return Mage::app()->getStore($storeId);
     }	
 }
 ?>

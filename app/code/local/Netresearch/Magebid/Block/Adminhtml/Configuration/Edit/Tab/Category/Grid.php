@@ -1,8 +1,21 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Category_Grid
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Category_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-     public function __construct()
+    /**
+     * Construct
+     *
+     * @return void
+     */	
+    public function __construct()
     {
         parent::__construct();
         $this->setId('configuration_category_grid');
@@ -11,6 +24,11 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Category_Grid e
 		$this->setUseAjax(true);
     }
 
+    /**
+     * Prepare Collection
+     *
+     * @return object
+     */	
     protected function _prepareCollection()
     {
         $model = Mage::getModel('magebid/import_category');
@@ -20,8 +38,11 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Category_Grid e
         return parent::_prepareCollection();
     }
 	
-	
-
+    /**
+     * Prepare Columns
+     *
+     * @return object
+     */	
     protected function _prepareColumns()
     {
         $this->addColumn('category_id', array(
@@ -51,11 +72,21 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Category_Grid e
         return parent::_prepareColumns();
     }
 
+    /**
+     * Disable Row-Edit-Url
+     *
+     * @return boolean
+     */	
     public function getRowUrl($row)
     {
        return false;
     }
 	
+    /**
+     * Return Grid Url
+     *
+     * @return string
+     */	
     public function getGridUrl()
     {
         return $this->getUrl('*/*/categories', array('_current' => true));

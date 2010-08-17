@@ -1,7 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Templates_Main_Grid
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Templates_Main_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */		
      public function __construct()
     {
         parent::__construct();
@@ -10,18 +23,24 @@ class Netresearch_Magebid_Block_Adminhtml_Templates_Main_Grid extends Mage_Admin
         $this->setDefaultDir('desc');
     }
 
+    /**
+     * Prepare Collection
+     *
+     * @return object
+     */	
     protected function _prepareCollection()
     {
         $model = Mage::getModel('magebid/templates');
-        $collection = $model->getCollection();
-		    
+        $collection = $model->getCollection();		    
 		$this->setCollection($collection);
-
         return parent::_prepareCollection();
     }
 	
-	
-
+    /**
+     * Prepare Columns
+     *
+     * @return object
+     */	
     protected function _prepareColumns()
     {
 
@@ -68,8 +87,6 @@ class Netresearch_Magebid_Block_Adminhtml_Templates_Main_Grid extends Mage_Admin
             'type'          => 'datetime',
         ));
 		
-
-
         $this->addColumn('action',
             array(
                 'header'    => Mage::helper('magebid')->__('Action'),
@@ -95,10 +112,14 @@ class Netresearch_Magebid_Block_Adminhtml_Templates_Main_Grid extends Mage_Admin
                 'filter'    => false,
                 'sortable'  => false
         ));
-
         return parent::_prepareColumns();
     }
 
+    /**
+     * Return Row-Edit-Url
+     *
+     * @return string
+     */		
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array(

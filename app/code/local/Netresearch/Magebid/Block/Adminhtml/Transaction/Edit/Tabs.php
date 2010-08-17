@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tabs
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         parent::__construct();		
@@ -9,6 +23,11 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tabs extends Mage_Adm
         $this->setTitle(Mage::helper('magebid')->__('Transaction'));
     }
 
+    /**
+     * Before HTML-Rendering: Prepare Tab-View
+     *
+     * @return object
+     */	
     protected function _beforeToHtml()
     {
         $this->addTab('transaction', array(
@@ -17,7 +36,6 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tabs extends Mage_Adm
             'content'   => $this->getLayout()->createBlock('magebid/adminhtml_transaction_edit_tab_transaction')->toHtml(),
             'active'    => true,
         ));
-
 		
         $this->addTab('buyer', array(
             'label'     => Mage::helper('magebid')->__('Buyer Informations'),

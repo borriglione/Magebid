@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tab_Profile
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tab_Profile extends Mage_Adminhtml_Block_Widget_Form
 {
+    /**
+     * Prepare Form
+     *
+     * @return object
+     */	
     protected function _prepareForm()
     {
         $form = new Varien_Data_Form();		
@@ -136,6 +150,11 @@ class Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tab_Profile extends Mage_A
         return parent::_prepareForm();	
 	}
 	
+    /**
+     * Get selected storeview
+     *
+     * @return int
+     */	
 	public function getStore()
 	{
 		//Set store Id

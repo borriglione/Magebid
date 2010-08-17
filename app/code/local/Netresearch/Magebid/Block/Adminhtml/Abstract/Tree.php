@@ -1,12 +1,31 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Abstract_Tree
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Abstract_Tree extends Mage_Adminhtml_Block_Catalog_Category_Tree
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
 	public function __construct()
     {
         parent::__construct();
         $this->setTemplate('magebid/tab/category.phtml');
     }
 
+    /**
+     * Get existing eBay Category for this entry (profile or auction)
+     *
+     * @return string
+     */	
     public function getEbayCategory($field)
     {        
 		if (Mage::registry('frozen_magebid'))
@@ -15,11 +34,21 @@ class Netresearch_Magebid_Block_Adminhtml_Abstract_Tree extends Mage_Adminhtml_B
 		}		
     }
 
+    /**
+     * Get Load URL, for the AJAX-Build-Category-Request
+     *
+     * @return string
+     */	
     public function getLoadTreeUrl($expanded=null)
     {
         return $this->getUrl('*/*/categoriesJson', array('_current'=>true));
     }
 
+    /**
+     * Get JSON for the child-tree
+     *
+     * @return string
+     */	
 	public function getEbayChildTreeJson($category_id)
 	{
 		$children = Mage::getModel('magebid/import_category')->buildChildTree($category_id);
@@ -27,6 +56,11 @@ class Netresearch_Magebid_Block_Adminhtml_Abstract_Tree extends Mage_Adminhtml_B
         return $json;		
 	}	
 	
+    /**
+     * Get JSON for the initial store category tree
+     *
+     * @return string
+     */	
 	public function getEbayTreeJson($field)
 	{
 		$selected_cat = '';
@@ -41,6 +75,11 @@ class Netresearch_Magebid_Block_Adminhtml_Abstract_Tree extends Mage_Adminhtml_B
         return $json;		
 	}	
 	
+    /**
+     * Get Load URL, for the AJAX-Category-Features-Request
+     *
+     * @return string
+     */	
     public function getCategoryFeaturesUrl()
     {
         return $this->getUrl('*/*/categoryFeaturesJson');

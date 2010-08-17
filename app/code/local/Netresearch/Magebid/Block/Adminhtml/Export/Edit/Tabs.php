@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tabs
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         parent::__construct();		
@@ -9,6 +23,11 @@ class Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tabs extends Mage_Adminhtm
         $this->setTitle(Mage::helper('magebid')->__('Export'));
     }
 
+    /**
+     * Before HTML
+     *
+     * @return object
+     */	
     protected function _beforeToHtml()
     {
         $this->addTab('profile', array(
@@ -54,9 +73,7 @@ class Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tabs extends Mage_Adminhtm
             'label'     => Mage::helper('magebid')->__('Selected Products'),
             'title'     => Mage::helper('magebid')->__('Selected Products'),
     		'content'   => $this->getLayout()->createBlock('magebid/adminhtml_export_edit_tab_product')->toHtml(),
-        ));			
-		
-			
+        ));				
 
         return parent::_beforeToHtml();
     }

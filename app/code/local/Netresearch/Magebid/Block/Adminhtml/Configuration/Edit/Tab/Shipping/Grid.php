@@ -1,14 +1,32 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Grid
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-     public function __construct()
+    /**
+     * Construct
+     *
+     * @return void
+     */	
+    public function __construct()
     {
         parent::__construct();
         $this->setId('configuration_shipping_grid');
 		$this->setUseAjax(true);
     }
 
+    /**
+     * Prepare Collection
+     *
+     * @return object
+     */	
     protected function _prepareCollection()
     {
         $model = Mage::getModel('magebid/import_shipping');
@@ -17,8 +35,11 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Grid e
         return parent::_prepareCollection();
     }
 	
-	
-
+    /**
+     * Prepare Columns
+     *
+     * @return object
+     */	
     protected function _prepareColumns()
     {
         $this->addColumn('shipping_service', array(
@@ -54,15 +75,25 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Grid e
 
         return parent::_prepareColumns();
     }
-
-    public function getGridUrl()
-    {
-        return $this->getUrl('*/*/shippings', array('_current' => true));
-    }	
-	
+    
+    /**
+     * Disable Row-Edit-Url
+     *
+     * @return boolean
+     */	
     public function getRowUrl($row)
     {
        return false;
+    }	
+
+    /**
+     * Return Grid Url
+     *
+     * @return string
+     */	
+    public function getGridUrl()
+    {
+        return $this->getUrl('*/*/shippings', array('_current' => true));
     }	
 }
 ?>

@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Templates_Edit_Form
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Templates_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
+    /**
+     * Prepare Form
+     *
+     * @return object
+     */	
     protected function _prepareForm()
     {
         $form = new Varien_Data_Form(array(
@@ -11,7 +25,6 @@ class Netresearch_Magebid_Block_Adminhtml_Templates_Edit_Form extends Mage_Admin
 
         $fieldset = $form->addFieldset('edit_magebid', array('legend' => Mage::helper('magebid')->__('Template')));
 
-		
         $fieldset->addField('content_name', 'text', array(
             'name'      => 'content_name',
             'title'     => Mage::helper('magebid')->__('Title'),
@@ -38,12 +51,10 @@ class Netresearch_Magebid_Block_Adminhtml_Templates_Edit_Form extends Mage_Admin
             'required'  => true,
         ));
 
-
-		
-
         $form->setUseContainer(true);
         $form->setValues(Mage::registry('frozen_magebid')->getData());
         $this->setForm($form);
         return parent::_prepareForm();
     }
 }
+?>

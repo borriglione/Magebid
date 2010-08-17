@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Transaction_Edit
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         parent::__construct();		
@@ -9,25 +23,15 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tabs extends Mage_A
         $this->setTitle(Mage::helper('magebid')->__('Configuration'));        
     }
 
+    /**
+     * Before HTML
+     *
+     * @return object
+     */	
     protected function _beforeToHtml()
     {
         $active_tab = Mage::registry('active_tab');		
-        
-        /*
-		$this->addTab('configuration', array(
-            'label'     => Mage::helper('magebid')->__('General imports'),
-            'title'     => Mage::helper('magebid')->__('General imports'),
-            'content'   => $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_configuration')->toHtml(),
-            'active'    => true,
-        ));	*/			
-
-		/*
-        $this->addTab('categories', array(
-            'label'     => Mage::helper('magebid')->__('Categories'),
-            'title'     => Mage::helper('magebid')->__('Categories'),
-            'content'   => $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_categories')->toHtml(),
-        ));	*/
-		
+               
 		$this->addTab('shipping', array(
             'label'     => Mage::helper('magebid')->__('Shipping Methods'),
             'title'     => Mage::helper('magebid')->__('Shipping Methods'),

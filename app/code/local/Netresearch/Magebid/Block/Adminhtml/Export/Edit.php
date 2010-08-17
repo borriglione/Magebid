@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Export_Edit
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Export_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
 	public function __construct()
     {
         parent::__construct();
@@ -22,6 +36,11 @@ class Netresearch_Magebid_Block_Adminhtml_Export_Edit extends Mage_Adminhtml_Blo
 		$this->_removeButton('reset');
     }
 
+    /**
+     * Return Header Text
+     *
+     * @return string
+     */	
     public function getHeaderText()
     {
 		return Mage::helper('magebid')->__('Magebid Export (Profile: %s)',Mage::getModel('magebid/profile')->load(Mage::registry('profile_id'))->getProfileName());

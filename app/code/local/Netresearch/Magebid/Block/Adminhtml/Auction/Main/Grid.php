@@ -1,10 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-    protected $_module = 'magebid';
-    protected $_model  = 'auction';
-
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         parent::__construct();
@@ -13,6 +23,11 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid extends Mage_Adminht
         $this->setDefaultDir('desc');
     }
 
+    /**
+     * Prepare Collection
+     *
+     * @return object
+     */	
     protected function _prepareCollection()
     {
 		$collection = Mage::getModel('magebid/auction')->getCollection();
@@ -20,22 +35,22 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid extends Mage_Adminht
         return parent::_prepareCollection();
     }
 	
+    /**
+     * Prepare Massaction
+     *
+     * @return object
+     */	
     protected function _prepareMassaction()
     {
         
-		$this->setMassactionIdField($this->_model.'_id');
+		$this->setMassactionIdField('auction_id');
         $this->getMassactionBlock()->setFormFieldName('id');
 
         $this->getMassactionBlock()->addItem('delete', array(
              'label'    => Mage::helper('magebid')->__('Delete'),
              'url'      => $this->getUrl('*/*/massDelete'),
-             'confirm'  => Mage::helper($this->_module)->__('Are you sure?')
-        ));			
-        
-        //$this->getMassactionBlock()->addItem('update', array(
-        //      'label'    => Mage::helper('magebid')->__('Update'),
-        //      'url'      => $this->getUrl('*/*/massUpdate')
-        // ));        
+             'confirm'  => Mage::helper('magebid')->__('Are you sure?')
+        ));	
 		
         $this->getMassactionBlock()->addItem('export', array(
              'label'    => Mage::helper('magebid')->__('Export to Ebay'),
@@ -45,12 +60,16 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid extends Mage_Adminht
         $this->getMassactionBlock()->addItem('end', array(
              'label'    => Mage::helper('magebid')->__('End Items'),
              'url'      => $this->getUrl('*/*/massEndItems'),
-			 'confirm'  => Mage::helper($this->_module)->__('Are you sure?')
+			 'confirm'  => Mage::helper('magebid')->__('Are you sure?')
         ));				
-		
         return $this;
     }	
 
+    /**
+     * Prepare Columns
+     *
+     * @return object
+     */	
     protected function _prepareColumns()
     {
 
@@ -99,9 +118,7 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid extends Mage_Adminht
             'align'         => 'left',
             'index'         => 'quantity_sold',
             'type'          => 'text',
-        ));			        
-		
-		$store = $this->_getStore();
+        ));		
 		
         $this->addColumn('price_now', array(
             'header'        => Mage::helper('magebid')->__('Price'),
@@ -148,20 +165,23 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid extends Mage_Adminht
         return parent::_prepareColumns();
     }
 
+    /**
+     * Return Row-Edit-Url
+     *
+     * @return string
+     */	
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array(
             'id' => $row->getMagebidAuctionId(),
         ));
     }
-	
-	
-    protected function _getStore()
-    {
-        $storeId = (int) $this->getRequest()->getParam('store', 0);
-        return Mage::app()->getStore($storeId);
-    }	
-	
+    	
+    /**
+     * Create column for Preview- and Auction-Link
+     *
+     * @return string
+     */	
 	protected function _getFormatedLinks()
 	{		
 		$ebay_link = '<a href="$link"> '.Mage::helper('magebid')->__('eBay Link').'</a><br />';

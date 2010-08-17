@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Daily_log
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Daily_log extends Mage_Adminhtml_Block_Widget_Form
 {	
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         parent::__construct();
@@ -8,12 +22,22 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Daily_log exten
         $this->setTitle('Return Policy');
     }
 	
+    /**
+     * Return Header Text
+     *
+     * @return string
+     */		
     public function getHeaderText()
     {
         return Mage::helper('magebid')
           ->__("Daily Log");
     }	
     
+    /**
+     * Before HTML
+     *
+     * @return object
+     */	
     public function _beforeToHtml()
     {		
 		$this->setChild('grid', $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_daily_log_grid', 'configuration.daily.log.grid'));

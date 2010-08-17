@@ -1,39 +1,78 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Payment_Abstract
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Payment_Abstract extends Mage_Adminhtml_Block_Widget implements Varien_Data_Form_Element_Renderer_Interface
 {
-
     protected $_element = null;
     protected $_paymentMethods = null;
     protected $_websites = null;
 
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         $this->setTemplate('magebid/tab/payment/method.phtml');
     }	
 	
+    /**
+     * Return Product
+     *
+     * @return object
+     */	
     public function getProduct()
     {
         return Mage::registry('product');
     }
 
+    /**
+     * Return rendered HTML
+     *
+     * @return string
+     */	
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         $this->setElement($element);
         return $this->toHtml();
     }
 	
-	
+    /**
+     * Set Element
+     * 
+     * @param object $element Varien_Data_Form_Element_Abstract
+     * 
+     * @return object
+     */	
     public function setElement(Varien_Data_Form_Element_Abstract $element)
     {
         $this->_element = $element;
         return $this;
     }
 
+    /**
+     * Get Element
+     * 
+     * @return object
+     */	
     public function getElement()
     {
         return $this->_element;
     }
 	
+    /**
+     * Get imported payment methods from ebay
+     * 
+     * @return array|null
+     */	
 	public function getPaymentMethods($paymentCode=null)
 	{
         if (!$this->_paymentMethods) {
@@ -50,6 +89,11 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Payment_Abstract exte
             (isset($this->_paymentMethods[$paymentCode]) ? $this->_paymentMethods[$paymentCode] : null);		
 	}
 	
+    /**
+     * Prepare Layout
+     *
+     * @return object
+     */	
     protected function _prepareLayout()
     {
         $this->setChild('add_button',
@@ -62,14 +106,21 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Payment_Abstract exte
         return parent::_prepareLayout();
     }
 
+    /**
+     * Return Add-Button-Html
+     * 
+     * @return string
+     */	
     public function getAddButtonHtml()
     {
         return $this->getChildHtml('add_button');
     }	
 	
-	
-	
-    public function getValues()
+	/**
+     * Get existing values
+     * 
+     * @return array
+     */	    public function getValues()
     {
         $values =array();
         
@@ -89,12 +140,16 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Payment_Abstract exte
         return $values;
     } 
 	
+    /**
+     * Return true if it's allowed to edit the mapping
+     * 
+     * @return boolean
+     */	
 	public function getAllowEdit()
 	{
 		$role = Mage::registry('role');
 		if ($role=='view') return false;
 		return true;
-	}
-	
+	}	
 }
 ?>

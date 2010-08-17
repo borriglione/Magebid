@@ -1,33 +1,69 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Mapping
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Mapping extends Mage_Adminhtml_Block_Widget implements Varien_Data_Form_Element_Renderer_Interface
 {
-
     protected $_element = null;
     protected $_shippingMethods = null;
 
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         $this->setTemplate('magebid/configuration/tab/mapping/shipping.phtml');
     }
 	
+    /**
+     * Return rendered HTML
+     *
+     * @return string
+     */	
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         $this->setElement($element);
         return $this->toHtml();
     }
 	
-	
+    /**
+     * Set Element
+     * 
+     * @param object $element Varien_Data_Form_Element_Abstract
+     * 
+     * @return object
+     */	
     public function setElement(Varien_Data_Form_Element_Abstract $element)
     {
         $this->_element = $element;
         return $this;
     }
 
+    /**
+     * Get Element
+     * 
+     * @return object
+     */	
     public function getElement()
     {
         return $this->_element;
     }
-	
+    
+    /**
+     * Get imported shipping methods from ebay
+     * 
+     * @param string $shippingCode
+     * 
+     * @return array
+     */	
 	public function geteBayShippingMethods($shippingCode=null)
 	{
         if (!$this->_shippingMethods) {
@@ -43,6 +79,13 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Mappin
             (isset($this->_shippingMethods[$shippingCode]) ? $this->_shippingMethods[$shippingCode] : null);		
 	}
 	
+    /**
+     * Get avaiable shipping methods from magento
+     * 
+     * @param string $shippingCode
+     * 
+     * @return array
+     */	
 	public function getMagentoShippingMethods($shippingCode=null)
 	{
 		$carriers = new Mage_Shipping_Model_Config();		
@@ -68,6 +111,11 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Mappin
 		
 	}	
 	
+    /**
+     * Prepare Layout
+     * 
+     * @return object
+     */	
     protected function _prepareLayout()
     {
         $this->setChild('add_button',
@@ -80,13 +128,21 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Mappin
         return parent::_prepareLayout();
     }
 
+    /**
+     * Return Add-Button-Html
+     * 
+     * @return string
+     */	
     public function getAddButtonHtml()
     {
         return $this->getChildHtml('add_button');
-    }	
+    }		
 	
-	
-	
+    /**
+     * Get existing mapping
+     * 
+     * @return array
+     */	
     public function getValues()
     {
         $values = array();
@@ -102,6 +158,11 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Mappin
         return $values;
     } 
 	
+    /**
+     * Return true if it's allowed to edit the mapping
+     * 
+     * @return boolean
+     */	
 	public function getAllowEdit()
 	{
 		$role = Mage::registry('role');

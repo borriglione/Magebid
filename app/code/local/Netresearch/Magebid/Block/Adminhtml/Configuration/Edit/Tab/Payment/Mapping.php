@@ -1,33 +1,67 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Payment_Mapping
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Payment_Mapping extends Mage_Adminhtml_Block_Widget implements Varien_Data_Form_Element_Renderer_Interface
 {
-
     protected $_element = null;
     protected $_paymentMethods = null;
 
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         $this->setTemplate('magebid/configuration/tab/mapping/payment.phtml');
     }
 	
+    /**
+     * Return rendered HTML
+     *
+     * @return string
+     */	
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         $this->setElement($element);
         return $this->toHtml();
     }
 	
-	
+    /**
+     * Set Element
+     * 
+     * @param object $element Varien_Data_Form_Element_Abstract
+     * 
+     * @return object
+     */	
     public function setElement(Varien_Data_Form_Element_Abstract $element)
     {
         $this->_element = $element;
         return $this;
     }
 
+    /**
+     * Get Element
+     * 
+     * @return object
+     */	
     public function getElement()
     {
         return $this->_element;
     }
 	
+    /**
+     * Get imported payment methods from ebay
+     * 
+     * @return array|null
+     */	
 	public function geteBayPaymentMethods()
 	{
         if (!$this->_paymentMethods) {
@@ -41,6 +75,11 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Payment_Mapping
         return (count($this->_paymentMethods)>0) ? $this->_paymentMethods : null;		
 	}
 	
+    /**
+     * Get avaiable payment methods from magento
+     * 
+     * @return array
+     */	
 	public function getMagentoPaymentMethods()
 	{		
 		$magento_payment_methods = array();
@@ -59,11 +98,15 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Payment_Mapping
 			if (!$methodInstance->canUseInternal()) continue;
 				
 			$magento_payment_methods[$code] = $methodInstance->getTitle();
-		}		
-		
+		}				
 		return $magento_payment_methods;
 	}	
 	
+    /**
+     * Prepare Layout
+     * 
+     * @return object
+     */	
     protected function _prepareLayout()
     {
         $this->setChild('add_button',
@@ -76,13 +119,21 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Payment_Mapping
         return parent::_prepareLayout();
     }
 
+    /**
+     * Return Add-Button-Html
+     * 
+     * @return string
+     */	
     public function getAddButtonHtml()
     {
         return $this->getChildHtml('add_button');
     }	
 	
-	
-	
+    /**
+     * Get existing mapping
+     * 
+     * @return array
+     */	
     public function getValues()
     {
         $data = Mage::getModel('magebid/mapping')->getCollection()->addFilter('kind','payment')->getItems();
@@ -97,6 +148,11 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Payment_Mapping
         return $values;
     } 
 	
+    /**
+     * Return true if it's allowed to edit the mapping
+     * 
+     * @return boolean
+     */	
 	public function getAllowEdit()
 	{
 		$role = Mage::registry('role');

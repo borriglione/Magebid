@@ -1,10 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Log_Main_Grid
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Log_Main_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-    protected $_module = 'magebid';
-    protected $_model  = 'log';    
-	
+    /**
+     * Construct
+     *
+     * @return void
+     */		
 	public function __construct()
     {
         parent::__construct();
@@ -13,6 +23,11 @@ class Netresearch_Magebid_Block_Adminhtml_Log_Main_Grid extends Mage_Adminhtml_B
         $this->setDefaultDir('desc');
     }
 
+    /**
+     * Prepare Collection
+     *
+     * @return object
+     */	
     protected function _prepareCollection()
     {
         $model = Mage::getModel('magebid/log');
@@ -21,6 +36,11 @@ class Netresearch_Magebid_Block_Adminhtml_Log_Main_Grid extends Mage_Adminhtml_B
         return parent::_prepareCollection();
     }	    
     
+    /**
+     * Prepare Columns
+     *
+     * @return object
+     */	
     protected function _prepareColumns()
     {
         $this->addColumn('magebid_log_id', array(
@@ -63,7 +83,11 @@ class Netresearch_Magebid_Block_Adminhtml_Log_Main_Grid extends Mage_Adminhtml_B
         return parent::_prepareColumns();
     }
     
-    
+    /**
+     * Prepare Massaction
+     *
+     * @return object
+     */	
     protected function _prepareMassaction()
     {
         
@@ -73,13 +97,17 @@ class Netresearch_Magebid_Block_Adminhtml_Log_Main_Grid extends Mage_Adminhtml_B
         $this->getMassactionBlock()->addItem('delete', array(
              'label'    => Mage::helper('magebid')->__('Delete'),
              'url'      => $this->getUrl('*/*/massDelete'),
-             'confirm'  => Mage::helper($this->_module)->__('Are you sure?')
+             'confirm'  => Mage::helper('magebid')->__('Are you sure?')
         ));	
 		
         return $this;
     }	   
 
-    
+    /**
+     * Prepare Edit-Row-Url
+     *
+     * @return string
+     */	
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array(

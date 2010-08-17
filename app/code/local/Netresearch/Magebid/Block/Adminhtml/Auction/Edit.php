@@ -1,7 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Auction_Edit
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Auction_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         parent::__construct();
@@ -9,17 +22,13 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit extends Mage_Adminhtml_Bl
         $this->_mode = 'edit';
         $this->_controller = 'adminhtml_auction';
 
-		
-
         if( $this->getRequest()->getParam($this->_objectId) )
 		{
             //exit($this->getRequest()->getParam($this->_objectId));
 			$magebidData = Mage::getModel('magebid/auction')->load($this->getRequest()->getParam($this->_objectId));
             Mage::register('frozen_magebid', $magebidData);
         }
-		
-		
-		
+
 		//Set Role
 		if ($magebidData->getMagebidEbayStatusId()>0)
 		{
@@ -44,6 +53,11 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit extends Mage_Adminhtml_Bl
 		}
     }
 
+    /**
+     * Return Header Text
+     *
+     * @return string
+     */	
     public function getHeaderText()
     {
         return Mage::helper('magebid')

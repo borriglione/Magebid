@@ -1,6 +1,20 @@
 <?php
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Auction_Main
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Auction_Main extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         $this->_addButtonLabel = Mage::helper('magebid')->__('Add New');
@@ -12,11 +26,21 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main extends Mage_Adminhtml_Bl
 		$this->setTemplate('magebid/auction/list.phtml');
     }
 	
+    /**
+     * Return Header Text
+     *
+     * @return string
+     */	
     public function getHeaderText()
     {
         return Mage::helper('magebid')->__('Auction List');		
     }
 		
+    /**
+     * Before HTML
+     *
+     * @return object
+     */		
     public function _beforeToHtml()
     {		
 		$this->setChild('grid', $this->getLayout()->createBlock('adminhtml/admin_auction_main_grid', 'auction.main.grid'));		
@@ -32,6 +56,11 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main extends Mage_Adminhtml_Bl
         return parent::_beforeToHtml();
     }		
 	
+    /**
+     * Get different reasons to end an auction
+     *
+     * @return array
+     */		
 	public function getEndItemReasons()
 	{
 		return Mage::getSingleton('magebid/auction')->getEndItemOptions();		

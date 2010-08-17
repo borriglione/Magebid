@@ -1,11 +1,19 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Form
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
     /**
-     * Initialize cache management form
+     * Initialize form
      *
-     * @return Mage_Adminhtml_Block_System_Cache_Form
+     * @return object
      */
     public function initForm()
     {

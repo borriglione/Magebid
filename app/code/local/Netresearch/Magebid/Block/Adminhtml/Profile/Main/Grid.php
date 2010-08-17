@@ -1,10 +1,20 @@
 <?php
-
+/**
+ * Netresearch_Magebid_Block_Adminhtml_Profile_Main_Grid
+ *
+ * @category  Netresearch
+ * @package   Netresearch_Magebid
+ * @author    André Herrn <andre.herrn@netresearch.de>
+ * @copyright 2010 André Herrn
+ * @link      http://www.magebid.de/
+*/
 class Netresearch_Magebid_Block_Adminhtml_Profile_Main_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-    protected $_module = 'magebid';
-    protected $_model  = 'profile';
-
+    /**
+     * Construct
+     *
+     * @return void
+     */	
     public function __construct()
     {
         parent::__construct();
@@ -12,6 +22,11 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Main_Grid extends Mage_Adminht
         $this->_controller = 'magebid';
     }
 
+    /**
+     * Prepare Collection
+     *
+     * @return object
+     */	 
     protected function _prepareCollection()
     {
 		$collection = Mage::getModel('magebid/profile')->getCollection();		
@@ -20,6 +35,11 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Main_Grid extends Mage_Adminht
 		
     }
 	
+    /**
+     * Prepare Columns
+     *
+     * @return object
+     */	
     protected function _prepareColumns()
     {
 
@@ -47,7 +67,6 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Main_Grid extends Mage_Adminht
             'filter_index'  => 'name',
             'index'         => 'name',
         ));		
-
 		
         $this->addColumn('action',
             array(
@@ -74,24 +93,19 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Main_Grid extends Mage_Adminht
                 'filter'    => false,
                 'sortable'  => false
         ));
-
-
-
         return parent::_prepareColumns();
     }
-
+    
+    /**
+     * Return Row-Edit-Url
+     *
+     * @return string
+     */		
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array(
             'id' => $row->getMagebidProfileId(),
         ));
     }
-	
-	
-    protected function _getStore()
-    {
-        $storeId = (int) $this->getRequest()->getParam('store', 0);
-        return Mage::app()->getStore($storeId);
-    }	
 }
 ?>
