@@ -5,8 +5,9 @@
  * @category  Netresearch
  * @package   Netresearch_Magebid
  * @author    André Herrn <andre.herrn@netresearch.de>
- * @copyright 2010 André Herrn
+ * @copyright 2010 André Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
  * @link      http://www.magebid.de/
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtml_Controller_Action
 {
@@ -295,8 +296,7 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
      * @return void
      */	
     public function categoriesAction()
-    {        
-		
+    {
 		if( $this->getRequest()->getParam('id') ) {
             $magebidData = Mage::getModel('magebid/auction')
                 ->load($this->getRequest()->getParam('id'));
@@ -305,6 +305,24 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 		
 		$this->getResponse()->setBody(
             $this->getLayout()->createBlock('magebid/adminhtml_auction_edit_tab_category')->toHtml()
+        );
+    }	
+    
+    /**
+     * View Store Categories Tab
+     *
+     * @return void
+     */	
+    public function storeCategoriesAction()
+    {        
+		if( $this->getRequest()->getParam('id') ) {
+            $magebidData = Mage::getModel('magebid/auction')
+                ->load($this->getRequest()->getParam('id'));
+            Mage::register('frozen_magebid', $magebidData);
+        }     
+		
+		$this->getResponse()->setBody(
+            $this->getLayout()->createBlock('magebid/adminhtml_auction_edit_tab_store_category')->toHtml()
         );
     }	
 	
@@ -320,6 +338,19 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
                 ->getEbayChildTreeJson($this->getRequest()->getParam('category'))
         );
     }	
+    
+    /**
+     * View Store Categories Tab
+     *
+     * @return void
+     */	
+    public function storeCategoriesJsonAction()
+    {
+        $this->getResponse()->setBody(
+            $this->getLayout()->createBlock('magebid/adminhtml_auction_edit_tab_store_category')
+                ->getEbayChildTreeJson($this->getRequest()->getParam('category'))
+        );
+    }	  
     
     /**
      * Return JSON of the category-features

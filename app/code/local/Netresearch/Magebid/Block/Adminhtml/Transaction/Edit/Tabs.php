@@ -5,8 +5,9 @@
  * @category  Netresearch
  * @package   Netresearch_Magebid
  * @author    André Herrn <andre.herrn@netresearch.de>
- * @copyright 2010 André Herrn
+ * @copyright 2010 André Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
  * @link      http://www.magebid.de/
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 class Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
@@ -55,13 +56,23 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Edit_Tabs extends Mage_Adm
    			'content'   => $this->getLayout()->createBlock('magebid/adminhtml_transaction_edit_tab_shipping')->toHtml(),
         ));
 		
-
-		
         $this->addTab('payment', array(
             'label'     => Mage::helper('magebid')->__('Payment Methods'),
             'title'     => Mage::helper('magebid')->__('Payment Methods'),
     		'content'   => $this->getLayout()->createBlock('magebid/adminhtml_transaction_edit_tab_payment')->toHtml(),
-        ));						
+        ));		
+        
+        $this->addTab('order', array(
+            'label'     => Mage::helper('magebid')->__('Order Informations'),
+            'title'     => Mage::helper('magebid')->__('Order Informations'),
+    		'content'   => $this->getLayout()->createBlock('magebid/adminhtml_transaction_edit_tab_order')->toHtml(),
+        ));		 
+
+        $this->addTab('feedback', array(
+            'label'     => Mage::helper('magebid')->__('Feedback'),
+            'title'     => Mage::helper('magebid')->__('Feedback'),
+    		'content'   => $this->getLayout()->createBlock('magebid/adminhtml_transaction_edit_tab_feedback')->toHtml(),
+        ));		       
 
         return parent::_beforeToHtml();
     }

@@ -5,8 +5,9 @@
  * @category  Netresearch
  * @package   Netresearch_Magebid
  * @author    André Herrn <andre.herrn@netresearch.de>
- * @copyright 2010 André Herrn
+ * @copyright 2010 André Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
  * @link      http://www.magebid.de/
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 {
@@ -15,6 +16,12 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
      * @var int
      */		
     protected $_ebay_store_flag = 0;	
+    
+    /**
+     * Category_id of the dataset
+     * @var int
+     */		
+    protected $_dataset_stored_category_id = 0;	
 	
     /**
      * Construct
@@ -50,8 +57,8 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 			return false;
 		}
 	
-		//If there are some categories, delete them
-		$this->getResource()->deleteAll();	
+		//Delete all existing ebay categories
+		$this->getResource()->deleteAllEbayCategories();	
 		
 		//Add the new categories
 		foreach ($ebay_categories->CategoryArray as $category)
@@ -67,6 +74,10 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 			//save
 			$this->setData($data)->save();
 		}			
+		
+		//Delete entry for the last category features version->Otherwise the category features were not updated
+		$this->load('category_features_version','key')->delete();
+		
 		return count($ebay_categories->CategoryArray);
 	}	
 	
@@ -82,8 +93,9 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
      */		
 	public function buildTree($selected_cat = 0)
 	{
-		$cat_array = array();
-		
+		//Save the origin dataset category_id
+		$this->_dataset_stored_category_id = $selected_cat;
+	
 		if ($selected_cat=='' || $selected_cat==0)
 		{
 			$cat_array = array(
@@ -103,6 +115,20 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 	}	
 	
     /**
+     * Build Child Category Tree
+     * 
+     * Get an array of all child-categories for the $category_id
+     * 
+     * @param int $category_id Category_id
+     *
+     * @return array 
+     */	
+	public function buildChildTree($category_id)
+	{
+		return $this->_addChildren($category_id);						
+	}
+	
+    /**
      * Add children categories
      * 
 	 * Get all children to a given $parent_cat_id
@@ -118,7 +144,7 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		
 		if (is_null($parent_cat_id))
 		{
-			//Level one categorys
+			//Level one categories
 			$collection->addFieldToFilter('category_level',1);
 		}
 		else
@@ -128,7 +154,14 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		}		
 		
 		//Check if it is a eBay Store Tree
-		if ($this->_ebay_store_flag==1) $collection->addFieldToFilter('store',1);			
+		if ($this->_ebay_store_flag==1)
+		{
+			$collection->addFieldToFilter('store',1);			
+		}
+		else
+		{
+			$collection->addFieldToFilter('store',0);
+		}
 		
 		$children = array();
 		$lauf = 0;
@@ -171,9 +204,16 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		$collection->addFieldToFilter('category_parent_id',$parent_cat_id); 
 
 		//Check if it is a eBay Store Tree
-		if ($this->_ebay_store_flag==1) $collection->addFieldToFilter('store',1);			
+		if ($this->_ebay_store_flag==1)
+		{
+			$collection->addFieldToFilter('store',1);			
+		}
+		else
+		{
+			$collection->addFieldToFilter('store',0);	
+		}
 				
-		if ($collection->count()>0) return true; else return false;		
+		if ($collection->count()>1) return true; else return false;		
 	}
 	
     /**
@@ -230,12 +270,21 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 			
 			//Set sisters
 			$cats = $this->_addChildren(null);
+			
+			
+			$checked = 0;			
 			foreach ($cats as $key => $value)
 			{
 				if ($value['id']==$selected_cat)
 				{
 					$cats[$key]['children'] = $children;
 					$cats[$key]['expanded'] = true;
+				}
+				
+				//For the level1-categories which are checked (mostly ebay store categories)
+				if ($value['id']==$this->_dataset_stored_category_id)
+				{
+					$cats[$key]['checked'] = true;
 				}
 			}		
 			

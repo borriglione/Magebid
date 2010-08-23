@@ -5,8 +5,9 @@
  * @category  Netresearch
  * @package   Netresearch_Magebid
  * @author    André Herrn <andre.herrn@netresearch.de>
- * @copyright 2010 André Herrn
+ * @copyright 2010 André Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
  * @link      http://www.magebid.de/
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
@@ -105,12 +106,13 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adm
             'index'         => 'name',
         ));	*/		
 		
+        /*
         $this->addColumn('checkout_status', array(
             'header'        => Mage::helper('magebid')->__('Checkout Status'),
             'align'         => 'left',
             'filter_index'  => 'checkout_status',
             'index'         => 'checkout_status',
-        ));		
+        ));		*/
 		
         $this->addColumn('complete_status', array(
             'header'        => Mage::helper('magebid')->__('Complete'),
@@ -119,12 +121,13 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adm
             'index'         => 'complete_status',
         ));		
 		
-        $this->addColumn('	quantity', array(
+        /*
+        $this->addColumn('quantity', array(
             'header'        => Mage::helper('magebid')->__('Quantity'),
             'align'         => 'left',
             'filter_index'  => 'quantity',
             'index'         => 'quantity',
-        ));							
+        ));*/				
 		
         $this->addColumn('total_amount', array(
             'header'        => Mage::helper('magebid')->__('Total Amount'),

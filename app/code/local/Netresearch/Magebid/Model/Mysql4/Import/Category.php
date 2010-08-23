@@ -5,8 +5,9 @@
  * @category  Netresearch
  * @package   Netresearch_Magebid
  * @author    André Herrn <andre.herrn@netresearch.de>
- * @copyright 2010 André Herrn
+ * @copyright 2010 André Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
  * @link      http://www.magebid.de/
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 class Netresearch_Magebid_Model_Mysql4_Import_Category extends Mage_Core_Model_Mysql4_Abstract
 {
@@ -75,12 +76,26 @@ class Netresearch_Magebid_Model_Mysql4_Import_Category extends Mage_Core_Model_M
      * 
      * @return void
      */		
-    public function deleteAll()
+    public function deleteAllEbayCategories()
     {
     	$write = $this->_getWriteAdapter();     
             
         $write->delete($this->getMainTable(),
-                $write->quoteInto($this->getMainTable().'.magebid_import_category_id>?', 0)
+                $write->quoteInto($this->getMainTable().'.store=?', 0)
+        );  
+    }	
+    
+    /**
+     * Deletes all eBay Store Categories
+     * 
+     * @return void
+     */		
+    public function deleteAllEbayStoreCategories()
+    {
+    	$write = $this->_getWriteAdapter();     
+            
+        $write->delete($this->getMainTable(),
+                $write->quoteInto($this->getMainTable().'.store=?', 1)
         );  
     }	
 }
