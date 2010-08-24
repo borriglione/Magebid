@@ -117,6 +117,9 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 			//Try Payment Received
 			$this->_setPaymentReceived();
 			
+			//Check special cases (f.e. COD-Payments)
+			$this->_giveSpecialFeedback();
+			
 			//Try Shipped
 			$this->_setShipped();		
 			
@@ -151,8 +154,7 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 				$this->_tasks['paid'] = true;
 				
 				//Set order to paid
-				$data = array('payment_received'=>1);		
-				$this->_transaction->addData($data)->save();
+				Mage::getModel('magebid/transaction')->setTransactionsAsPaymentReceived($this->_order_id);
 				
 				//Set success message
 				$success_message = Mage::helper('magebid')->__('eBay order %s successful marked as: %s',$this->_order_id,Mage::helper('magebid')->__('Payment received'));
@@ -186,8 +188,7 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 				$this->_tasks['shipped'] = true;
 				
 				//Set order to shipped
-				$data = array('shipped'=>1);		
-				$this->_transaction->addData($data)->save();
+				Mage::getModel('magebid/transaction')->setTransactionsAsShipped($this->_order_id);
 				
 				//Set success message
 				$success_message = Mage::helper('magebid')->__('eBay order %s successful marked as: %s',$this->_order_id,Mage::helper('magebid')->__('Shipped'));
@@ -221,9 +222,8 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 				$this->_tasks['feedback']['text'] = Mage::getSingleton('magebid/setting')->getReviewText();
 				$this->_tasks['feedback']['user'] = $this->_transaction->getBuyerEbayUserId();
 				
-				//Set order to shipped
-				$data = array('reviewed'=>1);		
-				$this->_transaction->addData($data)->save();
+				//Set order to reviewed
+				Mage::getModel('magebid/transaction')->setTransactionsAsReviewed($this->_order_id);
 				
 				//Set success message
 				$success_message = Mage::helper('magebid')->__('eBay order %s successful marked as: %s',$this->_order_id,Mage::helper('magebid')->__('Reviewed'));
@@ -240,5 +240,43 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 	}
 	
 	
+    /**
+     * Method to give a feedback "payment received" to eBay in special conditions
+     * 
+     * This method is used only for special payment methods, see Jira NRMB-80
+     * The problem is, that eBay "COD"-Payments give the ebay order status "complete" but
+     * the order isn't real complete. There is still the possibility to do the checkout for the 
+     * same items again, and a new ebay-order-it will be created. To avoid this, Magebid has to
+     * give a "payment received" feedback to ebay
+     * 
+     * @return void
+     */		
+	protected function _giveSpecialFeedback()
+	{	
+		//If transaction is not already marked as payment received
+		//if payment method is COD
+		if ($this->_transaction->getPaymentReceived()==0  && $this->_transaction->getPaymentMethod()=="COD")
+		{
+			if ($this->_tasks['paid']!=true)
+			{
+				//Set tasks
+				$this->_tasks['paid'] = true;
+				
+				//Set order to paid
+				Mage::getModel('magebid/transaction')->setTransactionsAsPaymentReceived($this->_order_id);
+				
+				//Set success message
+				$success_message = Mage::helper('magebid')->__('eBay order %s successful marked as: %s',$this->_order_id,Mage::helper('magebid')->__('Payment received'));
+	       		Mage::getSingleton('adminhtml/session')->addSuccess($success_message);					
+			
+				//Add Comment
+				if ($this->_comments_mode)
+				{
+					$this->_order->addStatusToHistory($this->new_status, $success_message, false);	
+					$this->_order->save();						
+				}						
+			}		
+		}		
+	}
 }
 ?>

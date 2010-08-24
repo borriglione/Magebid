@@ -114,12 +114,13 @@ class Netresearch_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adm
             'index'         => 'checkout_status',
         ));		*/
 		
+        /*
         $this->addColumn('complete_status', array(
             'header'        => Mage::helper('magebid')->__('Complete'),
             'align'         => 'left',
             'filter_index'  => 'complete_status',
             'index'         => 'complete_status',
-        ));		
+        ));*/
 		
         /*
         $this->addColumn('quantity', array(

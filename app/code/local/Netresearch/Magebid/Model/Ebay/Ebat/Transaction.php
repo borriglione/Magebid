@@ -93,8 +93,6 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 
 		//Call 
 		$res = $this->_sessionproxy->GetSellerTransactions($req);
-		//print_r($res);
-		//exit();			
 		
 		if ($res->Ack == 'Success')
 		{
@@ -108,6 +106,65 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
+	}
+	
+    /**
+     * GetOrderTransactions-Call to get the order-informations for the given order_ids
+     * 
+     * @param array $order_ids eBay-Order-Ids
+     *
+     * @return object
+     */	
+	public function getOrderTransactions($order_ids)
+	{
+		$req = new GetOrderTransactionsRequestType();			
+		
+		//Params
+		$req->setDetailLevel('ReturnAll');		
+		
+		//Set Order_IDs Array
+		$orderIDArray = new OrderIDArrayType();
+		foreach ($order_ids as $order_id)
+		{
+			$orderIDArray->addOrderID($order_id);
+		}
+		$req->setOrderIDArray($orderIDArray);
+		
+		//Call 
+		$res = $this->_sessionproxy->GetOrderTransactions($req);
+		
+		if ($res->Ack == 'Success')
+		{
+			Mage::getModel('magebid/log')->logSuccess("order-transactions-update","order_ids ".implode(",",$order_ids),var_export($req,true),var_export($res,true));
+			return $res;
+		}		
+		else
+		{
+			//Set Error
+			Mage::getModel('magebid/log')->logError("order-transactions-update","order_ids ".implode(",",$order_ids),var_export($req,true),var_export($res,true));
+			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
+			Mage::getSingleton('adminhtml/session')->addError($message);	
+		}		
+	}
+	
+    /**
+     * Map raw eBay Order Item Information for the magebid database
+     * 
+     * @param OrderType $raw_order eBay-Order-Item
+     *
+     * @return array
+     */	
+	public function mapRawOrderItem($raw_order)
+	{
+		$mapped_order = array(
+			'ebay_order_id'=>$raw_order->OrderID,
+			'ebay_order_status'=>$raw_order->OrderStatus,
+			'payment_method'=>$raw_order->CheckoutStatus->PaymentMethod,
+			'payment_status'=>$raw_order->CheckoutStatus->eBayPaymentStatus,
+			'checkout_status'=>$raw_order->CheckoutStatus->Status,
+		);
+		
+		return $mapped_order;		
 	}
 
     /**

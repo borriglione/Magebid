@@ -70,9 +70,6 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		if ($this->getMagebidEbayStatusId()==self::AUCTION_STATUS_CREATED || $this->getMagebidEbayStatusId()==self::AUCTION_STATUS_FINISHED)
 			 return false;
 		
-		//Get eBay-Item-Data
-		//if (empty($auction_item)) $auction_item = Mage::getModel('magebid/ebay_items')->getEbayItem($this->getEbayItemId()); 		
-
 		//Update auction details
 		$magebid_auction_detail = Mage::getModel('magebid/auction_detail')->load($this->getMagebidAuctionDetailId());
 		$magebid_auction_detail->addData($ebay_item_information);		
@@ -80,7 +77,7 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		$this->load($this->getId()); //reload
 		
 		//Check Auction-Status
-		$this->_checkStatus($magebid_auction_detail,$auction_item);			
+		$this->_checkStatus($magebid_auction_detail,$ebay_item_information);			
 	}	
 	
     /**
@@ -204,6 +201,9 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		
 		//Set Time for this Update
 		Mage::getSingleton('magebid/configuration')->setLastSellerTransactions($to);	
+		
+		//Get better eBay-Order-Informations and save them to the single transactions
+		Mage::getSingleton('magebid/transaction')->updateEbayOrders();		
 
 		//Try to create multiple item_orders
 		Mage::getModel('magebid/transaction')->tryCreateMultipleItemOrders();	

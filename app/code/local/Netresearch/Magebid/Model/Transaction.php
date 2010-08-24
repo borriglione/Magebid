@@ -279,5 +279,113 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 			else return false;
 		}
 	}
+	
+	
+    /**
+     * Update transactions of multiple-item-orders with the eBay GetOrderTransactions-Call
+     * 
+     * @return void
+     */	
+	public function updateEbayOrders()
+	{
+		//Get different eBay Orders which are not transformed into magento orders
+		$orders = $this->getResource()->getDifferentOrders();
+		
+		//For every order which is completed in ebay but not already created in Magento
+		$order_ids = array();
+		foreach ($orders as $order)
+		{		
+			$order_ids[] = $order['ebay_order_id'];
+		}
+		
+		//Make the GetOrderTransactions-Call
+		if (count($order_ids)>0)
+		{
+			$results = Mage::getModel('magebid/ebay_transaction')->getOrderTransactions($order_ids);
+		}		
+		
+		//For every order-result
+		foreach ($results as $result)
+		{
+			//get every transaction for an ebay_order_id 
+			$transactions = $this->getCollection();
+			$transactions->addFieldToFilter('ebay_order_id', $result['ebay_order_id']);		
+			$transactions->load();
+			
+			//Save the order-result informations for every transaction
+			foreach ($transactions as $transaction)
+			{
+				$transaction->addData($result)->save();  					
+			}	
+		}		
+	}
+	
+    /**
+     * Mark transactions as payment_received
+     * 
+     * @param int $magento_order_id Magento Order Id
+     * 
+     * @return void
+     */	
+	public function setTransactionsAsPaymentReceived($magento_order_id)
+	{
+		foreach ($this->_getTransactionsByMagentoOrderId($magento_order_id) as $transaction)
+		{
+			//Set order to paid
+			$data = array('payment_received'=>1);		
+			$transaction->addData($data)->save();
+		}
+	}
+	
+    /**
+     * Mark transactions as shipped
+     * 
+     * @param int $magento_order_id Magento Order Id
+     * 
+     * @return void
+     */	
+	public function setTransactionsAsShipped($magento_order_id)
+	{
+		foreach ($this->_getTransactionsByMagentoOrderId($magento_order_id) as $transaction)
+		{
+			//Set order to paid
+			$data = array('shipped'=>1);		
+			$transaction->addData($data)->save();
+		}
+	}
+
+    /**
+     * Mark transactions as reviewed
+     * 
+     * @param int $magento_order_id Magento Order Id
+     * 
+     * @return void
+     */	
+	public function setTransactionsAsReviewed($magento_order_id)
+	{
+		foreach ($this->_getTransactionsByMagentoOrderId($magento_order_id) as $transaction)
+		{
+			//Set order to paid
+			$data = array('reviewed'=>1);		
+			$transaction->addData($data)->save();
+		}
+	}
+	
+	
+    /**
+     * Get all transactions for a Magento Order Id
+     * 
+     * @param int $magento_order_id Magento Order Id
+     * 
+     * @return object
+     */	
+	protected function _getTransactionsByMagentoOrderId($magento_order_id)
+	{
+			//get every transaction for an ebay_order_id 
+			$transactions = $this->getCollection();
+			$transactions->addFieldToFilter('order_id', $magento_order_id);		
+			$transactions->load();
+			return $transactions;
+	}
 }
 ?>

@@ -60,6 +60,37 @@ class Netresearch_Magebid_Model_Ebay_Transaction extends Mage_Core_Model_Abstrac
 		
 		return $raw_transactions;
 	}
+	
+    /**
+     * Get eBay-Order-Informations
+     *
+     * @param array $order_ids ebay-order-ids
+     *
+     * @return object
+     */		
+	public function getOrderTransactions($order_ids)
+	{		
+		$raw_orders = array();
+
+		for ($i=0;$i<count($order_ids);$i=$i+20)
+		{
+			//Get the 20 ebay order ids
+			$part_ebay_order_ids = array_slice($order_ids, $i, 20);
+			
+			//Make the call
+			$order_transactions = $this->_handler->getOrderTransactions($order_ids);
+			
+			foreach ($order_transactions->OrderArray as $raw_order)
+			{
+				$raw_orders[] = $this->_handler->mapRawOrderItem($raw_order);
+			}			
+			
+			//Daily Log
+			Mage::getModel('magebid/daily_log')->logCall();	
+		}
+		
+		return $raw_orders;
+	}
 }
 
 ?>

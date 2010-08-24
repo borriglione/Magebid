@@ -72,7 +72,7 @@ class Netresearch_Magebid_Adminhtml_Transaction_MainController extends Mage_Admi
 	{
         try 
 		{		
-			Mage::getModel('magebid/auction')->updateTransactions();
+			Mage::getModel('magebid/auction')->updateTransactions();		
 			
 			Mage::getSingleton('adminhtml/session')->addSuccess(
                     Mage::helper('adminhtml')->__('Items were updated successfully'
