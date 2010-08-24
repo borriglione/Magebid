@@ -145,6 +145,8 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
      */			
 	public function saveOrUpdate($raw_transaction)
 	{
+		$new_transaction = $this->getId() ? false : true;
+	
 		//get ebay_item_id
 		$ebay_item_id = $raw_transaction->Item->ItemID;
 
@@ -177,12 +179,12 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 				
 		
 		 //If it is an existing Transaction->Update
-		if ($this->getId()>0)
+		if (!$new_transaction && Mage::getStoreConfig('magebid/magebid_notices/transaction_notice'))
 		{
 	        Mage::getSingleton('adminhtml/session')->addSuccess(
 	                    Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully updated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
 		}
-		else //if it is a new transaction
+		else if ($new_transaction && Mage::getStoreConfig('magebid/magebid_notices/transaction_notice')) //if it is a new transaction
 		{
 	        Mage::getSingleton('adminhtml/session')->addSuccess(
 	                    Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully generated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
