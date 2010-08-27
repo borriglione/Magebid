@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `magebid_auction_detail` (
   `last_updated` datetime DEFAULT NULL,
   `use_tax_table` tinyint(1) NOT NULL DEFAULT '0',
   `vat_percent` decimal(11,3) DEFAULT NULL,
+  `condition_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`magebid_auction_detail_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -100,6 +101,15 @@ CREATE TABLE IF NOT EXISTS `magebid_import_category` (
   `category_parent_id` int(11) NOT NULL,
   `store` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`magebid_import_category_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `magebid_import_category_features` (
+  `magebid_import_category_features_id` int(11) NOT NULL AUTO_INCREMENT,
+  `key_id` varchar(255) NOT NULL,
+  `value_id` int(11) NOT NULL,
+  `value_display_name` varchar(255) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  PRIMARY KEY (`magebid_import_category_features_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `magebid_import_payment_methods` (
@@ -183,6 +193,7 @@ CREATE TABLE IF NOT EXISTS `magebid_profile` (
   `returns_description` text,
   `use_tax_table` tinyint(1) NOT NULL DEFAULT '0',
   `vat_percent` decimal(11,3) DEFAULT NULL,
+  `condition_id` int(11) DEFAULT NULL,  
   PRIMARY KEY (`magebid_profile_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -235,6 +246,8 @@ CREATE TABLE IF NOT EXISTS `magebid_transaction` (
   `payment_received` int(1) NOT NULL DEFAULT '0',
   `shipped` int(1) NOT NULL DEFAULT '0',
   `reviewed` int(1) NOT NULL DEFAULT '0',
+  `ebay_order_id` varchar(255) DEFAULT NULL,
+  `ebay_order_status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`magebid_transaction_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -254,6 +267,25 @@ CREATE TABLE IF NOT EXISTS `magebid_transaction_user` (
   `shipping_country` varchar(255) DEFAULT NULL,
   `magebid_transaction_id` int(11) NOT NULL,
   PRIMARY KEY (`magebid_transaction_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `magebid_daily_log` (
+  `magebid_daily_log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `day` date NOT NULL,
+  `count` int(11) NOT NULL,
+  PRIMARY KEY (`magebid_daily_log_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `magebid_log` (
+  `magebid_log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `request` text NOT NULL,
+  `response` text NOT NULL,
+  `additional` text NOT NULL,
+  `result` varchar(255) NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`magebid_log_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 ");

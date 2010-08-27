@@ -76,7 +76,7 @@ class Netresearch_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		}			
 		
 		//Delete entry for the last category features version->Otherwise the category features were not updated
-		$this->load('category_features_version','key')->delete();
+		Mage::getModel('magebid/configuration')->load('category_features_version','key')->delete();
 		
 		return count($ebay_categories->CategoryArray);
 	}	
