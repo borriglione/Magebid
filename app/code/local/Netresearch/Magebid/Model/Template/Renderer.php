@@ -124,12 +124,27 @@ class Netresearch_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstra
 		//For every product attribut
 		$media_gallery = $this->_product->getMediaGallery();
 		
+		//Get Main Image
 		$i = 1;
+		if ($this->_product->getImage()!="")
+		{
+			$image_path = Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$this->_product->getImage();
+			$this->_search_array[] = "{{var product_image".$i."}}";
+			$this->_replace_array[] = '<img src="'.$image_path.'" alt="image'.$i.'" class="image'.$i.'" />';
+						
+			//Replace Link Product Image
+			$this->_search_array[] = "{{var link_product_image".$i."}}";
+			$this->_replace_array[] = $image_path;
+			$image_path_main = $image_path;
+			$i++;
+		}
+
+		//Get Additional Images
 		if (count($media_gallery['images'])>0)
 		{
 			foreach ($media_gallery['images'] as $key => $value)
 			{
-				if ($value['disabled']==0)
+				if ($value['disabled']==0 && $image_path_main!=Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$value['file'])
 				{
 					//Replace product_image
 					$this->_search_array[] = "{{var product_image".$i."}}";

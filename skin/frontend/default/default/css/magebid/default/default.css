@@ -71,6 +71,8 @@ p.short_desc
 #magebid_main_image img
 {
 	max-height:490px;
+	max-width:350px;
+	margin-top:20px;
 }
 
 

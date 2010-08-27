@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS `magebid_auction_detail` (
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `life_time` int(11) DEFAULT NULL,
-  `start_price` decimal(11,2) DEFAULT NULL,
-  `fixed_price` decimal(11,2) DEFAULT NULL,
+  `start_price` varchar(255) DEFAULT NULL,
+  `fixed_price` varchar(255) DEFAULT NULL,
   `price_now` decimal(11,2) DEFAULT NULL,
   `final_price` decimal(11,2) DEFAULT NULL,
   `auction_name` varchar(255) DEFAULT NULL,
@@ -288,6 +288,15 @@ CREATE TABLE IF NOT EXISTS `magebid_log` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`magebid_log_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+INSERT INTO `magebid_profile` (`magebid_profile_id`, `profile_name`, `start_price`, `fixed_price`, `duration`, `quantity`, `country`, `currency`, `location`, `dispatch_time`, `ebay_category_1`, `ebay_category_2`, `ebay_store_category_1`, `ebay_store_category_2`, `is_image`, `is_more_images`, `is_galery_image`, `magebid_auction_type_id`, `hit_counter`, `header_templates_id`, `main_templates_id`, `footer_templates_id`, `refund_option`, `returns_accepted_option`, `returns_within_option`, `returns_description`, `use_tax_table`, `vat_percent`, `condition_id`) VALUES
+(1, 'Default', '-10%', '+20%', 7, 10, 'DE', 'EUR', 'Leipzig', 1, 9355, 12395, 0, 0, 1, 0, 1, 2, 'RetroStyle', 1, 3, 2, 'MoneyBack', 'ReturnsAccepted', 14, 'Information zum Rückgaberecht.', 0, 1.000, 1000);
+
+INSERT INTO `magebid_templates` (`magebid_templates_id`, `content_name`, `content`, `content_type`, `date_created`, `date_modified`) VALUES
+(1, 'Default', '<div id=\"magebid_store_header\">\r\n<link href=\"{{skin_url}}/frontend/default/default/css/magebid/default/default.css\" type=\"text/css\" rel=\"stylesheet\">\r\n<script type=\"text/javascript\">\r\n<!--\r\nfunction zoom_image(source)\r\n{\r\nif (source.indexOf(''{{var'')>-1) return false;\r\nvar big_image;\r\nbig_image = document.getElementById(\"magebid_main_image\").getElementsByTagName(\"img\")[0].src = source;\r\n}\r\n-->\r\n</script>	\r\n</div>', 'header', '2010-08-27 13:33:48', '2010-08-27 17:21:22'),
+(2, 'Default', '<div id=\"magebid_store_footer\">\r\n<img src=\"{{skin_url}}frontend/default/default/images/magebid/default/footer.gif\">\r\n<ul class=\"magebid_info_list\">\r\n<li><a href=\"{{link_url}}\">Home</a></li>\r\n<li><a href=\"{{link_url}}\">Kontakt</a></li>\r\n<li><a href=\"{{link_url}}\">Impressum</a></li>\r\n<li><a href=\"{{link_url}}\">Datenschutz</a></li>\r\n<li><a href=\"{{link_url}}\">Nutzungsbedingungen</a></li>\r\n</ul>\r\n</div>', 'footer', '2010-08-27 13:34:13', '2010-08-27 16:15:01'),
+(3, 'Default', '<div id=\"magebid_store_main\">\r\n<table>\r\n<tr>\r\n<td>\r\n<div id=\"magebid_main_image\">\r\n{{var product_image1}}<br />\r\n</div>\r\n<div id=\"magebid_list_images\">\r\n<a href=#\" onclick=\"javascript:zoom_image(''{{var link_product_image1}}'');return false;\">{{var product_image1}}</a>\r\n<a href=#\" onclick=\"javascript:zoom_image(''{{var link_product_image2}}'');return false;\">{{var product_image2}}</a>\r\n<a href=#\" onclick=\"javascript:zoom_image(''{{var link_product_image3}}'');return false;\">{{var product_image3}}</a>\r\n</div>\r\n</td>\r\n<td class=\"magebid_description\">\r\n<h1>{{var product_name}}</h1>\r\n<p class=\"short_desc\">{{var product_short_description}}</p>\r\n<p class=\"long_desc\">{{var product_description}}</p>\r\n<!-- Beliebige Attribute\r\n<ul>\r\n <li class=\"dimension\">Größe: {{var product_dimension}}</li>\r\n <li class=\"dimension\">Hersteller: {{var product_manufacturer}}</li>\r\n <li class=\"dimension\">Farbe: {{var product_color}}</li>\r\n</ul>\r\n-->\r\n</td>\r\n</tr>\r\n</table>\r\n</div>', 'main', '2010-08-27 13:35:00', '2010-08-27 17:13:52');
+
 
 ");
 

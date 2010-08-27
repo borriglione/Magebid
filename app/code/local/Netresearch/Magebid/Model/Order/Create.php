@@ -169,7 +169,7 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	        //Log
 	        foreach ($this->_transactions as $transaction)
 			{
-				Mage::getModel('magebid/log')->logSuccess("order-create","transaction ".$transaction->getEbayTransactionId()." / order ".$this->_order->getIncrementId(),"","",var_export($this->_order->getData(),true));
+				Mage::getModel('magebid/log')->logSuccess("order-create","transaction ".$transaction->getEbayTransactionId()." / order ".$this->_order->getIncrementId(),"","","");
 			}	        
 	        
 			return $this->_order;		

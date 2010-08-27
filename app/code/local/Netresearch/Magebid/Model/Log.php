@@ -57,8 +57,8 @@ class Netresearch_Magebid_Model_Log extends Mage_Core_Model_Abstract
      * @return void
      */	   
     protected function logging($type,$title,$request,$response,$additional,$result)
-    {
-     	$log_data = array(
+    { 
+    	$log_data = array(
 			'type' => $type,
 			'title' => $title,
 			'request' => $request,
@@ -69,7 +69,7 @@ class Netresearch_Magebid_Model_Log extends Mage_Core_Model_Abstract
 		);		
     	
     	$this->addData($log_data);		
-	    $this->save();   	
+	    $this->save();  
     }
 }
 ?>
