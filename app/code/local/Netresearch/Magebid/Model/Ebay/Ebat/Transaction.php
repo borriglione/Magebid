@@ -96,13 +96,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 		
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("seller-transactions-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logSuccess("seller-transactions-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			return $res;
 		}		
 		else
 		{
 			//Set Error
-			Mage::getModel('magebid/log')->logError("seller-transactions-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logError("seller-transactions-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
@@ -135,13 +135,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 		
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("order-transactions-update","order_ids ".implode(",",$order_ids),var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logSuccess("order-transactions-update","order_ids ".implode(",",$order_ids),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			return $res;
 		}		
 		else
 		{
 			//Set Error
-			Mage::getModel('magebid/log')->logError("order-transactions-update","order_ids ".implode(",",$order_ids),var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logError("order-transactions-update","order_ids ".implode(",",$order_ids),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}		

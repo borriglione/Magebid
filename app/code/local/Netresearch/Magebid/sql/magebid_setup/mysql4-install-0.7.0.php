@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `magebid_import_category` (
   `category_level` int(11) NOT NULL,
   `category_name` varchar(255) CHARACTER SET latin1 NOT NULL,
   `category_parent_id` int(11) NOT NULL,
+  `condition_enabled` tinyint(1) DEFAULT NULL,
   `store` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`magebid_import_category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

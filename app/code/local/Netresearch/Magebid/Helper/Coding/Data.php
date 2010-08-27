@@ -82,6 +82,20 @@ class Netresearch_Magebid_Helper_Coding_Data extends Mage_Core_Helper_Abstract
 	{		
 		return utf8_decode($string);
 	}		
+	
+    /**
+     * Enconding xml to UTF8 and var_dump it
+     * 
+     * @param string $string 
+     *
+     * @return string
+     */   
+	public function encodeXmlEbayToMagentoAndDump($xml)
+	{
+		$xml = var_export($xml,true);
+		$xml = $this->encodeStringEbayToMagento($xml);
+		return $xml;
+	}
 }
 
 ?>

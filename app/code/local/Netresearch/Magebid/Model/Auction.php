@@ -129,13 +129,13 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 				$response['request_type'] = 'export';
 				
 				//Save auction (set ebay_item_id and status)
-				$this->addData($response)->save();	
+				$this->addData($response)->save();				
 				
 				return $response;
 			}		
-		}	
-		
+		}			
 		return false;
+		
 	}
 	
     /**
@@ -174,6 +174,36 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		}
 		return $data;		
 	}	
+	
+	
+	
+    /**
+     * Call eBay getSellerList and updates the auctions
+     * 
+     * This function get the date of the oldest active auction in Magebid as $from 
+     * and the date now as $now
+     *
+     * @return void 
+     */	 	
+	public function updateAuctions()
+	{
+			//Get Start/End Time
+			$from = Mage::getModel('magebid/auction')->getResource()->getOldestStartDate();
+			$to = Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');			
+			
+			//Make call
+			$items = Mage::getModel('magebid/ebay_items')->getSellerList($from,$to);			
+			
+			//For every modified item
+			foreach ($items as $item)
+			{
+				//$mapped_item = Mage::getModel('magebid/ebay_items')->getHandler()->mappingItem($item);							
+				$auction = Mage::getModel('magebid/auction')->load($item['ebay_item_id'],'ebay_item_id');
+				$auction->ebayUpdate($item);
+			}	
+	}	
+	
+	
 	
     /**
      * Call eBay LastSellerTransactions and updates/created new transactions

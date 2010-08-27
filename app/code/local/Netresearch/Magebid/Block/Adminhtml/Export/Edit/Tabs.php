@@ -54,6 +54,7 @@ class Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tabs extends Mage_Adminhtm
             'label'     => Mage::helper('magebid')->__('Categories'),
             'title'     => Mage::helper('magebid')->__('Categories'),
             'url'       => $this->getUrl('*/*/categories', array('_current' => true)),
+			'content'   => $this->getLayout()->createBlock('magebid/adminhtml_export_edit_tab_category')->toHtml(),
             'class'     => 'ajax',			
         ));		        
 		
@@ -61,6 +62,7 @@ class Netresearch_Magebid_Block_Adminhtml_Export_Edit_Tabs extends Mage_Adminhtm
             'label'     => Mage::helper('magebid')->__('Store Categories'),
             'title'     => Mage::helper('magebid')->__('Store Categories'),
             'url'       => $this->getUrl('*/*/storeCategories', array('_current' => true)),
+			'content'   => $this->getLayout()->createBlock('magebid/adminhtml_export_edit_tab_store_category')->toHtml(),
             'class'     => 'ajax',			
         ));			
 	

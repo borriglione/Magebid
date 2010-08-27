@@ -144,7 +144,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		   	//Build response
 			$response = array();
 			$response['ebay_item_id'] = $res->ItemID;	
-			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true));		
+			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));		
 			return $response;
 		}
 		elseif ($res->Ack == 'Warning')
@@ -156,7 +156,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			//Set Error
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$res->ItemID);
 			Mage::getSingleton('adminhtml/session')->addWarning($message);			
-			Mage::getModel('magebid/log')->logWarning("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logWarning("auction-add","auction ".$response['ebay_item_id'],Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			return $response;			
 		}
 		else
@@ -164,7 +164,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			//Set Error
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$res->ItemID);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
-			Mage::getModel('magebid/log')->logError("auction-add","auction id ".$auction_data['magebid_auction_id'],var_export($req,true),var_export($res,true));			
+			Mage::getModel('magebid/log')->logError("auction-add","auction id ".$auction_data['magebid_auction_id'],Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));			
 			return false;
 		}		
 	}
@@ -382,13 +382,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("auction-end","auction ".$itemid,var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logSuccess("auction-end","auction ".$itemid,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			return true;
 		}		
 		else
 		{
 			//Set Error
-			Mage::getModel('magebid/log')->logError("auction-end","auction ".$itemid,var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logError("auction-end","auction ".$itemid,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
 			Mage::getSingleton('adminhtml/session')->addError($message);
 			return false;	
@@ -426,13 +426,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("seller-list-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logSuccess("seller-list-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			return $res;
 		}		
 		else
 		{
 			//Set Error
-			Mage::getModel('magebid/log')->logError("seller-list-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logError("seller-list-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			

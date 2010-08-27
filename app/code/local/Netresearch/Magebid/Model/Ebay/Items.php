@@ -93,21 +93,6 @@ class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 			return false;
 		}
 	}
-
-    /**
-     * get Last Seller Events
-     * 
-     * !Currently not used!->using getSellerTransactions instead
-     * 
-     * @param string $from Start Date
-     * @param string $to End Date
-     *
-     * @return array
-     */	 	
-	public function getLastSellerEvents($from,$to)
-	{
-		return $this->_handler->getLastSellerEvents($from,$to);
-	}	
 	
     /**
      * Get all auctions of seller in a defined date-range

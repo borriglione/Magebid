@@ -23,8 +23,7 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 		
 		$this->loadLayout();				
         $this->_addContent($this->getLayout()->createBlock('magebid/adminhtml_auction_main', 'auction'));
-        $this->renderLayout();		
-
+        $this->renderLayout();
     }
     
     /**
@@ -146,20 +145,8 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 	{
         try 
 		{		
-			//Get Start/End Time
-			$from = Mage::getModel('magebid/auction')->getResource()->getOldestStartDate();
-			$to = Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');			
-			
-			//Make call
-			$items = Mage::getModel('magebid/ebay_items')->getSellerList($from,$to);			
-			
-			//For every modified item
-			foreach ($items as $item)
-			{
-				//$mapped_item = Mage::getModel('magebid/ebay_items')->getHandler()->mappingItem($item);							
-				$auction = Mage::getModel('magebid/auction')->load($item['ebay_item_id'],'ebay_item_id');
-				$auction->ebayUpdate($item);
-			}					
+			//Update all auctions
+			Mage::getModel('magebid/auction')->updateAuctions();					
 			
 			//Update all transactions
 			Mage::getModel('magebid/auction')->updateTransactions();
@@ -210,7 +197,13 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 					{
 		                Mage::getSingleton('adminhtml/session')->addSuccess(
 		                    Mage::helper('magebid')->__('Auction %s was exported successfully',$auction->getEbayItemId())
-		                );						
+		                );			
+
+						//Update all auctions
+						//This is necessary to get the link-url and some other important 
+						//informations which are not in the result of the addItem()-Call
+						sleep(5); //Sleep 5 sek and wait for slow eBay to get the last added items!
+						Mage::getModel('magebid/auction')->updateAuctions();
 					}								
                 }
             } 

@@ -104,12 +104,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Sale extends Mage_Core_Model_Abstract
         	
 		if ($res->Ack == 'Success')
 		{			
-			Mage::getModel('magebid/log')->logSuccess("transaction-status-change","itemid ".$item_id." / transaction ".$transaction_id,var_export($req,true),var_export($res,true),var_export($tasks,true));
+			Mage::getModel('magebid/log')->logSuccess("transaction-status-change","itemid ".$item_id." / transaction ".$transaction_id,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($tasks));
 			return true;
 		}
 		else
 		{
-			Mage::getModel('magebid/log')->logError("transaction-status-change","itemid ".$item_id." / transaction ".$transaction_id,var_export($req,true),var_export($res,true),var_export($tasks,true));
+			Mage::getModel('magebid/log')->logError("transaction-status-change","itemid ".$item_id." / transaction ".$transaction_id,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($tasks));
 			return false;
 		}		
 	}			
