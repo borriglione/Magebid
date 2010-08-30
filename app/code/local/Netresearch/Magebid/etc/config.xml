@@ -163,12 +163,6 @@
                         <title>Magebid</title>
                         <sort_order>30</sort_order>
 				        <children>				
-							<!--<magebid_originial module="magebid">
-								<title>Original</title>
-								<sort_order>170</sort_order>
-								<action>magebid/admin</action>               
-							</magebid_originial>-->	
-
 							<magebid_auction module="magebid" translate="title">
 								<title>Auctions</title>
 								<sort_order>50</sort_order>
@@ -229,24 +223,51 @@
 				</all>
 				<admin>
 					<children>
-						<Netresearch_Magebid>
-							<title>Magebid Module</title>
-							<sort_order>10</sort_order>
-						</Netresearch_Magebid>
-				                        <system>
-				                            <children>
-				                                <config>
-				                                    <children>
-				                                        <magebid>
-				                                            <title>Magebid</title>
-				                                        </magebid>
-				                                    </children>
-				                                </config>
-				                            </children>
-				                        </system>
-				                    </children>
-				                </admin>
-            	</resources>
+						<!-- Magebid Menu (System->Magebid)-->
+				        <system>
+				            <children>
+				                <magebid translate="title">
+				                    <title>Magebid</title>
+									<sort_order>30</sort_order>
+				                    <children>
+				                         <magebid_auction translate="title">
+				                             <title>Auctions</title>
+				                         </magebid_auction>
+				                         <magebid_transaction translate="title">
+				                             <title>Transactions</title>
+				                         </magebid_transaction>
+				                         <magebid_configuration translate="title">
+				                             <title>Configuration</title>
+				                         </magebid_configuration>
+				                         <magebid_templates translate="title">
+				                             <title>Templates</title>
+				                         </magebid_templates>
+				                         <magebid_profiles translate="title">
+				                             <title>Profiles</title>
+				                         </magebid_profiles>
+				                         <magebid_log translate="title">
+				                             <title>Logs</title>
+				                         </magebid_log>						 
+				                   </children>
+				                </magebid>
+				            </children>
+				        </system>
+						
+						<!-- Magebid Configuration Area (System->Configuration->Magebid)-->
+				        <system>
+				             <children>
+				                  <config>
+				                      <children>
+				                          <magebid>
+				                                <title>Magebid</title>
+				                          </magebid>
+				                      </children>
+				                  </config>
+				             </children>
+				        </system>
+				    </children>
+				</admin>
+            </resources>
 		</acl>
 		<layout>
 			<updates>
