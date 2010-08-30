@@ -883,8 +883,11 @@ class EbatNs_Session {
     }
 	*/
 		
-    $this->_keys['test'] = array($params_arr['sandbox']['AppId'], $params_arr['sandbox']['DevId'], $params_arr['sandbox']['CertId']);
-    $this->_keys['prod'] = array($params_arr['production']['AppId'], $params_arr['production']['DevId'], $params_arr['production']['CertId']);
+  	//Magebid comment
+  	//Keyset is not used anymore
+  	//Using Token Instead
+    //$this->_keys['test'] = array($params_arr['sandbox']['AppId'], $params_arr['sandbox']['DevId'], $params_arr['sandbox']['CertId']);
+    //$this->_keys['prod'] = array($params_arr['production']['AppId'], $params_arr['production']['DevId'], $params_arr['production']['CertId']);
    
     if (isset($params_arr['site-id']))
         $this->setSiteId($params_arr['site-id']);
@@ -1024,21 +1027,21 @@ class EbatNs_Session {
     switch ($value) {
       case 0:
         $this->_setProp('ApiUrl', 'https://api.ebay.com/wsapi');
-        $this->_setProp('AppId', $this->_keys['prod'][0]);
-        $this->_setProp('DevId', $this->_keys['prod'][1]);
-        $this->_setProp('CertId', $this->_keys['prod'][2]);
+        //$this->_setProp('AppId', $this->_keys['prod'][0]);
+        //$this->_setProp('DevId', $this->_keys['prod'][1]);
+        //$this->_setProp('CertId', $this->_keys['prod'][2]);
         break;
       case 1:
         $this->_setProp('ApiUrl', 'https://api.sandbox.ebay.com/wsapi');
-        $this->_setProp('AppId', $this->_keys['test'][0]);
-        $this->_setProp('DevId', $this->_keys['test'][1]);
-        $this->_setProp('CertId', $this->_keys['test'][2]);
+        //$this->_setProp('AppId', $this->_keys['test'][0]);
+        //$this->_setProp('DevId', $this->_keys['test'][1]);
+        //$this->_setProp('CertId', $this->_keys['test'][2]);
         break;
       case 2:
-        $this->_setProp('ApiUrl', 'https://api.ebay.com/wsapi');
-        $this->_setProp('AppId', $this->_keys['test'][0]);
-        $this->_setProp('DevId', $this->_keys['test'][1]);
-        $this->_setProp('CertId', $this->_keys['test'][2]);
+        //$this->_setProp('ApiUrl', 'https://api.ebay.com/wsapi');
+        //$this->_setProp('AppId', $this->_keys['test'][0]);
+        //$this->_setProp('DevId', $this->_keys['test'][1]);
+        //$this->_setProp('CertId', $this->_keys['test'][2]);
         break;
     }
   }
