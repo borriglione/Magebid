@@ -78,23 +78,41 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstra
 	}	
 	
     /**
-     * Preparing the Exception-Handling-Error-Message
+     * Preparing the Exception-Handling-Error-Message for Auctions
      * 
      * @param object $res Response-Object of the eBay-Call
      * @param int $ebay_item_id ebay_item_id
      *
      * @return string
      */		
-	public function exceptionHandling($res,$ebay_item_id)
+	public function exceptionAuctionHandling($res,$ebay_item_id = "")
 	{
 		$string = "";
 		foreach ($res->Errors as $error)
 		{
 			$string .= $error->SeverityCode." (".$error->ErrorCode.") ".
 						" - ".Mage::helper('magebid')->__('Auction')." ".$ebay_item_id.
-						  " - ".Mage::helper('coding')->encodePrepareDb(htmlentities($error->ShortMessage)).'<br />'.Mage::helper('coding')->encodePrepareDb(htmlentities($error->LongMessage))."<br />";
+						  " - ".Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->ShortMessage)).'<br />'.Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->LongMessage))."<br />";
 		}
 		return $string;		
 	}	
+	
+    /**
+     * Preparing the Exception-Handling-Error-Message (General)
+     * 
+     * @param object $res Response-Object of the eBay-Call
+     *
+     * @return string
+     */		
+	public function exceptionHandling($res)
+	{
+		$string = "";
+		foreach ($res->Errors as $error)
+		{
+			$string .= $error->SeverityCode." (".$error->ErrorCode.") ".
+						  " - ".Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->ShortMessage)).'<br />'.Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->LongMessage))."<br />";
+		}
+		return $string;		
+	}		
 }
 ?>

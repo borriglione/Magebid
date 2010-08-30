@@ -89,7 +89,8 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		else
 		{
 			Mage::getModel('magebid/log')->logError("import",$DetailName,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
-			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
+			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
+			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
 	}
 
@@ -114,7 +115,8 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		else
 		{
 			Mage::getModel('magebid/log')->logError("import","Category",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
-			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
+			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
+			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
 	}	
 	
@@ -144,7 +146,8 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		else
 		{
 			Mage::getModel('magebid/log')->logError("import","Category Features",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
-			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
+			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
+			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
 	}
 }

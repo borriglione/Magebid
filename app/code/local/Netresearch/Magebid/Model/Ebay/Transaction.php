@@ -47,11 +47,14 @@ class Netresearch_Magebid_Model_Ebay_Transaction extends Mage_Core_Model_Abstrac
 		{			
 			$seller_transactions = $this->_handler->getSellerTransactions($from,$to,$page);	
 			
-			foreach ($seller_transactions->TransactionArray as $raw_transaction)
+			if (count($seller_transactions->TransactionArray)>0)
 			{
-				$raw_transactions[] = $raw_transaction;
-			}			
-			$page++;
+				foreach ($seller_transactions->TransactionArray as $raw_transaction)
+				{
+					$raw_transactions[] = $raw_transaction;
+				}			
+				$page++;
+			}
 
 			//Daily Log
 			Mage::getModel('magebid/daily_log')->logCall();				
