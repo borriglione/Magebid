@@ -168,8 +168,8 @@ CREATE TABLE IF NOT EXISTS `magebid_payment_methods` (
 CREATE TABLE IF NOT EXISTS `magebid_profile` (
   `magebid_profile_id` int(11) NOT NULL AUTO_INCREMENT,
   `profile_name` varchar(255) NOT NULL,
-  `start_price` decimal(11,2) NOT NULL DEFAULT '0.00',
-  `fixed_price` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `start_price` varchar(255) DEFAULT NULL,
+  `fixed_price` varchar(255) NOT NULL,
   `duration` int(11) NOT NULL DEFAULT '0',
   `quantity` int(11) NOT NULL,
   `country` varchar(255) NOT NULL,

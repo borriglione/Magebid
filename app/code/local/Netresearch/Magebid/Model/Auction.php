@@ -192,15 +192,18 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 			$to = Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');			
 			
 			//Make call
-			$items = Mage::getModel('magebid/ebay_items')->getSellerList($from,$to);			
-			
-			//For every modified item
-			foreach ($items as $item)
+			if ($from!="") //If there is a start date
 			{
-				//$mapped_item = Mage::getModel('magebid/ebay_items')->getHandler()->mappingItem($item);							
-				$auction = Mage::getModel('magebid/auction')->load($item['ebay_item_id'],'ebay_item_id');
-				$auction->ebayUpdate($item);
-			}	
+				$items = Mage::getModel('magebid/ebay_items')->getSellerList($from,$to);			
+				
+				//For every modified item
+				foreach ($items as $item)
+				{
+					//$mapped_item = Mage::getModel('magebid/ebay_items')->getHandler()->mappingItem($item);							
+					$auction = Mage::getModel('magebid/auction')->load($item['ebay_item_id'],'ebay_item_id');
+					$auction->ebayUpdate($item);
+				}	
+			}
 	}	
 	
 	

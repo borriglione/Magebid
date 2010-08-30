@@ -160,13 +160,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			return $response;			
 		}
 		else
-		{
-			//Set Error
-			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$res->ItemID);
-			Mage::getSingleton('adminhtml/session')->addError($message);	
+		{					
+			//Set Error	
+			Mage::getSingleton('adminhtml/session')->addError($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);	
 			Mage::getModel('magebid/log')->logError("auction-add","auction id ".$auction_data['magebid_auction_id'],Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));			
 			return false;
-		}		
+		}	
 	}
 	
     /**
@@ -430,12 +429,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			return $res;
 		}		
 		else
-		{
+		{		
 			//Set Error
 			Mage::getModel('magebid/log')->logError("seller-list-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
-			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
-			Mage::getSingleton('adminhtml/session')->addError($message);	
-		}			
+			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
+		}		
 	}	
 	
     /**
