@@ -264,10 +264,14 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
 			
 			if ($product_price>1) return $product_price; else return "1";
 		}
-		else //absolute price
+		else if ($this->_processed_profile_data[$field]!="") //take the absolute price
 		{			
 			return $this->_processed_profile_data[$field];			
 		}		
+		else //return the normal product price
+		{
+			return Mage::helper('tax')->getPrice($this->_product, $this->_product->getFinalPrice(), true);
+		}
 	}
 }
 ?>
