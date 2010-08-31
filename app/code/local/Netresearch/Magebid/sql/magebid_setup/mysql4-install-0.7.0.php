@@ -70,10 +70,6 @@ CREATE TABLE IF NOT EXISTS `magebid_auction_type` (
   PRIMARY KEY (`magebid_auction_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-INSERT INTO `magebid_auction_type` (`magebid_auction_type_id`, `name`) VALUES
-(1, 'Auction / Chinese'),
-(2, 'FixedPriceItem');
-
 CREATE TABLE IF NOT EXISTS `magebid_configuration` (
   `magebid_configuration_id` int(1) NOT NULL AUTO_INCREMENT,
   `key` varchar(255) NOT NULL,
@@ -86,12 +82,6 @@ CREATE TABLE IF NOT EXISTS `magebid_ebay_status` (
   `status_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`magebid_ebay_status_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-INSERT INTO `magebid_ebay_status` (`magebid_ebay_status_id`, `status_name`) VALUES
-(0, 'Noch nicht eingestellt'),
-(1, 'In Vorbereitung'),
-(2, 'Aktiv'),
-(3, 'Beendet');
 
 CREATE TABLE IF NOT EXISTS `magebid_import_category` (
   `magebid_import_category_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -169,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `magebid_profile` (
   `magebid_profile_id` int(11) NOT NULL AUTO_INCREMENT,
   `profile_name` varchar(255) NOT NULL,
   `start_price` varchar(255) DEFAULT NULL,
-  `fixed_price` varchar(255) NOT NULL,
+  `fixed_price` varchar(255) DEFAULT NULL,
   `duration` int(11) NOT NULL DEFAULT '0',
   `quantity` int(11) NOT NULL,
   `country` varchar(255) NOT NULL,
@@ -289,6 +279,16 @@ CREATE TABLE IF NOT EXISTS `magebid_log` (
   PRIMARY KEY (`magebid_log_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+INSERT INTO `magebid_auction_type` (`magebid_auction_type_id`, `name`) VALUES
+(1, 'Auction / Chinese'),
+(2, 'FixedPriceItem');
+
+INSERT INTO `magebid_ebay_status` (`magebid_ebay_status_id`, `status_name`) VALUES
+(0, 'Noch nicht eingestellt'),
+(1, 'In Vorbereitung'),
+(2, 'Aktiv'),
+(3, 'Beendet');
+
 INSERT INTO `magebid_profile` (`magebid_profile_id`, `profile_name`, `start_price`, `fixed_price`, `duration`, `quantity`, `country`, `currency`, `location`, `dispatch_time`, `ebay_category_1`, `ebay_category_2`, `ebay_store_category_1`, `ebay_store_category_2`, `is_image`, `is_more_images`, `is_galery_image`, `magebid_auction_type_id`, `hit_counter`, `header_templates_id`, `main_templates_id`, `footer_templates_id`, `refund_option`, `returns_accepted_option`, `returns_within_option`, `returns_description`, `use_tax_table`, `vat_percent`, `condition_id`) VALUES
 (1, 'Default', '-10%', '+20%', 7, 10, 'DE', 'EUR', 'Leipzig', 1, 9355, 12395, 0, 0, 1, 0, 1, 2, 'RetroStyle', 1, 3, 2, 'MoneyBack', 'ReturnsAccepted', 14, 'Information zum Rückgaberecht.', 0, 1.000, 1000);
 
@@ -297,6 +297,14 @@ INSERT INTO `magebid_templates` (`magebid_templates_id`, `content_name`, `conten
 (2, 'Default', '<div id=\"magebid_store_footer\">\r\n<img src=\"{{skin_url}}frontend/default/default/images/magebid/default/footer.gif\">\r\n<ul class=\"magebid_info_list\">\r\n<li><a href=\"{{link_url}}\">Home</a></li>\r\n<li><a href=\"{{link_url}}\">Kontakt</a></li>\r\n<li><a href=\"{{link_url}}\">Impressum</a></li>\r\n<li><a href=\"{{link_url}}\">Datenschutz</a></li>\r\n<li><a href=\"{{link_url}}\">Nutzungsbedingungen</a></li>\r\n</ul>\r\n</div>', 'footer', '2010-08-27 13:34:13', '2010-08-27 16:15:01'),
 (3, 'Default', '<div id=\"magebid_store_main\">\r\n<table>\r\n<tr>\r\n<td>\r\n<div id=\"magebid_main_image\">\r\n{{var product_image1}}<br />\r\n</div>\r\n<div id=\"magebid_list_images\">\r\n<a href=#\" onclick=\"javascript:zoom_image(''{{var link_product_image1}}'');return false;\">{{var product_image1}}</a>\r\n<a href=#\" onclick=\"javascript:zoom_image(''{{var link_product_image2}}'');return false;\">{{var product_image2}}</a>\r\n<a href=#\" onclick=\"javascript:zoom_image(''{{var link_product_image3}}'');return false;\">{{var product_image3}}</a>\r\n</div>\r\n</td>\r\n<td class=\"magebid_description\">\r\n<h1>{{var product_name}}</h1>\r\n<p class=\"short_desc\">{{var product_short_description}}</p>\r\n<p class=\"long_desc\">{{var product_description}}</p>\r\n<!-- Beliebige Attribute\r\n<ul>\r\n <li class=\"dimension\">Größe: {{var product_dimension}}</li>\r\n <li class=\"dimension\">Hersteller: {{var product_manufacturer}}</li>\r\n <li class=\"dimension\">Farbe: {{var product_color}}</li>\r\n</ul>\r\n-->\r\n</td>\r\n</tr>\r\n</table>\r\n</div>', 'main', '2010-08-27 13:35:00', '2010-08-27 17:13:52');
 
+INSERT INTO `magebid_payment_methods` (`magebid_payment_methods_id`, `magebid_profile_id`, `magebid_auction_id`, `magebid_transaction_id`, `code`, `price`) VALUES
+(1, 1, NULL, 0, 'PayPal', 0.00),
+(2, 1, NULL, 0, 'COD', 0.00),
+(3, 1, NULL, 0, 'CashOnPickup', 0.00);
+
+INSERT INTO `magebid_shipping_methods` (`magebid_shipping_methods_id`, `magebid_profile_id`, `magebid_auction_id`, `magebid_transaction_id`, `code`, `price`, `add_price`) VALUES
+(1, 1, NULL, NULL, 'DE_DHLPackchen', 4.00, 2.00),
+(2, 1, NULL, NULL, 'DE_DHLPaket', 5.00, 3.00);
 
 ");
 
