@@ -50,7 +50,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 		//Reset error_level
 		//disable Error_Reporting
 		$this->_old_error_level = error_reporting();
-		error_reporting(0);		
+		error_reporting(E_ERROR | E_WARNING | E_PARSE);		
 		
 		//get Sessionproxy
 		$this->_sessionproxy = Mage::getModel('magebid/ebay_ebat_session')->getMagebidConnection();	
@@ -103,8 +103,8 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 		{
 			//Set Error
 			Mage::getModel('magebid/log')->logError("seller-transactions-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
-			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
-			Mage::getSingleton('adminhtml/session')->addError($message);	
+			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
+			Mage::getSingleton('adminhtml/session')->addError($message);		
 		}			
 	}
 	
@@ -142,7 +142,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Ab
 		{
 			//Set Error
 			Mage::getModel('magebid/log')->logError("order-transactions-update","order_ids ".implode(",",$order_ids),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
-			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res,$itemid);
+			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}		
 	}

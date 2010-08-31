@@ -307,19 +307,22 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		}		
 		
 		//For every order-result
-		foreach ($results as $result)
+		if (count($results)>0)
 		{
-			//get every transaction for an ebay_order_id 
-			$transactions = $this->getCollection();
-			$transactions->addFieldToFilter('ebay_order_id', $result['ebay_order_id']);		
-			$transactions->load();
-			
-			//Save the order-result informations for every transaction
-			foreach ($transactions as $transaction)
+			foreach ($results as $result)
 			{
-				$transaction->addData($result)->save();  					
+				//get every transaction for an ebay_order_id 
+				$transactions = $this->getCollection();
+				$transactions->addFieldToFilter('ebay_order_id', $result['ebay_order_id']);		
+				$transactions->load();
+				
+				//Save the order-result informations for every transaction
+				foreach ($transactions as $transaction)
+				{
+					$transaction->addData($result)->save();  					
+				}	
 			}	
-		}		
+		}	
 	}
 	
     /**

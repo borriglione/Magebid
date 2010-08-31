@@ -45,7 +45,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Store extends Mage_Core_Model_Abstract
 		//Reset error_level
 		//disable Error_Reporting
 		$this->_old_error_level = error_reporting();
-		error_reporting(0);		
+		error_reporting(E_ERROR | E_WARNING | E_PARSE);			
 		
 		//get Sessionproxy
 		$this->_sessionproxy = Mage::getModel('magebid/ebay_ebat_session')->getMagebidConnection();	
@@ -82,7 +82,8 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Store extends Mage_Core_Model_Abstract
 		else
 		{
 			Mage::getModel('magebid/log')->logError("import","Store-Category",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
-			throw new Exception($res->Errors[0]->ShortMessage.'<br />'.$res->Errors[0]->LongMessage);
+			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
+			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
 	}	
 }

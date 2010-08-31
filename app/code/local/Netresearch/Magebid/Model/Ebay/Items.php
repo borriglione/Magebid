@@ -110,10 +110,13 @@ class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 		do
 		{			
 			$raw_items = $this->_handler->getSellerList($from,$to,$page);
-			foreach ($raw_items->ItemArray as $raw_item)
+			if (count($raw_items)>0)
 			{
-				$items[] = $this->_handler->mappingItem($raw_item);
-			}			
+				foreach ($raw_items->ItemArray as $raw_item)
+				{
+					$items[] = $this->_handler->mappingItem($raw_item);
+				}	
+			}		
 			$page++;
 
 			//Daily Log
