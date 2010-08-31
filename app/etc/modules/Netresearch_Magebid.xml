@@ -13,7 +13,7 @@
     <modules>
         <Netresearch_Magebid>
             <active>true</active>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
         </Netresearch_Magebid>
     </modules>
 </config>
