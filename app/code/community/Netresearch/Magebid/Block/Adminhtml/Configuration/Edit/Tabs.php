@@ -65,7 +65,7 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tabs extends Mage_A
             'label'     => Mage::helper('magebid')->__('Category Features'),
             'title'     => Mage::helper('magebid')->__('Category Features'),
             'content'   => $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_categoryFeatures')->toHtml(),
-			'active'	=> ($active_tab=='category') ? true : false,
+			'active'	=> ($active_tab=='category_features') ? true : false,
         ));	          
 		
 		$this->addTab('policy', array(
