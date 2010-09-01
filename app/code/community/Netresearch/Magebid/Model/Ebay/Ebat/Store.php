@@ -42,10 +42,9 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Store extends Mage_Core_Model_Abstract
     {
         $this->_init('magebid/ebay_ebat_store');	
 		
-		//Reset error_level
-		//disable Error_Reporting
+		//Set lower Error_Reporting
 		$this->_old_error_level = error_reporting();
-		error_reporting(E_ERROR | E_WARNING | E_PARSE);			
+		error_reporting(E_ERROR | E_PARSE);			
 		
 		//get Sessionproxy
 		$this->_sessionproxy = Mage::getModel('magebid/ebay_ebat_session')->getMagebidConnection();	
