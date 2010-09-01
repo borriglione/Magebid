@@ -201,7 +201,7 @@ class EbatNs_ResponseParser
                 {
                     case 'FAULTSTRING':
                         $errResponse->raise('soap-fault: ' .
-                             utf8_decode($value['value']), 90000 +
+                             $value['value'], 90000 +
                              2);
                     break;
                 case 'ERRORCODE':

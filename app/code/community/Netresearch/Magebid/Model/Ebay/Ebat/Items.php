@@ -143,7 +143,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		   	//Build response
 			$response = array();
 			$response['ebay_item_id'] = $res->ItemID;	
-			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));		
+			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));		
 			return $response;
 		}
 		elseif ($res->Ack == 'Warning')
@@ -184,7 +184,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
         $item->setLocation($this->_auction_data['location']);        
         $item->setDispatchTimeMax($this->_auction_data['dispatch_time']); 
         $item->setDescription(Mage::helper('coding')->encodeStringMagentoToEbay($this->_auction_data['auction_description']));		
-		$item->setConditionID($this->_auction_data['condition_id']);
+	    $item->setConditionID($this->_auction_data['condition_id']);
         return $item;	
 	}
 	

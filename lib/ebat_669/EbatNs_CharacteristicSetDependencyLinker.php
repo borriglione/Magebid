@@ -225,7 +225,7 @@ class EbatNs_CharacteristicSetDependencyLinker
 			$parser = $this->_proxy->getParser('http://www.intradesys.com/Schemas/ebay/AttributeData_Extension.xsd');
 			$parser->setExtensionPrefix('EbatNsCsSetExt_');
 									
-			$parserResponse = $parser->decode('eBay', '<?xml version="1.0" encoding="utf-8" ?>' . utf8_encode($attributeData), 3, 'EbatNsCsSetExt_AttributeDataType');
+			$parserResponse = $parser->decode('eBay', '<?xml version="1.0" encoding="utf-8" ?>' . $attributeData, 3, 'EbatNsCsSetExt_AttributeDataType');
 
 			$attributeDependencyData = $this->manageDependencies($parserResponse);
 

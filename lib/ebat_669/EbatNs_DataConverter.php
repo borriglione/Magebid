@@ -60,7 +60,7 @@ class EbatNs_DataConverterIso extends EbatNs_DataConverter
         switch ($type)
         {
             case 'string':
-                return utf8_decode($data);
+                return $data;
             case 'dateTime':
                 {
                     $dPieces = split('T', $data);
@@ -94,7 +94,7 @@ class EbatNs_DataConverterIso extends EbatNs_DataConverter
             
             default:
                 if (is_string($data))
-                    $data = "<![CDATA[" . utf8_encode($data) . "]]>";
+                    $data = "<![CDATA[" . $data . "]]>";
                 break;
         }
         

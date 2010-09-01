@@ -20,7 +20,8 @@ class Netresearch_Magebid_Helper_Coding_Data extends Mage_Core_Helper_Abstract
      */   
 	public function encodeStringEbayToMagento($string)
 	{
-		return utf8_encode($string);
+		//return utf8_encode($string);
+		return $string;
 	}
 	
     /**
@@ -80,7 +81,8 @@ class Netresearch_Magebid_Helper_Coding_Data extends Mage_Core_Helper_Abstract
      */  
 	public function encodeStringMagentoToEbay($string)
 	{		
-		return utf8_decode($string);
+		//return utf8_decode($string);
+		return $string;
 	}		
 	
     /**

@@ -729,7 +729,7 @@ class EbatNs_LegacyMapper
 		{
 			case 'utf8_encode':
 			case 'utf8encode':
-				return utf8_encode($arg);
+				return $arg;
 			case 'legacy-map':
 			case 'mapped-options':
 				return $this->mapValue($arg);
