@@ -322,7 +322,7 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
     /**
      * Get different statused from the table ebay_status
      * 
-     * Delete candidate, see NRME89
+     * Delete candidate, see NRMB-89
      * 
      * @return array
      */			
@@ -358,8 +358,40 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
         
         if (!empty($data))
         {
-        	if ($data[0]['min_start_date']!="") return $data[0]['min_start_date'];
-        	else return $data[0]['min_date_created'];
+        	if ($data[0]['min_date_created']!="")
+        	{
+        		return $data[0]['min_date_created'];
+        	}
+        }      
+	}
+	
+    /**
+     * Get "Future" Start-Date, used for the eBay-Call getSellerList
+     * 
+     * @return string
+     */		
+	public function getFutureStartDate()
+	{
+		$select = $this->_getReadAdapter()
+			->select()
+			->from($this->getMainTable())
+			->columns('max(mad.start_date) as max_start_date')            
+		    ->join(
+                array('mad' => $this->getTable('magebid/auction_detail')), 
+                $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')	                          	
+            ->where('magebid_ebay_status_id = ?',Netresearch_Magebid_Model_Auction::AUCTION_STATUS_ACTIVE)
+            ->group('magebid_ebay_status_id'); 
+       
+        $data = $this->_getReadAdapter()->fetchAll($select);
+        
+        if (!empty($data))
+        {
+        	$max_start_date = $data[0]['max_start_date'];
+        	
+        	//Add 1 day
+			$time = Mage::getModel('core/date')->timestamp($max_start_date);
+			$time = $time+(60*60*24);
+			return Mage::getModel('core/date')->gmtDate(null, $time);
         }      
 	}
 }
