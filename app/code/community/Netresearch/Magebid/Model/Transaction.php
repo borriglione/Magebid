@@ -224,7 +224,7 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
                 );	
 				
 				//Check if order state should be changed
-				Mage::getModel('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 
+				Mage::getModel('magebid/order_status')->setEbayStatus($order,$order->getStatus(),'',true); 
 
 				return true;
 			}
@@ -274,7 +274,7 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 				}				
 				
 				//Check if order state should be changed
-				Mage::getModel('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 	
+				Mage::getModel('magebid/order_status')->setEbayStatus($order,$order->getStatus(),'',true); 	
 
 				return true;
 			}	

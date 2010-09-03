@@ -111,10 +111,11 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
      * @param object $order Magento Order
      * @param string $new_status New Order Status
      * @param string $order_comment Magento Order comment
+     * @param boolean $new_order If it is a new Magento Order
      *
      * @return void
      */	  	
-	public function setEbayStatus($order,$new_status,$order_comment = '')
+	public function setEbayStatus($order,$new_status,$order_comment = '',$new_order = false)
 	{		
 		//Init
 		$this->_varSet($order,$new_status);		
@@ -137,8 +138,18 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 			$this->_setReviewed();
 			
 			//Set Request
-			if (!empty($this->_tasks)) Mage::getSingleton('magebid/ebay_sale')->setCompleteSale($this->_transaction,$this->_tasks);			
-		
+			if (!empty($this->_tasks))
+			{
+				Mage::getSingleton('magebid/ebay_sale')->setCompleteSale($this->_transaction,$this->_tasks);			
+
+				//If it is a new order we have to set the order-comment manually
+				if ($new_order)
+				{
+					$this->_order->addStatusToHistory($this->new_status, $this->_comments, false);	
+					$this->_order->save();		
+				}
+			}
+			
 			return $this->_comments;
 		}
 		catch (Exception $e)
