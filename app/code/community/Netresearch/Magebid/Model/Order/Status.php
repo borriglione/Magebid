@@ -110,10 +110,11 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
      * 
      * @param object $order Magento Order
      * @param string $new_status New Order Status
+     * @param string $order_comment Magento Order comment
      *
      * @return void
      */	  	
-	public function setEbayStatus($order,$new_status,$order_comment)
+	public function setEbayStatus($order,$new_status,$order_comment = '')
 	{		
 		//Init
 		$this->_varSet($order,$new_status);		

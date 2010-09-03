@@ -195,6 +195,7 @@
 "Preview","Vorschau"
 "Actions","Aktionen"
 "Order (%s) for Auction %s was created successfully","eBay Bestellung %s für Auktion %s wurde erfolgreich erstellt"
+"Order (%s) for Auction %s / Transaction %s was created successfully","eBay Bestellung %s für Auktion %s / Transaktion %s wurde erfolgreich erstellt"
 "Auctions were updated successfully","Auktionen wurden erfolreich aktualisiert"
 "Add comments to orders","Kommentare zu Bestellungen hinzufügen"
 "If status was changed","Falls Status geändert"

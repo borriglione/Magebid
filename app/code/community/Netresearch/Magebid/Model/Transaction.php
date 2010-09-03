@@ -220,11 +220,11 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 				
 				//Add success message
 				Mage::getSingleton('adminhtml/session')->addSuccess(
-                    Mage::helper('magebid')->__('Order (%s) for Auction %s was created successfully',$order_id,$this->getEbayItemId())
+                    Mage::helper('magebid')->__('Order (%s) for Auction %s / Transaction %s was created successfully',$order_id,$this->getEbayItemId(),$this->getEbayTransactionId())
                 );	
 				
 				//Check if order state should be changed
-				Mage::getSingleton('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 
+				Mage::getModel('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 
 
 				return true;
 			}
@@ -269,12 +269,12 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 
 					//Add success message
 					Mage::getSingleton('adminhtml/session')->addSuccess(
-	                    Mage::helper('magebid')->__('Order (%s) for Auction %s was created successfully',$order_id,$transaction->getEbayItemId())
+	                    Mage::helper('magebid')->__('Order (%s) for Auction %s / Transaction %s was created successfully',$order_id,$transaction->getEbayItemId(),$transaction->getEbayTransactionId())
 	                );						
 				}				
 				
 				//Check if order state should be changed
-				Mage::getSingleton('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 	
+				Mage::getModel('magebid/order_status')->setEbayStatus($order,$order->getStatus()); 	
 
 				return true;
 			}	
