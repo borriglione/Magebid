@@ -12,6 +12,12 @@
 class Netresearch_Magebid_Model_Sales_Order extends Mage_Sales_Model_Order
 {
     /**
+     * Check value to avoid a double-feedback-message
+     * @var boolean
+     */	
+	protected $_feedback_was_sent = false;
+
+    /**
      * Order state protected setter.
      * 
      * Dispatch Event, which is catched by Netresearch_Magebid_Model_Order_Observer to change the ebay status
@@ -29,7 +35,7 @@ class Netresearch_Magebid_Model_Sales_Order extends Mage_Sales_Model_Order
      */
     protected function _setState($state, $status = false, $comment = '', $isCustomerNotified = null, $shouldProtectState = false)
     { 
-     	$comment = Mage::getSingleton('magebid/order_status')->setEbayStatus($this,$state,$comment);  
+     	if (!$this->_feedback_was_sent) $comment = Mage::getSingleton('magebid/order_status')->setEbayStatus($this,$state,$comment);  
     	return parent::_setState($state, $status, $comment, $isCustomerNotified, $shouldProtectState);
     }
     
@@ -46,7 +52,8 @@ class Netresearch_Magebid_Model_Sales_Order extends Mage_Sales_Model_Order
      */
     public function setState($state, $status = false, $comment = '', $isCustomerNotified = false)
     {
-     	$comment = Mage::getSingleton('magebid/order_status')->setEbayStatus($this,$state,$comment);  
+     	$comment = Mage::getSingleton('magebid/order_status')->setEbayStatus($this,$state,$comment); 
+     	$this->_feedback_was_sent = true; 
     	return parent::setState($state, $status, $comment, $isCustomerNotified);
     }
 }
