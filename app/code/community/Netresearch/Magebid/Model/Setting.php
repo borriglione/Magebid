@@ -92,16 +92,6 @@ class Netresearch_Magebid_Model_Setting extends Mage_Core_Model_Abstract
     }		
 	
     /**
-     * Return true if an automatic feedback to eBay should be given
-     *
-     * @return boolean
-     */	      
-    public function checkMakeAutomaticReview()
-    {
-		return Mage::getStoreConfig('magebid/magebid_order_review/check');
-    }		
-	
-    /**
      * Return the Review Text which should be given automatically to a buyer in eBay
      *
      * @return string

@@ -12,29 +12,23 @@
 class Netresearch_Magebid_Model_Sales_Order extends Mage_Sales_Model_Order
 {
     /**
-     * Set a Magento order-status after creating a new Magento Order from an eBay Auction
+     * Order state protected setter.
      * 
-     * @param string $state if Multiselect for the order status selection is allowed 
-     * @param boolean $status 
-     * @param string $comment 
-     * @param boolean $isCustomerNotified If the customer should be notified
+     * Dispatch Event, which is catched by Netresearch_Magebid_Model_Order_Observer to change the ebay status
+     * By default allows to set any state. Can also update status to default or specified value
+     * Сomplete and closed states are encapsulated intentionally, see the _checkState()
      *
-     * @return object
-     */	      
-    public function setState($state, $status = false, $comment = '', $isCustomerNotified = false)
-    {
-        $this->setData('state', $state);
-        if ($status) {
-            if ($status === true) {
-                $status = $this->getConfig()->getStateDefaultStatus($state);
-            }
-						
-			//Set Event
-			Mage::dispatchEvent('sales_model_order_set_state', array('order' => $this,'change_state'=>$status));
-			
-            $this->addStatusToHistory($status, $comment, $isCustomerNotified);
-        }
-        return $this;
+     * @param string $state
+     * @param string|bool $status
+     * @param string $comment
+     * @param bool $isCustomerNotified
+     * @param $shouldProtectState
+     * @return Mage_Sales_Model_Order
+     */
+    protected function _setState($state, $status = false, $comment = '', $isCustomerNotified = null, $shouldProtectState = false)
+    { 
+     	$comment = Mage::getSingleton('magebid/order_status')->setEbayStatus($this,$state,$comment);  
+    	return parent::_setState($state, $status, $comment, $isCustomerNotified, $shouldProtectState);
     }
 }
 ?>

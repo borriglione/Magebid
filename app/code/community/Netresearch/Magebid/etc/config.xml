@@ -120,18 +120,6 @@
 	      </sales>
 	    </models>
 		
-		<events>
-			<sales_model_order_set_state>
-				<observers>
-					<netresearch_magebid_order_observer>
-						<type>singleton</type>
-						<class>magebid/order_observer</class>
-		 				<method>change_order_state</method>
-					</netresearch_magebid_order_observer>
-				</observers>
-			</sales_model_order_set_state>     
-		</events>		
-			
         <resources>
            <magebid_setup>
                <setup>

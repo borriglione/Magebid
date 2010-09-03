@@ -47,6 +47,12 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
      */			
 	protected $_comments_mode = false;
 	
+    /**
+     * Comments for the Magento Order Status 
+     * @var string
+     */			
+	protected $_comments = "";
+	
 	
     /**
      * Construct
@@ -77,7 +83,7 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 		//Set Order ID
 		if (!$this->_order_id)
 		{
-			$this->_order_id = $order->getIncrementId();
+			$this->_order_id = $this->_order->getIncrementId();
 		}		
 			
 		//Get Transaction
@@ -107,13 +113,16 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
      *
      * @return void
      */	  	
-	public function setEbayStatus($order,$new_status)
-	{
+	public function setEbayStatus($order,$new_status,$order_comment)
+	{		
 		//Init
 		$this->_varSet($order,$new_status);		
 		
 		try
 		{
+			//Build Order comment
+			if ($order_comment!='') $this->_addComment($order_comment);					
+		
 			//Try Payment Received
 			$this->_setPaymentReceived();
 			
@@ -124,10 +133,12 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 			$this->_setShipped();		
 			
 			//Try Reviewed
-			if (Mage::getSingleton('magebid/setting')->checkMakeAutomaticReview()==1) $this->_setReviewed();
+			$this->_setReviewed();
 			
 			//Set Request
 			if (!empty($this->_tasks)) Mage::getSingleton('magebid/ebay_sale')->setCompleteSale($this->_transaction,$this->_tasks);			
+		
+			return $this->_comments;
 		}
 		catch (Exception $e)
 		{
@@ -163,8 +174,7 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 				//Add Comment
 				if ($this->_comments_mode)
 				{
-					$this->_order->addStatusToHistory($this->new_status, $success_message, false);	
-					$this->_order->save();						
+					$this->_addComment($success_message);				
 				}		
 			}			
 		}		
@@ -197,8 +207,7 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 				//Add Comment
 				if ($this->_comments_mode)
 				{
-					$this->_order->addStatusToHistory($this->new_status, $success_message, false);	
-					$this->_order->save();						
+					$this->_addComment($success_message);				
 				}				
 			}	
 		}			
@@ -232,8 +241,7 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 				//Add Comment
 				if ($this->_comments_mode)
 				{
-					$this->_order->addStatusToHistory($this->new_status, $success_message, false);	
-					$this->_order->save();						
+					$this->_addComment($success_message);				
 				}				
 			}	
 		}			
@@ -272,11 +280,22 @@ class Netresearch_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 				//Add Comment
 				if ($this->_comments_mode)
 				{
-					$this->_order->addStatusToHistory($this->new_status, $success_message, false);	
-					$this->_order->save();						
+					$this->_addComment($success_message);				
 				}						
 			}		
 		}		
+	}
+	
+	protected function _addComment($comment)
+	{
+     	if ($this->_comments=='')
+     	{
+     		$this->_comments=$comment; 
+     	}
+     	else
+     	{
+     		$this->_comments.=" | ".$comment;
+     	}     	
 	}
 }
 ?>

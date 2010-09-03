@@ -28,17 +28,8 @@ class Netresearch_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 		
 		//set Request Handler
 		$this->_handler = Mage::getModel('magebid/ebay_ebat_items');
-	}
-	
-	/*
-	public function getEbayItem($itemid)
-	{
-		//Daily Log
-		Mage::getModel('magebid/daily_log')->logCall();			
-		
-		return $this->_handler->getEbayItem($itemid);
-	}*/
-	
+	}	
+
     /**
      * Call to add a new eBay auction
      * 
