@@ -93,7 +93,7 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		$transaction_array['ebay_order_status'] = $raw_transaction->ContainingOrder->OrderStatus;
 
 		//Return Encoded Array
-		return Mage::helper('coding')->encodeArray($transaction_array);
+		return $transaction_array;
 	}
 	
     /**
@@ -130,7 +130,7 @@ class Netresearch_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		$transaction_user_array['shipping_country'] = $raw_transaction->Buyer->BuyerInfo->ShippingAddress->Country;
 
 		//Return Encoded Array
-		return Mage::helper('coding')->encodeArray($transaction_user_array);
+		return $transaction_user_array;
 	}		
 	
     /**

@@ -82,12 +82,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		
 		if ($res->Ack == 'Success')
 		{			
-			Mage::getModel('magebid/log')->logSuccess("import",$DetailName,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logSuccess("import",$DetailName,var_export($req,true),var_export($res,true));
 			return $res;
 		}
 		else
 		{
-			Mage::getModel('magebid/log')->logError("import",$DetailName,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logError("import",$DetailName,var_export($req,true),var_export($res,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
@@ -108,12 +108,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("import","Category",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req));
+			Mage::getModel('magebid/log')->logSuccess("import","Category",var_export($req,true));
 			return $res;
 		}
 		else
 		{
-			Mage::getModel('magebid/log')->logError("import","Category",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logError("import","Category",var_export($req,true),var_export($res,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			
@@ -139,12 +139,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Miscellaneous extends Mage_Core_Model_
 		//Wort with response
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("import","Category Features",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req));
+			Mage::getModel('magebid/log')->logSuccess("import","Category Features",var_export($req,true));
 			return $res;
 		}
 		else
 		{
-			Mage::getModel('magebid/log')->logError("import","Category Features",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logError("import","Category Features",var_export($req,true),var_export($res,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			

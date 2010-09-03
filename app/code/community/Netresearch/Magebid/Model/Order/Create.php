@@ -233,8 +233,8 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	{
 		return array(   		
 	    				'email' 	=>		$this->_reference_transaction->getBuyerEmail(),
-	    				'lastname'	=> 		Mage::helper('order')->getSplitedLastname($this->_reference_transaction->getRegistrationName()),
-	    				'firstname'	=> 		Mage::helper('order')->getSplitedFirstname($this->_reference_transaction->getRegistrationName()),
+	    				'lastname'	=> 		Mage::helper('magebid_order')->getSplitedLastname($this->_reference_transaction->getRegistrationName()),
+	    				'firstname'	=> 		Mage::helper('magebid_order')->getSplitedFirstname($this->_reference_transaction->getRegistrationName()),
 						'store_id'	=> 		$this->_store->getId(),
 						'website_id'=> 		$this->_store->getWebsiteId(),
 	    				'created_at'=>		$this->_reference_transaction->getDateCreated(),
@@ -250,8 +250,8 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	protected function _getCustomerShippingAddressData()
 	{
 		return array(   		
-		    				'lastname'	=> 		Mage::helper('order')->getSplitedLastname($this->_reference_transaction->getShippingName()),
-		    				'firstname'	=> 		Mage::helper('order')->getSplitedFirstname($this->_reference_transaction->getShippingName()),
+		    				'lastname'	=> 		Mage::helper('magebid_order')->getSplitedLastname($this->_reference_transaction->getShippingName()),
+		    				'firstname'	=> 		Mage::helper('magebid_order')->getSplitedFirstname($this->_reference_transaction->getShippingName()),
 				    		'street'	=>		$this->_reference_transaction->getShippingStreet(),
 				    		'postcode'	=>		$this->_reference_transaction->getShippingZipCode(),
 				    		'city'		=>		$this->_reference_transaction->getShippingCity(),
@@ -269,8 +269,8 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	protected function _getCustomerBillingAddressData()
 	{
 		return array(   		
-		    				'lastname'	=> 		Mage::helper('order')->getSplitedLastname($this->_reference_transaction->getRegistrationName()),
-		    				'firstname'	=> 		Mage::helper('order')->getSplitedFirstname($this->_reference_transaction->getRegistrationName()),
+		    				'lastname'	=> 		Mage::helper('magebid_order')->getSplitedLastname($this->_reference_transaction->getRegistrationName()),
+		    				'firstname'	=> 		Mage::helper('magebid_order')->getSplitedFirstname($this->_reference_transaction->getRegistrationName()),
 				    		'street'	=>		$this->_reference_transaction->getRegistrationStreet(),
 				    		'postcode'	=>		$this->_reference_transaction->getRegistrationZipCode(),
 				    		'city'		=>		$this->_reference_transaction->getRegistrationCity(),
@@ -306,7 +306,7 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	{
 		//Set Billing Address
 		$billing_address_data = $this->_getCustomerBillingAddressData();
-	    $billing_address = Mage::helper('order')->compareCustomerAddress($this->_customer, $billing_address_data);
+	    $billing_address = Mage::helper('magebid_order')->compareCustomerAddress($this->_customer, $billing_address_data);
 	    if (!$billing_address)
 		{    			
 	    		$billing_address = $this->_createCustomerAddress($billing_address_data);
@@ -324,7 +324,7 @@ class Netresearch_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_
 	{
 		//Set Shipping Address
 		$shipping_address_data = $this->_getCustomerShippingAddressData();
-	    $shipping_address = Mage::helper('order')->compareCustomerAddress($this->_customer, $shipping_address_data);
+	    $shipping_address = Mage::helper('magebid_order')->compareCustomerAddress($this->_customer, $shipping_address_data);
 	    if (!$shipping_address)
 		{    			
 	    		$shipping_address = $this->_createCustomerAddress($shipping_address_data);

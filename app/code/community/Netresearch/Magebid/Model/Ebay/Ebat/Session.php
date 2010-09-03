@@ -92,7 +92,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstra
 		{
 			$string .= $error->SeverityCode." (".$error->ErrorCode.") ".
 						" - ".Mage::helper('magebid')->__('Auction')." ".$ebay_item_id.
-						  " - ".Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->ShortMessage)).'<br />'.Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->LongMessage))."<br />";
+						  " - ".$error->ShortMessage.'<br />'.$error->LongMessage."<br />";
 		}
 		return $string;		
 	}	
@@ -110,7 +110,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstra
 		foreach ($res->Errors as $error)
 		{
 			$string .= $error->SeverityCode." (".$error->ErrorCode.") ".
-						  " - ".Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->ShortMessage)).'<br />'.Mage::helper('coding')->encodeStringEbayToMagento(htmlentities($error->LongMessage))."<br />";
+						  " - ".$error->ShortMessage.'<br />'.$error->LongMessage."<br />";
 		}
 		return $string;		
 	}		

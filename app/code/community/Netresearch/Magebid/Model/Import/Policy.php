@@ -79,7 +79,7 @@ class Netresearch_Magebid_Model_Import_Policy extends Mage_Core_Model_Abstract
 			$data = array(
 				'key' => "ReturnsAcceptedOption",
 				'value' => $refund_accepted->ReturnsAcceptedOption,	
-				'description' => Mage::helper('coding')->encodeStringEbayToMagento($refund_accepted->Description),		
+				'description' => $refund_accepted->Description,		
 				);				
 			
 			//save

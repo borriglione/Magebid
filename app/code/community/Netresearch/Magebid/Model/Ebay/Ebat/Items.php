@@ -143,7 +143,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		   	//Build response
 			$response = array();
 			$response['ebay_item_id'] = $res->ItemID;	
-			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));		
+			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true));		
 			return $response;
 		}
 		elseif ($res->Ack == 'Warning')
@@ -155,7 +155,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			//Set Error
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionAuctionHandling($res,$res->ItemID);
 			Mage::getSingleton('adminhtml/session')->addWarning($message);			
-			Mage::getModel('magebid/log')->logWarning("auction-add","auction ".$response['ebay_item_id'],Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logWarning("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true));
 			return $response;			
 		}
 		else
@@ -163,7 +163,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			//Set Error	
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionAuctionHandling($res,$auction_data['magebid_auction_id']);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
-			Mage::getModel('magebid/log')->logError("auction-add","auction id ".$auction_data['magebid_auction_id'],Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));			
+			Mage::getModel('magebid/log')->logError("auction-add","auction id ".$auction_data['magebid_auction_id'],var_export($req,true),var_export($res,true));			
 			return false;
 		}	
 	}
@@ -183,7 +183,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
         $item->setListingDuration('Days_'.$this->_auction_data['life_time']);
         $item->setLocation($this->_auction_data['location']);        
         $item->setDispatchTimeMax($this->_auction_data['dispatch_time']); 
-        $item->setDescription(Mage::helper('coding')->encodeStringMagentoToEbay($this->_auction_data['auction_description']));		
+        $item->setDescription($this->_auction_data['auction_description']);		
 	    $item->setConditionID($this->_auction_data['condition_id']);
         return $item;	
 	}
@@ -223,7 +223,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		if (isset($this->_auction_data['refund_option'])) $retpol->setRefundOption($this->_auction_data['refund_option']);
 		if (isset($this->_auction_data['returns_within_option'])) $retpol->setReturnsWithinOption("Days_".$this->_auction_data['returns_within_option']);
 		if (isset($this->_auction_data['returns_accepted_option'])) $retpol->setReturnsAcceptedOption($this->_auction_data['returns_accepted_option']);
-		if (isset($this->_auction_data['returns_description'])) $retpol->setDescription(Mage::helper('coding')->encodeStringMagentoToEbay($this->_auction_data['returns_description']));
+		if (isset($this->_auction_data['returns_description'])) $retpol->setDescription($this->_auction_data['returns_description']);
 		$this->_ebay_item->setReturnPolicy($retpol);		
 	}	
 	
@@ -381,13 +381,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("auction-end","auction ".$itemid,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logSuccess("auction-end","auction ".$itemid,var_export($req,true),var_export($res,true));
 			return true;
 		}		
 		else
 		{
 			//Set Error
-			Mage::getModel('magebid/log')->logError("auction-end","auction ".$itemid,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logError("auction-end","auction ".$itemid,var_export($req,true),var_export($res,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionAuctionHandling($res,$itemid);
 			Mage::getSingleton('adminhtml/session')->addError($message);
 			return false;	
@@ -425,13 +425,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("seller-list-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logSuccess("seller-list-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
 			return $res;
 		}		
 		else
 		{		
 			//Set Error
-			Mage::getModel('magebid/log')->logError("seller-list-update","from ".$from." / to ".$to,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logError("seller-list-update","from ".$from." / to ".$to,var_export($req,true),var_export($res,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}		

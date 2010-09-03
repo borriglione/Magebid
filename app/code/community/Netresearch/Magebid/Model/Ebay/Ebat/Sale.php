@@ -104,12 +104,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Sale extends Mage_Core_Model_Abstract
         	
 		if ($res->Ack == 'Success')
 		{			
-			Mage::getModel('magebid/log')->logSuccess("transaction-status-change","itemid ".$item_id." / transaction ".$transaction_id,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($tasks));
+			Mage::getModel('magebid/log')->logSuccess("transaction-status-change","itemid ".$transaction->getEbayItemId()." / transaction ".$transaction->getEbayTransactionId(),var_export($req,true),var_export($res,true),var_export($tasks,true));
 			return true;
 		}
 		else
 		{
-			Mage::getModel('magebid/log')->logError("transaction-status-change","itemid ".$item_id." / transaction ".$transaction_id,Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($tasks));
+			Mage::getModel('magebid/log')->logError("transaction-status-change","itemid ".$transaction->getEbayItemId()." / transaction ".$transaction->getEbayTransactionId(),var_export($req,true),var_export($res,true),var_export($tasks,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 			return false;

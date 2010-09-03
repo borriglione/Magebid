@@ -75,12 +75,12 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Store extends Mage_Core_Model_Abstract
 		
 		if ($res->Ack == 'Success')
 		{
-			Mage::getModel('magebid/log')->logSuccess("import","Store-Category",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req));
+			Mage::getModel('magebid/log')->logSuccess("import","Store-Category",var_export($req,true));
 			return $res;
 		}
 		else
 		{
-			Mage::getModel('magebid/log')->logError("import","Store-Category",Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($req),Mage::helper('coding')->encodeXmlEbayToMagentoAndDump($res));
+			Mage::getModel('magebid/log')->logError("import","Store-Category",var_export($req,true),var_export($res,true));
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionHandling($res);
 			Mage::getSingleton('adminhtml/session')->addError($message);	
 		}			

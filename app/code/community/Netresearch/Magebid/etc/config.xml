@@ -97,8 +97,7 @@
 
          <helpers>
             <magebid><class>Netresearch_Magebid_Helper</class></magebid>
-			<coding><class>Netresearch_Magebid_Helper_Coding</class></coding>
-			<order><class>Netresearch_Magebid_Helper_Order</class></order>
+			<magebid_order><class>Netresearch_Magebid_Helper_Order</class></magebid_order>
         </helpers>
         
 		<blocks>

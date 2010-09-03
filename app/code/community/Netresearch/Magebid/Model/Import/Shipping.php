@@ -44,16 +44,14 @@ class Netresearch_Magebid_Model_Import_Shipping extends Mage_Core_Model_Abstract
 		//Add the new Shipping Services
 		foreach ($ebay_shipping_methods->ShippingServiceDetails as $shipping_service)
 		{
-			//echo Mage::helper('coding')->encodeStringEbayToMagento($shipping_service->ShippingService),"<br />";
-			
 			//Build the data
 			$data = array(
-				'shipping_service' => Mage::helper('coding')->encodeStringEbayToMagento($shipping_service->ShippingService),
+				'shipping_service' => $shipping_service->ShippingService,
 				'shipping_service_id' => $shipping_service->ShippingServiceID,
-				'description' => Mage::helper('coding')->encodeStringEbayToMagento($shipping_service->Description),				
+				'description' => $shipping_service->Description,				
 				);
 				
-			if ($shipping_service->ShippingCarrier[0]!="") $data['carrier'] = Mage::helper('coding')->encodeStringEbayToMagento($shipping_service->ShippingCarrier[0]);
+			if ($shipping_service->ShippingCarrier[0]!="") $data['carrier'] = $shipping_service->ShippingCarrier[0];
 			if ($shipping_service->InternationalService==1) $data['international'] = 1; else $data['international'] = 0;				
 			
 			//save
