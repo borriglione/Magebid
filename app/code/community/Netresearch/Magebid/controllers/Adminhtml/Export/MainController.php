@@ -43,24 +43,23 @@ class Netresearch_Magebid_Adminhtml_Export_MainController extends Mage_Adminhtml
 				
 				if (count($simple_products)==0)	
 				{
-					Mage::getSingleton('adminhtml/session')->addError(Mage::helper('magebid')
-					    ->__('Please select at least one simple product')
-				    );
-					$this->_redirectReferer();					
-				}		
+			    	throw new Exception(Mage::helper('magebid')
+					    ->__('Please select at least one simple product'));				
+				}
+
+				Mage::getSingleton('magebid/session')->setData('selected_products',$simple_products);
+						
+		        $this->loadLayout();				
+		        $this->_addContent($this->getLayout()->createBlock('magebid/adminhtml_export_new'));
+				$this->_addLeft($this->getLayout()->createBlock('magebid/adminhtml_export_new_tabs'));
+		        $this->renderLayout();	
            } 
 			catch (Exception $e)
 			{
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirectReferer();	
             }
-        }        
-
-		Mage::getSingleton('magebid/session')->setData('selected_products',$simple_products);
-
-        $this->loadLayout();				
-        $this->_addContent($this->getLayout()->createBlock('magebid/adminhtml_export_new'));
-		$this->_addLeft($this->getLayout()->createBlock('magebid/adminhtml_export_new_tabs'));
-        $this->renderLayout();		
+        }
     }		
 	
 	
