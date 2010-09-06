@@ -197,15 +197,15 @@ class Netresearch_Magebid_Adminhtml_Auction_MainController extends Mage_Adminhtm
 					{
 		                Mage::getSingleton('adminhtml/session')->addSuccess(
 		                    Mage::helper('magebid')->__('Auction %s was exported successfully',$auction->getEbayItemId())
-		                );			
-
-						//Update all auctions
-						//This is necessary to get the link-url and some other important 
-						//informations which are not in the result of the addItem()-Call
-						sleep(5); //Sleep 5 sek and wait for slow eBay to get the last added items!
-						Mage::getModel('magebid/auction')->updateAuctions();
+		                );
 					}								
                 }
+                
+				//Update all auctions
+				//This is necessary to get the link-url and some other important 
+				//informations which are not in the result of the addItem()-Call
+				sleep(5); //Sleep 5 sek and wait for slow eBay to get the last added items!
+				Mage::getModel('magebid/auction')->updateAuctions();
             } 
 			catch (Exception $e)
 			{
