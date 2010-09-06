@@ -30,7 +30,9 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
      */	   
     protected function _afterLoad(Mage_Core_Model_Abstract $object)
     {
-        //Load payment		
+        if (!is_object($object)) return parent::_afterLoad($object);
+    
+    	//Load payment		
 		$select = $this->_getReadAdapter()->select()
             ->from($this->getTable('magebid/payments'))
             ->where('magebid_auction_id = ?', $object->getMagebidAuctionId());
@@ -95,10 +97,26 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
         return $select;
     }	
 	
+    
+    /**
+     * Before deleting the auction data, delete auction-details
+     * 
+     * @param object $object Auction Object
+     *
+     * @return void
+     */		    
+	protected function _beforeDelete(Mage_Core_Model_Abstract $object)
+	{    
+			$auction = Mage::getModel('magebid/auction')->load($object->getId());
+	
+			//Delete auction_details
+	        Mage::getModel('magebid/auction_detail')->setId($auction->getMagebidAuctionDetailId())->delete();	
+	}
+    
     /**
      * After deleting the auction data, delete the shipping,payment and listing_enhancement too
      * 
-     * @param object $object Profile Object
+     * @param object $object Auction Object
      *
      * @return void
      */		    
@@ -115,9 +133,6 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 			//Delete Listing Enhancement
       		$condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
             $this->_getWriteAdapter()->delete($this->getTable('magebid/listing_enhancement'), $condition);				
-			
-			//Delete auction_details
-	        Mage::getModel('magebid/auction_detail')->setId($object->getMagebidAuctionDetailId())->delete();				
 	}	
 	
     /**
@@ -135,17 +150,18 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		{
 			//Save main object			
 			parent::save($object);
-			
-			if ($object->getRequestType()!='export' && $object->getRequestType()!='update')
+							
+			if ($object->getRequestType()!='export')
 			{
 				//Save auction details
-				$this->_prepareAuctionDetailsData($object);
 				Mage::getModel('magebid/auction_detail')
 					->load($object->getMagebidAuctionDetailId())
 					->addData($object->getData())
 					->save();
+			}
 			
-			
+			if ($object->getRequestType()!='update')
+			{			
 				//Save payment
 				$this->_savePayment($object);
 	

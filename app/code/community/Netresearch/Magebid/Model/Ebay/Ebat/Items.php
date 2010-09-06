@@ -142,8 +142,11 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		{
 		   	//Build response
 			$response = array();
-			$response['ebay_item_id'] = $res->ItemID;	
-			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true));		
+			$response['ebay_item_id'] = $res->ItemID;
+			$response['start_date'] = $res->StartTime;	
+			$response['end_date'] = $res->EndTime;		
+			
+			Mage::getModel('magebid/log')->logSuccess("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true),var_export($response,true));		
 			return $response;
 		}
 		elseif ($res->Ack == 'Warning')
@@ -151,11 +154,13 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			//Build response			
 			$response = array();
 			$response['ebay_item_id'] = $res->ItemID;
+			$response['start_date'] = $res->StartTime;	
+			$response['end_date'] = $res->EndTime;	
 			
-			//Set Error
+			//Set Warning
 			$message = Mage::getSingleton('magebid/ebay_ebat_session')->exceptionAuctionHandling($res,$res->ItemID);
 			Mage::getSingleton('adminhtml/session')->addWarning($message);			
-			Mage::getModel('magebid/log')->logWarning("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true));
+			Mage::getModel('magebid/log')->logWarning("auction-add","auction ".$response['ebay_item_id'],var_export($req,true),var_export($res,true),var_export($response,true));
 			return $response;			
 		}
 		else
@@ -446,6 +451,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
      */	
 	public function mappingItem($item)
 	{
+			$response_array = array();
 			$response_array['price_now'] = $item->SellingStatus->CurrentPrice->value;
 			$response_array['start_date'] = $item->ListingDetails->StartTime;
 			$response_array['end_date'] = $item->ListingDetails->EndTime;
@@ -455,7 +461,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 			$response_array['quantity_sold'] = $item->SellingStatus->QuantitySold;	
 			$response_array['quantity_sold'] = $item->SellingStatus->QuantitySold;	
 			$response_array['ebay_item_id'] = $item->ItemID;
-			//$response_array['full_response'] = $item;	
+			$response_array['full_response'] = $item;	
 
 			return $response_array;
 	}

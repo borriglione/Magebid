@@ -190,7 +190,7 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
 		//Get Start/End Time
 		$from = Mage::getModel('magebid/auction')->getResource()->getOldestStartDate();
 		$to = Mage::getModel('magebid/auction')->getResource()->getFutureStartDate();
-			
+		
 		//Make call
 		if ($from!="") //If there is a start date
 		{

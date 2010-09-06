@@ -163,7 +163,7 @@
 							</magebid_transaction>	
 							
 							<magebid_configuration module="magebid" translate="title">
-								<title>Configuration</title>
+								<title>Import and Setup</title>
 								<sort_order>57</sort_order>
 								<action>magebid/adminhtml_configuration_main/</action> 
 							</magebid_configuration>
@@ -178,13 +178,7 @@
 								<title>Profiles</title>
 								<sort_order>65</sort_order>
 								<action>magebid/adminhtml_profile_main</action>               
-							</magebid_profiles>		
-							
-							<magebid_log module="magebid" translate="title">
-								<title>Logs</title>
-								<sort_order>75</sort_order>
-								<action>magebid/adminhtml_log_main</action>               
-							</magebid_log>										
+							</magebid_profiles>											
 						</children>                 
 				    </magebid>	
 				</children>

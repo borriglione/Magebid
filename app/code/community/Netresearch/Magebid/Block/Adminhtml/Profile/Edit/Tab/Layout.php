@@ -25,6 +25,14 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Edit_Tab_Layout extends Mage_A
 		
 		$fieldset = $form->addFieldset('edit_magebid_layout', array('legend' => Mage::helper('magebid')->__('Layout')));
 		
+        $fieldset->addField('is_image', 'select', array(
+            'name'      => 'is_image',
+			'values'   => $yes_no_types,
+            'title'     => Mage::helper('magebid')->__('With Image'),
+            'label'     => Mage::helper('magebid')->__('With Image'),
+			'required'	=> true,
+        ));	
+		
         $fieldset->addField('is_galery_image', 'select', array(
             'name'      => 'is_galery_image',
 			'values'   => $yes_no_types,
@@ -65,12 +73,13 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Edit_Tab_Layout extends Mage_A
 			'required'	=> true,
         ));		
 		
+        /*
         $fieldset->addField('listing_enhancement', 'multiselect', array(
             'name'=>'listing_enhancement',
             'title'     => Mage::helper('magebid')->__('Listing Enhancement'),
             'label'     => Mage::helper('magebid')->__('Listing Enhancement'),				
             'values'	=> Mage::getSingleton('magebid/profile')->getListingEnhancements(),
-        ));			
+        ));*/		
 				
         $form->setValues(Mage::registry('frozen_magebid')->getData());		
         //$form->setUseContainer(true);

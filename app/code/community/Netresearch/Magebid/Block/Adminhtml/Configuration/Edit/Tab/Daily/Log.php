@@ -44,5 +44,15 @@ class Netresearch_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Daily_log exten
 		$this->setChild('grid', $this->getLayout()->createBlock('magebid/adminhtml_configuration_edit_tab_daily_log_grid', 'configuration.daily.log.grid'));
         return parent::_beforeToHtml();
     }	    
+    
+    /**
+     * Return URL to the Magebid Log - Grid View
+     *
+     * @return string
+     */	
+	public function getDetailedLogUrl()
+	{
+		return $this->getUrl('*/adminhtml_log_main/index');
+	}
 }
 ?>

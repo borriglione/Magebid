@@ -149,15 +149,6 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Details extends Mage_
 			'disabled' => $disabled,			
         ));					
 		
-        $auction->addField('is_image', 'select', array(
-            'name'      => 'is_image',
-			'values'   => $yes_no_types,
-            'title'     => Mage::helper('magebid')->__('With image'),
-            'label'     => Mage::helper('magebid')->__('With image'),
-			'required'	=> true,
-			'disabled' => $disabled,	
-        ));	
-		
         $auction->addField('magebid_auction_type_id', 'select', array(
             'name'      => 'magebid_auction_type_id',
             'title'     => Mage::helper('magebid')->__('Auction type'),
@@ -174,6 +165,7 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Details extends Mage_
 			'required'	=> false,
 			'values'	=> Mage::getSingleton('magebid/import_category_features')->getAvailableConditions(Mage::registry('frozen_magebid')->getData('ebay_category_1')),
 			'note'		=> Mage::helper('magebid')->__('Please select a category to choose this value'),
+			'disabled' => $disabled,	
         ));	             
 				
         //$form->setUseContainer(true);

@@ -113,14 +113,6 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_New_Tab_Profile extends Mage_A
 			'note'		=> Mage::helper('magebid')->__('Days'),			
         ));	
 		
-        $fieldset->addField('is_image', 'select', array(
-            'name'      => 'is_image',
-			'values'   => $yes_no_types,
-            'title'     => Mage::helper('magebid')->__('With Image'),
-            'label'     => Mage::helper('magebid')->__('With Image'),
-			'required'	=> true,
-        ));		
-		
         $fieldset->addField('magebid_auction_type_id', 'select', array(
             'name'      => 'magebid_auction_type_id',
             'title'     => Mage::helper('magebid')->__('Auction Type'),
