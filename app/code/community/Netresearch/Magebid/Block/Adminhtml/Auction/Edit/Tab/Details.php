@@ -128,6 +128,7 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Details extends Mage_
             'label'     => Mage::helper('magebid')->__('Duration'),
 			'required'	=> true,	
 			'values'	=> Mage::getSingleton('magebid/profile')->getDurationOptions(),	
+        	'disabled' => $disabled,
         ));	
 		
         $auction->addField('end_date', 'date', array(
