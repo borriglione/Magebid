@@ -150,6 +150,8 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 							
 			if ($object->getRequestType()!='export')
 			{
+				$object = $this->_prepareAuctionDetailsData($object);
+			
 				//Save auction details
 				Mage::getModel('magebid/auction_detail')
 					->load($object->getMagebidAuctionDetailId())
@@ -272,7 +274,7 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
     }	
     			
     /**
-     * Prepare Start-Date and End-Date for auction detail data
+     * Prepare Start-Date for auction detail data
      * 
      * Possibility of wrong behaviour, see Jira NRMB-91
      * 
@@ -284,20 +286,19 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 	{
 		//calculate Auction Life Time
 		$start_date = $object->getStartDate();
-		$end_date = $object->getEndDate();
-		$life_time = $object->getLifeTime();
 
 		if (!empty($start_date))
 		{
 			$start_date = $this->_formatDateTime($start_date);
 			$object->setStartDate($start_date);
-			$object->setEndDate($this->_getEndDate($start_date,$life_time));
 		}
 		else
 		{
 			$object->setStartDate(NULL);
 			$object->setEndDate(NULL);			
 		}		
+		
+		return $object;
 	}
 	
     /**
@@ -314,21 +315,6 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		$format = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM);
 		$date = Mage::app()->getLocale()->date($date, $format);
 		$time = $date->getTimestamp();
-		return Mage::getModel('core/date')->gmtDate(null, $time);
-	}	
-	
-    /**
-     * Calculating End Date
-     * 
-     * @param string $start_date
-     * @param int life_time In days 
-     *
-     * @return string
-     */			
-	protected function _getEndDate($start_date,$life_time)
-	{
-		$time = Mage::getModel('core/date')->timestamp($start_date);
-		$time = $time+(60*60*24*$life_time);
 		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}	
 	

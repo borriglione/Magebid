@@ -122,13 +122,12 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Details extends Mage_
 				'disabled' => $disabled,
             ));	
 		
-        $auction->addField('life_time', 'text', array(
-            'name'      => 'life_time',
+        $auction->addField('listing_duration', 'select', array(
+            'name'      => 'listing_duration',
             'title'     => Mage::helper('magebid')->__('Duration'),
             'label'     => Mage::helper('magebid')->__('Duration'),
 			'required'	=> true,	
-			'note'		=> Mage::helper('magebid')->__('Days'),	
-			'disabled' => $disabled,
+			'values'	=> Mage::getSingleton('magebid/profile')->getDurationOptions(),	
         ));	
 		
         $auction->addField('end_date', 'date', array(

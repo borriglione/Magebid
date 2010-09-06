@@ -98,13 +98,12 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Edit_Tab_Profile extends Mage_
         	'required'	=> true,
         ));						
 		
-        $fieldset->addField('duration', 'text', array(
-            'name'      => 'duration',
+        $fieldset->addField('listing_duration', 'select', array(
+            'name'      => 'listing_duration',
             'title'     => Mage::helper('magebid')->__('Duration'),
             'label'     => Mage::helper('magebid')->__('Duration'),
 			'required'	=> true,	
-			'note'		=> Mage::helper('magebid')->__('Days'),	
-			'value'		=> 7		
+			'values'	=> Mage::getSingleton('magebid/profile')->getDurationOptions(),	
         ));	
 		
         $fieldset->addField('dispatch_time', 'text', array(

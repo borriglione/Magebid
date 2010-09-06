@@ -174,7 +174,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 	}
 	
     /**
-     * Set general item informations
+     * Set general item informations 
      * 
      * @return object ItemType
      */		
@@ -185,7 +185,7 @@ class Netresearch_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
         $item->setCurrency($this->_auction_data['currency']);
         $item->setCountry($this->_auction_data['country']);		
 		if (!empty($this->_auction_data['start_date']) && ($this->_auction_data['start_date'] != '0000-00-00 00:00:00')) $item->setScheduleTime($this->_auction_data['start_date']);	
-        $item->setListingDuration('Days_'.$this->_auction_data['life_time']);
+        $item->setListingDuration($this->_auction_data['listing_duration']);
         $item->setLocation($this->_auction_data['location']);        
         $item->setDispatchTimeMax($this->_auction_data['dispatch_time']); 
         $item->setDescription($this->_auction_data['auction_description']);		

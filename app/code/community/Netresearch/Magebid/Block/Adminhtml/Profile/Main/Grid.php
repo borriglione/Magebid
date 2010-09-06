@@ -52,13 +52,12 @@ class Netresearch_Magebid_Block_Adminhtml_Profile_Main_Grid extends Mage_Adminht
             'index'         => 'profile_name',
         ));
 
-        $this->addColumn('duration', array(
+        $this->addColumn('listing_duration', array(
             'header'        => Mage::helper('magebid')->__('Duration'),
             'align'         => 'left',
             'width'         => '150px',
-            'filter_index'  => 'duration',
-            'index'         => 'duration',
-			'format' => '$duration '.Mage::helper('magebid')->__('Days')
+            'filter_index'  => 'listing_duration',
+            'index'         => 'listing_duration',
         ));
 		
         $this->addColumn('name', array(

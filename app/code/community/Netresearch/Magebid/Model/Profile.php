@@ -51,18 +51,21 @@ class Netresearch_Magebid_Model_Profile extends Mage_Core_Model_Abstract
 	}
 	
     /**
-     * Method creates an array with the possible durations for the new/edit-view
+     * Method creates an array with the possible listing_durations for the new/edit-view
      *
      * @return array
      */	 
 	public function getDurationOptions()
 	{
 		$duration_options = array(
-				array('value'=>1,'label'=>Mage::helper('magebid')->__('%s Day',1)),
-				array('value'=>3,'label'=>Mage::helper('magebid')->__('%s Days',3)),
-				array('value'=>5,'label'=>Mage::helper('magebid')->__('%s Days',5)),
-				array('value'=>7,'label'=>Mage::helper('magebid')->__('%s Days',7)),
-				array('value'=>10,'label'=>Mage::helper('magebid')->__('%s Days',10))
+				array('value'=>'Days_3','label'=>Mage::helper('magebid')->__('%s Days',3)),
+				array('value'=>'Days_5','label'=>Mage::helper('magebid')->__('%s Days',5)),
+				array('value'=>'Days_7','label'=>Mage::helper('magebid')->__('%s Days',7)),
+				array('value'=>'Days_10','label'=>Mage::helper('magebid')->__('%s Days',10)),
+				array('value'=>'Days_30','label'=>Mage::helper('magebid')->__('%s Days',30)),
+				array('value'=>'Days_60','label'=>Mage::helper('magebid')->__('%s Days',60)),	
+				array('value'=>'Days_90','label'=>Mage::helper('magebid')->__('%s Days',90)),
+				array('value'=>'GTC','label'=>Mage::helper('magebid')->__('Good Til Cancelled (GTC)')),											
 				);
 		array_unshift($duration_options, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please select --')));	
 		

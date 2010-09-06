@@ -77,14 +77,14 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
      * Return the caluclated end-date of an auction
      * 
      * @param string $start_date Start-Date of the auction
-     * @param int $life_time Lifetime of the auction in days
+     * @param int $listing_duration Lifetime of the auction in days
      * 
      * @return string
      */		
-	public function getEndDate($start_date,$life_time)
+	public function getEndDate($start_date,$listing_duration)
 	{
 		$time = Mage::getModel('core/date')->timestamp($start_date);
-		$time = $time+(60*60*24*$life_time);
+		$time = $time+(60*60*24*$listing_duration);
 		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}
 	
@@ -144,7 +144,7 @@ class Netresearch_Magebid_Model_Export extends Mage_Core_Model_Abstract
 			unset($this->_processed_profile_data['end_date']);			
 		}	
 		
-		$this->_processed_profile_data['life_time'] = $this->_processed_profile_data['duration'];		
+		$this->_processed_profile_data['listing_duration'] = $this->_processed_profile_data['listing_duration'];		
 
 	}
 	
