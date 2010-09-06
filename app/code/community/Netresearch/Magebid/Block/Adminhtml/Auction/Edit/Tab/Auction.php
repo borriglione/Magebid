@@ -46,8 +46,10 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Auction extends Mage_
             'label' => Mage::helper('magebid')->__('Product SKU'),
         ));
 		
-        $auction->addField('status_name', 'label', array(
+        $auction->addField('magebid_ebay_status_id', 'select', array(
             'label' => Mage::helper('magebid')->__('eBay Status'),
+			'values' => Mage::getSingleton('magebid/auction')->getEbayStatusOptions(),	
+			'disabled' => true,	
         ));	
 		
 	    if (Mage::registry('frozen_magebid')->getData('last_updated')!="")

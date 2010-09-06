@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Netresearch_Magebid>
-            <version>0.7.0</version>
+            <version>0.8.0</version>
         </Netresearch_Magebid>
     </modules>
 	
@@ -42,10 +42,7 @@
                     </profile>	
                     <auction>
                         <table>magebid_auction</table>
-                    </auction>	
-                    <ebay_status>
-                        <table>magebid_ebay_status</table>
-                    </ebay_status>											
+                    </auction>								
                     <auction_detail>
                         <table>magebid_auction_detail</table>
                     </auction_detail>	

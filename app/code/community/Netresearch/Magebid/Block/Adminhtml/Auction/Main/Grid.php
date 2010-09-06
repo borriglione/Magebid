@@ -98,13 +98,13 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Main_Grid extends Mage_Adminht
             'escape'        => true,
         ));
 		
-		//Mage::debug(Mage::getSingleton('magebid/auction')->getEbayStatusOptions());
-        $this->addColumn('status_name', array(
+        $this->addColumn('magebid_ebay_status_id', array(
             'header'        => Mage::helper('magebid')->__('Status'),
-            'index'         => 'status_name',
+            'index'         => 'magebid_ebay_status_id',
 			'type'			=> 'text',
-			//'type'     		=> 'options',
-			//'options'   	=> Mage::getSingleton('magebid/auction')->getEbayStatusOptions(),
+			'type'     		=> 'options',
+			'options'   	=> Mage::getSingleton('magebid/auction')->getEbayStatusOptions(),
+        	'width'         => '140px',
         ));		
 		
         $this->addColumn('quantity', array(

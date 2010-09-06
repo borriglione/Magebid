@@ -77,12 +77,6 @@ CREATE TABLE IF NOT EXISTS `magebid_configuration` (
   PRIMARY KEY (`magebid_configuration_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `magebid_ebay_status` (
-  `magebid_ebay_status_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `status_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`magebid_ebay_status_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `magebid_import_category` (
   `magebid_import_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) NOT NULL,
@@ -282,12 +276,6 @@ CREATE TABLE IF NOT EXISTS `magebid_log` (
 INSERT INTO `magebid_auction_type` (`magebid_auction_type_id`, `name`) VALUES
 (1, 'Auction / Chinese'),
 (2, 'FixedPriceItem');
-
-INSERT INTO `magebid_ebay_status` (`magebid_ebay_status_id`, `status_name`) VALUES
-(0, 'Noch nicht eingestellt'),
-(1, 'In Vorbereitung'),
-(2, 'Aktiv'),
-(3, 'Beendet');
 
 INSERT INTO `magebid_profile` (`magebid_profile_id`, `profile_name`, `start_price`, `fixed_price`, `duration`, `quantity`, `country`, `currency`, `location`, `dispatch_time`, `ebay_category_1`, `ebay_category_2`, `ebay_store_category_1`, `ebay_store_category_2`, `is_image`, `is_more_images`, `is_galery_image`, `magebid_auction_type_id`, `hit_counter`, `header_templates_id`, `main_templates_id`, `footer_templates_id`, `refund_option`, `returns_accepted_option`, `returns_within_option`, `returns_description`, `use_tax_table`, `vat_percent`, `condition_id`) VALUES
 (1, 'Default', '-10%', '+20%', 7, 10, 'DE', 'EUR', 'Leipzig', 1, 9355, 12395, 0, 0, 1, 0, 1, 2, 'RetroStyle', 1, 3, 2, 'MoneyBack', 'ReturnsAccepted', 14, 'Information zum Rückgaberecht.', 0, 1.000, 1000);

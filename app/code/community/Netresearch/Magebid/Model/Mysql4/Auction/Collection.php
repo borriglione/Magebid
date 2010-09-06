@@ -23,16 +23,13 @@ class Netresearch_Magebid_Model_Mysql4_Auction_Collection extends Mage_Core_Mode
 	}
 	
     /**
-     * Manipulating SQL: Join ebay_status, auction_details and auction_types
+     * Manipulating SQL: Join auction_details and auction_types
      *
      * @return void
      */	
     public function joinFields()
     {
 		$this->getSelect()
-            ->join(
-                array('mes' => $this->getTable('magebid/ebay_status')), 
-                'mes.magebid_ebay_status_id = main_table.magebid_ebay_status_id')
 		    ->join(
                 array('mad' => $this->getTable('magebid/auction_detail')), 
                 'mad.magebid_auction_detail_id = main_table.magebid_auction_detail_id')	

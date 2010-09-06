@@ -164,14 +164,13 @@ class Netresearch_Magebid_Model_Auction extends Mage_Core_Model_Abstract
      */	 		
 	public function getEbayStatusOptions()
 	{
-		$data = array();
+		$data = array(
+			self::AUCTION_STATUS_CREATED => Mage::helper('magebid')->__('Not added'),
+			self::AUCTION_STATUS_PREPARED=> Mage::helper('magebid')->__('Prepared in eBay'),
+			self::AUCTION_STATUS_ACTIVE=> Mage::helper('magebid')->__('Active'),
+			self::AUCTION_STATUS_FINISHED=> Mage::helper('magebid')->__('Finished'),	
+		);		
 		
-		$resource = $this->getResource();
-		$options = $resource->getEbayStatuses();
-		foreach ($options as $option)
-		{
-			$data[$option['magebid_ebay_status_id']] = $option['status_name'];
-		}
 		return $data;		
 	}	
 	

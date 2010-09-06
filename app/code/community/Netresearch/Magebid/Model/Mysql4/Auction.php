@@ -76,7 +76,7 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
     }	
 
     /**
-     * Manipulating Load SQL, Join Table ebay_status,auction_details and auction_type
+     * Manipulating Load SQL, Join Table auction_details and auction_type
      *
      * @return void
      */    
@@ -86,9 +86,6 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		
 		//Joins
         $select->join(
-				array('mes' => $this->getTable('magebid/ebay_status')),
-				 $this->getMainTable().'.magebid_ebay_status_id = mes.magebid_ebay_status_id')
-		       ->join(
                 array('mad' => $this->getTable('magebid/auction_detail')), 
                 $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')				 
  		       ->join(
@@ -335,24 +332,6 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}	
 	
-    /**
-     * Get different statused from the table ebay_status
-     * 
-     * Delete candidate, see NRMB-89
-     * 
-     * @return array
-     */			
-	public function getEbayStatuses()
-	{
-        $select = $this->_getReadAdapter()->select()
-            ->from($this->getTable('magebid/ebay_status'));
-			
-		if ($data = $this->_getReadAdapter()->fetchAll($select))
-		{			
-			return $data;
-		}	 	
-	}		
-
     /**
      * Get oldest Start-Date, used for the eBay-Call getSellerList
      * 
