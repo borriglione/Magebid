@@ -148,18 +148,18 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 			//Save main object			
 			parent::save($object);
 							
-			if ($object->getRequestType()!='export')
+			if ($object->getRequestType()!='update')
 			{
 				$object = $this->_prepareAuctionDetailsData($object);
-			
-				//Save auction details
-				Mage::getModel('magebid/auction_detail')
-					->load($object->getMagebidAuctionDetailId())
-					->addData($object->getData())
-					->save();
 			}
+				
+			//Save auction details
+			Mage::getModel('magebid/auction_detail')
+				->load($object->getMagebidAuctionDetailId())
+				->addData($object->getData())
+				->save();
 			
-			if ($object->getRequestType()!='update')
+			if ($object->getRequestType()!='update' && $object->getRequestType()!='export')
 			{			
 				//Save payment
 				$this->_savePayment($object);
@@ -328,7 +328,7 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
 		$select = $this->_getReadAdapter()
 			->select()
 			->from($this->getMainTable())
-			->columns('min(mad.start_date) as min_start_date,min('.$this->getMainTable().'.date_created) as min_date_created')            
+			->columns('min('.$this->getMainTable().'.date_created) as min_date_created')            
 		    ->join(
                 array('mad' => $this->getTable('magebid/auction_detail')), 
                 $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')	                          	
@@ -337,13 +337,14 @@ class Netresearch_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Ab
        
         $data = $this->_getReadAdapter()->fetchAll($select);
         
-        if (!empty($data))
+        if (!empty($data) && $data[0]['min_date_created']!="")
         {
-        	if ($data[0]['min_date_created']!="")
-        	{
-        		return $data[0]['min_date_created'];
-        	}
-        }      
+        	return $data[0]['min_date_created'];
+        }    
+        else
+        {
+        	return Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');
+        }  
 	}
 	
     /**

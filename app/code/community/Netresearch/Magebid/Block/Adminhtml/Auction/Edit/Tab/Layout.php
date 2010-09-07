@@ -52,6 +52,7 @@ class Netresearch_Magebid_Block_Adminhtml_Auction_Edit_Tab_Layout extends Mage_A
             'label'     => Mage::helper('magebid')->__('Hit Counter'),
 			'values'	=> Mage::getSingleton('magebid/profile')->getHitCounterStyles(),
 			'required'	=> true,
+        	'disabled' => $disabled,
         ));		
 		
         /*
