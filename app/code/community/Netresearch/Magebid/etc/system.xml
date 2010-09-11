@@ -19,7 +19,7 @@
             <sort_order>310</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>0</show_in_website>
-            <show_in_store>1</show_in_store>		
+            <show_in_store>0</show_in_store>		
 		 
 		
          <groups>
@@ -30,7 +30,7 @@
 		            <sort_order>1</sort_order>
 		            <show_in_default>1</show_in_default>
 		            <show_in_website>0</show_in_website>
-		            <show_in_store>1</show_in_store>  
+		            <show_in_store>0</show_in_store>  
 		            <fields>
 		                        <app_mode translate="label">
 		                       		<label>App Mode</label>
@@ -49,7 +49,7 @@
 		                            <sort_order>1</sort_order>
 		                            <show_in_default>1</show_in_default>
 		                            <show_in_website>0</show_in_website>
-		                            <show_in_store>1</show_in_store>
+		                            <show_in_store>0</show_in_store>
 		                        </ebay_site_id>
 		                        <token translate="label">
 		                            <label>Token</label>
@@ -57,7 +57,7 @@
 		                            <sort_order>8</sort_order>
 		                            <show_in_default>1</show_in_default>
 		                            <show_in_website>0</show_in_website>
-		                            <show_in_store>1</show_in_store>
+		                            <show_in_store>0</show_in_store>
 		                        </token>
 		            </fields>			
 			   </magebid_connection>
@@ -67,7 +67,7 @@
 					            <sort_order>40</sort_order>
 					            <show_in_default>1</show_in_default>
 					            <show_in_website>0</show_in_website>
-					            <show_in_store>1</show_in_store>  
+					            <show_in_store>0</show_in_store>  
 					            <fields>
 					                        <add_comment translate="label">
 					                       		<label>Add comments to orders</label>
@@ -87,7 +87,7 @@
 					                            <sort_order>0</sort_order>
 					                            <show_in_default>1</show_in_default>
 					                            <show_in_website>0</show_in_website>
-					                            <show_in_store>1</show_in_store>
+					                            <show_in_store>0</show_in_store>
 					                        </payment_received>
 											
 					                        <order_send translate="label">
@@ -97,7 +97,7 @@
 											    <sort_order>10</sort_order>
 					                            <show_in_default>1</show_in_default>
 					                            <show_in_website>0</show_in_website>
-					                            <show_in_store>1</show_in_store>
+					                            <show_in_store>0</show_in_store>
 					                        </order_send>			
 			                    </fields>			
 				</magebid_order_status>	
@@ -107,7 +107,7 @@
 					            <sort_order>60</sort_order>
 					            <show_in_default>1</show_in_default>
 					            <show_in_website>0</show_in_website>
-					            <show_in_store>1</show_in_store>  
+					            <show_in_store>0</show_in_store>  
 					            <fields>		                       
 										    <review_text translate="label">
 					                       		<label>Review Text</label>
@@ -115,7 +115,7 @@
 					                            <sort_order>10</sort_order>
 					                            <show_in_default>1</show_in_default>
 					                            <show_in_website>0</show_in_website>
-					                            <show_in_store>1</show_in_store>
+					                            <show_in_store>0</show_in_store>
 					                        </review_text>	
 					                        <order_reviewed translate="label">
 					                       		<label>Order Status</label>
@@ -124,7 +124,7 @@
 					                            <sort_order>20</sort_order>
 					                            <show_in_default>1</show_in_default>
 					                            <show_in_website>0</show_in_website>
-					                            <show_in_store>1</show_in_store>
+					                            <show_in_store>0</show_in_store>
 					                        </order_reviewed>																						
 								</fields>	
 				</magebid_order_review>		
@@ -134,7 +134,7 @@
 					            <sort_order>20</sort_order>
 					            <show_in_default>1</show_in_default>
 					            <show_in_website>0</show_in_website>
-					            <show_in_store>1</show_in_store>  
+					            <show_in_store>0</show_in_store>  
 					            <fields>
 					                        <import_default_store translate="label">
 					                       		<label>Import Default Store</label>
@@ -143,7 +143,7 @@
 					                            <sort_order>0</sort_order>
 					                            <show_in_default>1</show_in_default>
 					                            <show_in_website>0</show_in_website>
-					                            <show_in_store>1</show_in_store>
+					                            <show_in_store>0</show_in_store>
 					                        </import_default_store>		
 											
 					                        <update_customer_data translate="label">
@@ -153,7 +153,7 @@
 					                            <sort_order>10</sort_order>
 					                            <show_in_default>1</show_in_default>
 					                            <show_in_website>0</show_in_website>
-					                            <show_in_store>1</show_in_store>
+					                            <show_in_store>0</show_in_store>
 					                        </update_customer_data>													
 			                    </fields>			
 				</magebid_order_import>										  
@@ -163,7 +163,7 @@
 					            <sort_order>100</sort_order>
 					            <show_in_default>1</show_in_default>
 					            <show_in_website>0</show_in_website>
-					            <show_in_store>1</show_in_store>  
+					            <show_in_store>0</show_in_store>  
 					            <fields>
 					                        <email translate="label">
 					                       		<label>Paypal eMail Adresse</label>
@@ -171,7 +171,7 @@
 					                            <sort_order>0</sort_order>
 					                            <show_in_default>1</show_in_default>
 					                            <show_in_website>0</show_in_website>
-					                            <show_in_store>1</show_in_store>
+					                            <show_in_store>0</show_in_store>
 					                        </email>
 			
 			                    </fields>			
