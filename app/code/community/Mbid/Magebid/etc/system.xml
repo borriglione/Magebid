@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Mbid
+ * @package   Mbid_Magebid
+ * @author    André Herrn <info@magebid.com>
+ * @copyright 2010 André Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
+ * @link      http://www.magebid.com/
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+*/
+-->
+<config>
+    <sections>
+    	
+        <magebid translate="label" module="magebid">
+            <label>Magebid</label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>310</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>		
+		 
+		
+         <groups>
+            	
+		        <magebid_connection translate="label" module="magebid">
+		            <label>Magebid Connection Settings</label>
+		            <comment>Magebid - eBay Profileinstellungen</comment>
+		            <sort_order>1</sort_order>
+		            <show_in_default>1</show_in_default>
+		            <show_in_website>0</show_in_website>
+		            <show_in_store>0</show_in_store>  
+		            <fields>
+		                        <app_mode translate="label">
+		                       		<label>App Mode</label>
+									<!--<comment>Wenn nein - Production Modus aktiv</comment>-->
+		                            <frontend_type>select</frontend_type>
+		                            <source_model>magebid/system_config_source_app</source_model>
+		                            <sort_order>0</sort_order>
+		                            <show_in_default>1</show_in_default>
+		                            <show_in_website>0</show_in_website>
+		                            <show_in_store>0</show_in_store>
+		                        </app_mode>
+						
+		                        <ebay_site_id translate="label">
+		                            <label>Site ID</label>
+		                            <frontend_type>text</frontend_type>
+		                            <sort_order>1</sort_order>
+		                            <show_in_default>1</show_in_default>
+		                            <show_in_website>0</show_in_website>
+		                            <show_in_store>0</show_in_store>
+		                        </ebay_site_id>
+		                        <token translate="label">
+		                            <label>Token</label>
+		                            <frontend_type>text</frontend_type>
+		                            <sort_order>8</sort_order>
+		                            <show_in_default>1</show_in_default>
+		                            <show_in_website>0</show_in_website>
+		                            <show_in_store>0</show_in_store>
+		                        </token>
+		            </fields>			
+			   </magebid_connection>
+			   		      
+		       <magebid_order_status translate="label" module="magebid">
+					            <label>Order Status</label>
+					            <sort_order>40</sort_order>
+					            <show_in_default>1</show_in_default>
+					            <show_in_website>0</show_in_website>
+					            <show_in_store>0</show_in_store>  
+					            <fields>
+					                        <add_comment translate="label">
+					                       		<label>Add comments to orders</label>
+												<comment>If status was changed</comment>
+					                            <frontend_type>select</frontend_type>
+					                            <source_model>adminhtml/system_config_source_yesno</source_model>
+					                            <sort_order>0</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </add_comment>					                       
+										   
+										    <payment_received translate="label">
+					                       		<label>eBay "Zahlung erhalten"</label>
+					                            <frontend_type>multiselect</frontend_type>
+					                            <source_model>Mbid_Magebid_Model_System_Config_Source_Sales_Order_Status</source_model>
+					                            <sort_order>0</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </payment_received>
+											
+					                        <order_send translate="label">
+					                       		<label>eBay "Versendet"</label>
+					                            <frontend_type>multiselect</frontend_type>
+					                            <source_model>Mbid_Magebid_Model_System_Config_Source_Sales_Order_Status</source_model>
+											    <sort_order>10</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </order_send>			
+			                    </fields>			
+				</magebid_order_status>	
+				
+				<magebid_order_review translate="label" module="magebid">
+					            <label>Order Reviews</label>
+					            <sort_order>60</sort_order>
+					            <show_in_default>1</show_in_default>
+					            <show_in_website>0</show_in_website>
+					            <show_in_store>0</show_in_store>  
+					            <fields>		                       
+										    <review_text translate="label">
+					                       		<label>Review Text</label>
+					                            <frontend_type>text</frontend_type>
+					                            <sort_order>10</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </review_text>	
+					                        <order_reviewed translate="label">
+					                       		<label>Order Status</label>
+					                            <frontend_type>multiselect</frontend_type>
+					                            <source_model>Mbid_Magebid_Model_System_Config_Source_Sales_Order_Status</source_model>
+					                            <sort_order>20</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </order_reviewed>																						
+								</fields>	
+				</magebid_order_review>		
+				
+		       <magebid_order_import translate="label" module="magebid">
+					            <label>Order Import</label>
+					            <sort_order>20</sort_order>
+					            <show_in_default>1</show_in_default>
+					            <show_in_website>0</show_in_website>
+					            <show_in_store>0</show_in_store>  
+					            <fields>
+					                        <import_default_store translate="label">
+					                       		<label>Import Default Store</label>
+					                            <frontend_type>select</frontend_type>
+					                            <source_model>Mbid_Magebid_Model_System_Config_Source_Store</source_model>
+					                            <sort_order>0</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </import_default_store>		
+											
+					                        <update_customer_data translate="label">
+					                       		<label>Update Customer Data</label>
+					                            <frontend_type>select</frontend_type>
+					                            <source_model>adminhtml/system_config_source_yesno</source_model>
+					                            <sort_order>10</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </update_customer_data>													
+			                    </fields>			
+				</magebid_order_import>										  
+						  
+		       <magebid_paypal translate="label" module="magebid">
+					            <label>eBay - Paypal</label>
+					            <sort_order>100</sort_order>
+					            <show_in_default>1</show_in_default>
+					            <show_in_website>0</show_in_website>
+					            <show_in_store>0</show_in_store>  
+					            <fields>
+					                        <email translate="label">
+					                       		<label>Paypal eMail Adresse</label>
+					                            <frontend_type>text</frontend_type>
+					                            <sort_order>0</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </email>
+			
+			                    </fields>			
+				</magebid_paypal>	
+				
+		       <magebid_log translate="label" module="magebid">
+					            <label>Log</label>
+					            <sort_order>120</sort_order>
+					            <show_in_default>1</show_in_default>
+					            <show_in_website>0</show_in_website>
+					            <show_in_store>0</show_in_store>  
+					            <fields>
+					                        <success translate="label">
+					                       		<label>Log Success</label>
+					                            <frontend_type>select</frontend_type>
+					                            <source_model>adminhtml/system_config_source_yesno</source_model>
+					                            <sort_order>10</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </success>
+					                        <warning translate="label">
+					                       		<label>Log Warnings</label>
+						                            <frontend_type>select</frontend_type>
+					                            <source_model>adminhtml/system_config_source_yesno</source_model>
+					                            <sort_order>20</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </warning>
+					                        <error translate="label">
+					                       		<label>Log Errors</label>
+					                            <frontend_type>select</frontend_type>
+					                            <source_model>adminhtml/system_config_source_yesno</source_model>
+					                            <sort_order>30</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </error>
+			                    </fields>			
+				</magebid_log>	
+				
+		       <magebid_notices translate="label" module="magebid">
+					            <label>Notices</label>
+					            <sort_order>160</sort_order>
+					            <show_in_default>1</show_in_default>
+					            <show_in_website>0</show_in_website>
+					            <show_in_store>0</show_in_store>  
+					            <fields>
+					                        <transaction_notice translate="label">
+					                       		<label>Show Transaction Notices</label>
+					                            <frontend_type>select</frontend_type>
+					                            <source_model>adminhtml/system_config_source_yesno</source_model>
+					                            <sort_order>10</sort_order>
+					                            <show_in_default>1</show_in_default>
+					                            <show_in_website>0</show_in_website>
+					                            <show_in_store>0</show_in_store>
+					                        </transaction_notice>
+			                    </fields>			
+				</magebid_notices>							  
+			</groups>
+		</magebid>		
+			
+		
+    </sections>
+</config>
