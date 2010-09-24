@@ -120,7 +120,7 @@ class Mbid_Magebid_Model_Import_Category_Features extends Mage_Core_Model_Abstra
 		$avaiable_conditions = array();
 	
 		//Get Conditions
-		if ($condition_enabled = $this->_getConditionEnabled($ebay_category_id) && ($ebay_category_id!=0))
+			if (($ebay_category_id!=0) && $condition_enabled = $this->_getConditionEnabled($ebay_category_id))
 		{
 			$avaiable_conditions = $this->_getConditions($ebay_category_id);
 		}
