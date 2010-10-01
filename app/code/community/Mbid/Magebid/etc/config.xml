@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Mbid_Magebid>
-            <version>0.8.2</version>
+            <version>0.8.3</version>
         </Mbid_Magebid>
     </modules>
 	
@@ -92,6 +92,7 @@
          <helpers>
             <magebid><class>Mbid_Magebid_Helper</class></magebid>
 			<magebid_order><class>Mbid_Magebid_Helper_Order</class></magebid_order>
+			<magebid_encoding><class>Mbid_Magebid_Helper_Encoding</class></magebid_encoding>
         </helpers>
         
 		<blocks>

@@ -11,8 +11,8 @@ require_once 'EndItemRequestType.php';
  *
  * @category  Mbid
  * @package   Mbid_Magebid
- * @author    André Herrn <info@magebid.com>
- * @copyright 2010 André Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
+ * @author    AndrÃ© Herrn <info@magebid.com>
+ * @copyright 2010 AndrÃ© Herrn | Netresearch GmbH & Co.KG (http://www.netresearch.de)
  * @link      http://www.magebid.com/
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
@@ -182,8 +182,8 @@ class Mbid_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 	{
         $item = new ItemType();
         $item->setTitle($this->_auction_data['auction_name']);       
-        $item->setCurrency($this->_auction_data['currency']);
-        $item->setCountry($this->_auction_data['country']);		
+        //$item->setCurrency($this->_auction_data['currency']);
+        $item->setCountry($this->_auction_data['country']);	
 		if (!empty($this->_auction_data['start_date']) && ($this->_auction_data['start_date'] != '0000-00-00 00:00:00')) $item->setScheduleTime($this->_auction_data['start_date']);	
         $item->setListingDuration($this->_auction_data['listing_duration']);
         $item->setLocation($this->_auction_data['location']);        
@@ -411,8 +411,8 @@ class Mbid_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 	public function getSellerList($from,$to,$current_page = 1)
 	{
         //Build request
-		$req = new GetSellerListRequestType();	
-
+		$req = new GetSellerListRequestType();			
+		
 		//Set Params
 		$req->setStartTimeFrom($from);
 		$req->setStartTimeTo($to);
