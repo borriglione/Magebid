@@ -29,7 +29,6 @@ class Mbid_Magebid_Block_Adminhtml_Auction_Edit_Tab_Policy extends Mage_Adminhtm
             'title'     => Mage::helper('magebid')->__('Refund Option'),
             'label'     => Mage::helper('magebid')->__('Refund Option'),
 			'values'	=> Mage::getSingleton('magebid/import_policy')->getRefundOption(),			
-			'required'	=> true,
 			'disabled' => $disabled,
         ));	
 		

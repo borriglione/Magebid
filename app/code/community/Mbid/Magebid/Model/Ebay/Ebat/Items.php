@@ -182,7 +182,7 @@ class Mbid_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 	{
         $item = new ItemType();
         $item->setTitle($this->_auction_data['auction_name']);       
-        //$item->setCurrency($this->_auction_data['currency']);
+        $item->setCurrency($this->_auction_data['currency']);
         $item->setCountry($this->_auction_data['country']);	
 		if (!empty($this->_auction_data['start_date']) && ($this->_auction_data['start_date'] != '0000-00-00 00:00:00')) $item->setScheduleTime($this->_auction_data['start_date']);	
         $item->setListingDuration($this->_auction_data['listing_duration']);
