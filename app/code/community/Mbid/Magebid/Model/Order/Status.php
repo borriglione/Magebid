@@ -117,11 +117,14 @@ class Mbid_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
      */	  	
 	public function setEbayStatus($order,$new_status,$order_comment = '',$new_order = false)
 	{		
+		//Check if the Order is connected to Magebid
+		if (!$this->_checkIfMagentoOrder($order)) return $order_comment;
+	
 		//Init
 		$this->_varSet($order,$new_status);		
 		
 		try
-		{
+		{		
 			//Build Order comment
 			if ($order_comment!='') $this->_addComment($order_comment);					
 		
@@ -298,6 +301,29 @@ class Mbid_Magebid_Model_Order_Status extends Mage_Core_Model_Abstract
 		}		
 	}
 	
+    /**
+     * Check if the currect order is an order which was created by magebid
+     * 
+     * @return boolean
+     */		
+	protected function _checkIfMagentoOrder($order)
+	{
+		if (Mage::getModel('magebid/transaction')->load($order->getIncrementId(),'order_id')->getId())
+		{
+			return true;
+			
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+    /**
+     * Concat mutliple Order Comments
+     * 
+     * @return string
+     */		
 	protected function _addComment($comment)
 	{
      	if ($this->_comments=='')
