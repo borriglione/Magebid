@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Mbid_Magebid>
-            <version>0.8.1</version>
+            <version>0.8.5</version>
         </Mbid_Magebid>
     </modules>
 	
@@ -92,17 +92,13 @@
          <helpers>
             <magebid><class>Mbid_Magebid_Helper</class></magebid>
 			<magebid_order><class>Mbid_Magebid_Helper_Order</class></magebid_order>
+			<magebid_encoding><class>Mbid_Magebid_Helper_Encoding</class></magebid_encoding>
         </helpers>
         
 		<blocks>
             <magebid>
                 <class>Mbid_Magebid_Block</class>
-            </magebid>	
-            <adminhtml>
-                <rewrite>
-                    <catalog_product_grid>Mbid_Magebid_Block_Adminhtml_Catalog_Product_Grid</catalog_product_grid>					
-                </rewrite>
-            </adminhtml>				
+            </magebid>				
         </blocks>
 		
 	    <models>
@@ -144,6 +140,12 @@
                         <title>Magebid</title>
                         <sort_order>30</sort_order>
 				        <children>				
+							<magebid_catalog module="magebid" translate="title">
+								<title>Select Products</title>
+								<sort_order>40</sort_order>
+								<action>magebid/adminhtml_catalog_main/</action> 
+							</magebid_catalog>					
+						
 							<magebid_auction module="magebid" translate="title">
 								<title>Auctions</title>
 								<sort_order>50</sort_order>
@@ -205,6 +207,9 @@
 				                    <title>Magebid</title>
 									<sort_order>30</sort_order>
 				                    <children>
+				                         <magebid_catalog translate="title">
+				                             <title>Select Products</title>
+				                         </magebid_catalog>				                    	
 				                         <magebid_auction translate="title">
 				                             <title>Auctions</title>
 				                         </magebid_auction>

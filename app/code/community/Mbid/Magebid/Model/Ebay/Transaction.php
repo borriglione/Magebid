@@ -1,4 +1,8 @@
 <?php
+//include ebay lib
+require_once('lib/ebat_669/setincludepath.php');
+require_once 'EbatNs_Environment.php';
+
 /**
  * Mbid_Magebid_Model_Ebay_Transaction
  *
@@ -9,27 +13,28 @@
  * @link      http://www.magebid.com/
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
+
 class Mbid_Magebid_Model_Ebay_Transaction extends Mage_Core_Model_Abstract
 {
     /**
      * Handler for Calls to eBay
      * @var object Mbid_Magebid_Model_Ebay_Ebat_Transaction
-     */		
+     */
 	protected $_handler;
-	
+
     /**
      * Construct
      *
      * @return void
-     */		
+     */
 	protected function _construct()
     {
         $this->_init('magebid/ebay_transaction');
-		
+
 		//set Request Handler
 		$this->_handler = Mage::getModel('magebid/ebay_ebat_transaction');
-	}	
-	
+	}
+
     /**
      * Get all Seller Transactions in the date range $from->$to
      *
@@ -37,61 +42,61 @@ class Mbid_Magebid_Model_Ebay_Transaction extends Mage_Core_Model_Abstract
      * @param string $to End Date
      *
      * @return array
-     */		
+     */
 	public function getSellerTransactions($from,$to)
-	{		
+	{
 		$raw_transactions = array();
 		$page = 1;
 
 		do
-		{			
-			$seller_transactions = $this->_handler->getSellerTransactions($from,$to,$page);	
-			
+		{
+			$seller_transactions = $this->_handler->getSellerTransactions($from,$to,$page);
+
 			if (count($seller_transactions->TransactionArray)>0)
 			{
 				foreach ($seller_transactions->TransactionArray as $raw_transaction)
 				{
 					$raw_transactions[] = $raw_transaction;
-				}			
+				}
 				$page++;
 			}
 
 			//Daily Log
-			Mage::getModel('magebid/daily_log')->logCall();				
-		} 
-		while ($page<=$seller_transactions->PaginationResult->TotalNumberOfPages);	
-		
+			Mage::getModel('magebid/daily_log')->logCall();
+		}
+		while ($page<=$seller_transactions->PaginationResult->TotalNumberOfPages);
+
 		return $raw_transactions;
 	}
-	
+
     /**
      * Get eBay-Order-Informations
      *
      * @param array $order_ids ebay-order-ids
      *
      * @return object
-     */		
+     */
 	public function getOrderTransactions($order_ids)
-	{		
+	{
 		$raw_orders = array();
 
 		for ($i=0;$i<count($order_ids);$i=$i+20)
 		{
 			//Get the 20 ebay order ids
 			$part_ebay_order_ids = array_slice($order_ids, $i, 20);
-			
+
 			//Make the call
-			$order_transactions = $this->_handler->getOrderTransactions($order_ids);
-			
+			$order_transactions = $this->_handler->getOrderTransactions($part_ebay_order_ids);
+
 			foreach ($order_transactions->OrderArray as $raw_order)
 			{
 				$raw_orders[] = $this->_handler->mapRawOrderItem($raw_order);
-			}			
-			
+			}
+
 			//Daily Log
-			Mage::getModel('magebid/daily_log')->logCall();	
+			Mage::getModel('magebid/daily_log')->logCall();
 		}
-		
+
 		return $raw_orders;
 	}
 }

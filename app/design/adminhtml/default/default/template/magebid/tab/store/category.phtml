@@ -9,9 +9,51 @@
 */
 -->
 
-<p><?php echo Mage::helper('magebid')->__('Please select only one category and a category which has no child categories anymore'); ?></p>
+<?php
+
+//load trees that we can show the errors after loading the trees above (getEbayChildTreeErrors())
+$ebayTreeJson1 = $this->getEbayTreeJson('ebay_store_category_1');
+$ebayTreeErrors1 = $this->getEbayChildTreeErrors();
+$ebayTreeJson2 = $this->getEbayTreeJson('ebay_store_category_2');
+$ebayTreeErrors2 = $this->getEbayChildTreeErrors();
+
+?>
+
+<p><?php echo Mage::helper('magebid')->__('Please select only one category and a category which has no child categories anymore. If there is an error message that the old category exists no longer, you can select eBay as category to set no category.'); ?></p>
 
 <table>
+	<tr>
+		<td>
+			<?php if($ebayTreeErrors1): ?>
+			<div id="messages">
+				<ul class="messages">
+					<?php foreach($ebayTreeErrors1 as $error): ?>
+					<li class="error-msg">
+						<ul>
+							<li><?php echo $error; ?></li>
+						</ul>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
+		</td>
+		<td>
+			<?php if($ebayTreeErrors2): ?>
+			<div id="messages">
+				<ul class="messages">
+					<?php foreach($ebayTreeErrors2 as $error): ?>
+					<li class="error-msg">
+						<ul>
+							<li><?php echo $error; ?></li>
+						</ul>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<div class="entry-edit" style="width:350px;">
@@ -22,7 +64,7 @@
 			        <input type="hidden" name="ebay_store_category_1" id="ebay-store-category-1" value="<?php echo $this->getEbayStoreCategory('ebay_store_category_1') ?>">
 			        <div id="ebay-store-categories-1" class="tree"></div>
 			    </fieldset>
-			</div>			
+			</div>
 		</td>
 		<td>
 			<div class="entry-edit" style="width:350px;">
@@ -33,18 +75,18 @@
 			        <input type="hidden" name="ebay_store_category_2" id="ebay-store-category-2" value="<?php echo $this->getEbayStoreCategory('ebay_store_category_2') ?>">
 			        <div id="ebay-store-categories-2" class="tree"></div>
 			    </fieldset>
-			</div>					
-		</td>		
+			</div>
+		</td>
 	</tr>
 </table>
 
 <script type="text/javascript">
-	
+
 Ext.EventManager.onDocumentReady(function() {
     var categoryLoader = new Ext.tree.TreeLoader({
        dataUrl: '<?php echo $this->getLoadTreeUrl()?>'
     });
-	
+
     categoryLoader.createNode = function(config) {
         config.uiProvider = Ext.tree.CheckboxNodeUI;
         var node;
@@ -94,7 +136,7 @@ Ext.EventManager.onDocumentReady(function() {
     });
 
 	tree.setRootNode(root);
-	bildCategoryTree(root, <?php echo $this->getEbayTreeJson('ebay_store_category_1') ?>);
+	bildCategoryTree(root, <?php echo $ebayTreeJson1 ?>);
     tree.addListener('click', categoryClick.createDelegate(this));
 
     // render the tree
@@ -131,7 +173,7 @@ Ext.EventManager.onDocumentReady(function() {
     var categoryLoader = new Ext.tree.TreeLoader({
        dataUrl: '<?php echo $this->getLoadTreeUrl()?>'
     });
-	
+
     categoryLoader.createNode = function(config) {
         config.uiProvider = Ext.tree.CheckboxNodeUI;
         var node;
@@ -179,7 +221,7 @@ Ext.EventManager.onDocumentReady(function() {
     });
 
 	tree.setRootNode(root);
-	bildCategoryTree(root, <?php echo $this->getEbayTreeJson('ebay_store_category_2') ?>);
+	bildCategoryTree(root, <?php echo $ebayTreeJson2 ?>);
     tree.addListener('click', categoryClick.createDelegate(this));
 
     // render the tree
@@ -200,10 +242,10 @@ function categoryClick(node, e){
     node.getUI().check(!node.getUI().checked())
     varienElementMethods.setHasChanges(Event.element(e), e);
 };
-function categoryAdd(id) {	
+function categoryAdd(id) {
     $('ebay-store-category-1').value = id;
 }
-function categoryRemove(id) {    
+function categoryRemove(id) {
     $('ebay-store-category-1').value = '';
 }
 

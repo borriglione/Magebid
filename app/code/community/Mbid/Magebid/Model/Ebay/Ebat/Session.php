@@ -92,7 +92,7 @@ class Mbid_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstract
 		{
 			$string .= $error->SeverityCode." (".$error->ErrorCode.") ".
 						" - ".Mage::helper('magebid')->__('Auction')." ".$ebay_item_id.
-						  " - ".$error->ShortMessage.'<br />'.$error->LongMessage."<br />";
+						  " - ".Mage::helper('magebid_encoding')->encodeErrorsFromEbay($error->ShortMessage).'<br />'.Mage::helper('magebid_encoding')->encodeErrorsFromEbay($error->LongMessage)."<br />";
 		}
 		return $string;		
 	}	
@@ -110,7 +110,7 @@ class Mbid_Magebid_Model_Ebay_Ebat_Session extends Mage_Core_Model_Abstract
 		foreach ($res->Errors as $error)
 		{
 			$string .= $error->SeverityCode." (".$error->ErrorCode.") ".
-						  " - ".$error->ShortMessage.'<br />'.$error->LongMessage."<br />";
+						  " - ".Mage::helper('magebid_encoding')->encodeErrorsFromEbay($error->ShortMessage).'<br />'.Mage::helper('magebid_encoding')->encodeErrorsFromEbay($error->LongMessage)."<br />";
 		}
 		return $string;		
 	}		

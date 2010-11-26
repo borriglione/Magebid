@@ -15,26 +15,36 @@ class Mbid_Magebid_Model_Auction_Type extends Mage_Core_Model_Abstract
      * Construct
      *
      * @return void
-     */	
+     */
 	protected function _construct()
     {
         $this->_init('magebid/auction_type');
-    }	
-	
+    }
+
     /**
      * Get all auction types for an option-select-box
      *
      * @return array
-     */	
-	function getAllAuctionTypesOptions()
+     */
+	public function getAllAuctionTypesOptions()
 	{
-		$collection = parent::getCollection();	
+		$collection = parent::getCollection();
 		$collection = $collection->toOptionArray();
 		array_unshift($collection, array('value'=>'', 'label'=>Mage::helper('magebid')->__('-- Please Select --')));
 		return $collection;
 	}
-	
 
-	
+	public function getAuctionTypeId($auctionType) {
+		$collection = $this->getCollection();
+		foreach($collection as $item) {
+			//search in string, because name can be like "auction / chinese"
+			if($item->getName() == $auctionType || strpos($item->getName(),$auctionType) !== false)
+				return $item->getId();
+		}
+		return false;
+	}
+
+
+
 }
 ?>

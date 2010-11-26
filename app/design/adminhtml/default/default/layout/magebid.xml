@@ -15,23 +15,29 @@
 		</reference> 	
 	</default>		
 	
-	<netresearch_magebid_adminhtml_configuration_main_index>
+	<mbid_magebid_adminhtml_configuration_main_index>
 		<reference name="head">
 			<action method="addCss"><name>magebid.css</name></action>
 		</reference>
-	</netresearch_magebid_adminhtml_configuration_main_index>	
+	</mbid_magebid_adminhtml_configuration_main_index>	
 	
-	<netresearch_magebid_adminhtml_configuration_main_save>
+	<mbid_magebid_adminhtml_configuration_main_save>
 		<reference name="head">
 			<action method="addCss"><name>magebid.css</name></action>
 		</reference>
-	</netresearch_magebid_adminhtml_configuration_main_save>
+	</mbid_magebid_adminhtml_configuration_main_save>
 	
-    <netresearch_magebid_adminhtml_export_main_massprepare>
+    <mbid_magebid_adminhtml_export_main_massprepare>
         <reference name="left">
             <block type="adminhtml/store_switcher" name="store_switcher" before="-"></block>
         </reference>	
-    </netresearch_magebid_adminhtml_export_main_massprepare>			
+    </mbid_magebid_adminhtml_export_main_massprepare>	
+	
+    <mbid_magebid_adminhtml_catalog_main_index>
+        <reference name="content">
+            <block type="adminhtml/store_switcher" name="store_switcher" before="-"></block>
+        </reference>	
+    </mbid_magebid_adminhtml_catalog_main_index>		
 </layout>
 
 

@@ -12,10 +12,16 @@
 class Mbid_Magebid_Block_Adminhtml_Auction_Edit_Tab_Store_Category_Tree extends Mage_Adminhtml_Block_Catalog_Category_Tree
 {
     /**
+	 * errors while building the tree
+	 * @var array
+	 */
+	private $_ebayChildTreeErrors = array();
+
+    /**
      * Construct
      *
      * @return void
-     */	
+     */
 	public function __construct()
     {
         parent::__construct();
@@ -26,20 +32,20 @@ class Mbid_Magebid_Block_Adminhtml_Auction_Edit_Tab_Store_Category_Tree extends 
      * Get existing eBay Store Category for this entry (profile or auction)
      *
      * @return string
-     */	
+     */
     public function getEbayStoreCategory($field)
-    {        
+    {
 		if (Mage::registry('frozen_magebid'))
 		{
 			return Mage::registry('frozen_magebid')->getData($field);
-		}		
+		}
     }
 
     /**
      * Get Load URL, for the AJAX-Build-Category-Request
      *
      * @return string
-     */	
+     */
     public function getLoadTreeUrl($expanded=null)
     {
         return $this->getUrl('*/*/storeCategoriesJson', array('_current'=>true));
@@ -49,32 +55,41 @@ class Mbid_Magebid_Block_Adminhtml_Auction_Edit_Tab_Store_Category_Tree extends 
      * Get JSON for the child-tree
      *
      * @return string
-     */	
+     */
 	public function getEbayChildTreeJson($ebay_store_category_id)
 	{
 		$children = Mage::getModel('magebid/import_category')->setEbayStoreFlag()->buildChildTree($ebay_store_category_id);
         $json = Zend_Json::encode($children);
-        return $json;		
-	}	
-	
+        return $json;
+	}
+
+	/**
+	 * Get Errors while building the tree (e.g. to display in template file above the category tree)
+	 */
+	public function getEbayChildTreeErrors() {
+		return $this->_ebayChildTreeErrors;
+	}
+
     /**
      * Get JSON for the initial store category tree
      *
      * @return string
-     */	
+     */
 	public function getEbayTreeJson($field)
 	{
 		$selected_cat = '';
-		
+
 		if (Mage::registry('frozen_magebid'))
 		{
 			$selected_cat =  Mage::registry('frozen_magebid')->getData($field);
-		}			
-		
-		$rootArray = Mage::getModel('magebid/import_category')->setEbayStoreFlag()->buildTree($selected_cat);
+		}
+
+		$model = Mage::getModel('magebid/import_category');
+		$rootArray = $model->setEbayStoreFlag()->buildTree($selected_cat);
+		$this->_ebayChildTreeErrors = $model->getTreeErrors();
         $json = Zend_Json::encode(isset($rootArray['children']) ? $rootArray['children'] : array());
-        return $json;		
-	}	
+        return $json;
+	}
 
 }
 ?>

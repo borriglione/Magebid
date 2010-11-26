@@ -15,24 +15,24 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
      * Construct
      *
      * @return void
-     */	
+     */
     protected function _construct()
     {
         $this->_init('magebid/auction', 'magebid_auction_id');
-    }	
+    }
 
     /**
      * When loading the auction, load shipping,payment and listing_enhancement too
-     * 
+     *
      * @param object $object
      *
      * @return object
-     */	   
+     */
     protected function _afterLoad(Mage_Core_Model_Abstract $object)
     {
         if (!is_object($object)) return parent::_afterLoad($object);
-    
-    	//Load payment		
+
+    	//Load payment
 		$select = $this->_getReadAdapter()->select()
             ->from($this->getTable('magebid/payments'))
             ->where('magebid_auction_id = ?', $object->getMagebidAuctionId());
@@ -44,7 +44,7 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
             }
             $object->setData('payment_methods', $paymentsArray);
         }
-		
+
 		//Load shipping
         $select = $this->_getReadAdapter()->select()
             ->from($this->getTable('magebid/shipping'))
@@ -56,8 +56,8 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
                 $shippingArray[] = array('shipping_method'=>$row['code'],'price'=>$row['price'],'add_price'=>$row['add_price']);
             }
             $object->setData('shipping_methods', $shippingArray);
-        }		
-		
+        }
+
 		//Load listing enhancement
         $select = $this->_getReadAdapter()->select()
             ->from($this->getTable('magebid/listing_enhancement'))
@@ -69,166 +69,166 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
                 $listingEnhancementArray[] = $row['code'];
             }
             $object->setData('listing_enhancement', $listingEnhancementArray);
-        }				
-		
+        }
+
 
         return parent::_afterLoad($object);
-    }	
+    }
 
     /**
      * Manipulating Load SQL, Join Table auction_details and auction_type
      *
      * @return void
-     */    
+     */
     protected function _getLoadSelect($field, $value, $object)
     {
         $select = parent::_getLoadSelect($field, $value, $object);
-		
+
 		//Joins
         $select->join(
-                array('mad' => $this->getTable('magebid/auction_detail')), 
-                $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')				 
+                array('mad' => $this->getTable('magebid/auction_detail')),
+                $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')
  		       ->join(
-                array('mat' => $this->getTable('magebid/auction_type')), 
-                $this->getMainTable().'.magebid_auction_type_id = mat.magebid_auction_type_id');		 							     
+                array('mat' => $this->getTable('magebid/auction_type')),
+                $this->getMainTable().'.magebid_auction_type_id = mat.magebid_auction_type_id');
         return $select;
-    }	
-	
-    
+    }
+
+
     /**
      * Before deleting the auction data, delete auction-details
-     * 
+     *
      * @param object $object Auction Object
      *
      * @return void
-     */		    
+     */
 	protected function _beforeDelete(Mage_Core_Model_Abstract $object)
-	{    
+	{
 			$auction = Mage::getModel('magebid/auction')->load($object->getId());
-	
+
 			//Delete auction_details
-	        Mage::getModel('magebid/auction_detail')->setId($auction->getMagebidAuctionDetailId())->delete();	
+	        Mage::getModel('magebid/auction_detail')->setId($auction->getMagebidAuctionDetailId())->delete();
 	}
-    
+
     /**
      * After deleting the auction data, delete the shipping,payment and listing_enhancement too
-     * 
+     *
      * @param object $object Auction Object
      *
      * @return void
-     */		    
+     */
 	protected function _afterDelete(Mage_Core_Model_Abstract $object)
 	{
 			//Delete Shipping
 	        $condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
-	        $this->_getWriteAdapter()->delete($this->getTable('magebid/shipping'), $condition);	
-			
+	        $this->_getWriteAdapter()->delete($this->getTable('magebid/shipping'), $condition);
+
 			//Delete payment
 	        $condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
-	        $this->_getWriteAdapter()->delete($this->getTable('magebid/payments'), $condition);	
-			
+	        $this->_getWriteAdapter()->delete($this->getTable('magebid/payments'), $condition);
+
 			//Delete Listing Enhancement
       		$condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
-            $this->_getWriteAdapter()->delete($this->getTable('magebid/listing_enhancement'), $condition);				
-	}	
-	
+            $this->_getWriteAdapter()->delete($this->getTable('magebid/listing_enhancement'), $condition);
+	}
+
     /**
      * After saving aution, save shipping and payment methods as well
-     * 
+     *
      * @param object $object Profile Object
      *
      * @return void
-     */	    	
+     */
     public function save(Mage_Core_Model_Abstract $object)
-    {    	
+    {
 		$this->beginTransaction();
-		
+
 		try
 		{
-			//Save main object			
+			//Save main object
 			parent::save($object);
-							
+
 			if ($object->getRequestType()!='update')
 			{
 				$object = $this->_prepareAuctionDetailsData($object);
 			}
-				
+
 			//Save auction details
 			Mage::getModel('magebid/auction_detail')
 				->load($object->getMagebidAuctionDetailId())
 				->addData($object->getData())
 				->save();
-			
+
 			if ($object->getRequestType()!='update' && $object->getRequestType()!='export')
-			{			
+			{
 				//Save payment
 				$this->_savePayment($object);
-	
+
 				//Save shipping
-				$this->_saveShipping($object);					
-			}						
-			
-			$this->commit();				
-		}		
-		catch (Exception $e) 
-		{			
+				$this->_saveShipping($object);
+			}
+
+			$this->commit();
+		}
+		catch (Exception $e)
+		{
 			$this->rollBack();
 			throw($e);
-		}		
+		}
 	}
 
     /**
      * Save Payment Methods for auction
-     * 
+     *
      * @param object $object Auction Object
      *
      * @return void
-     */	 		
+     */
 	protected function _savePayment($object)
 	{
 			//Delete old payment
 	        $condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
-	        $this->_getWriteAdapter()->delete($this->getTable('magebid/payments'), $condition);		
-			
+	        $this->_getWriteAdapter()->delete($this->getTable('magebid/payments'), $condition);
+
 			//Save Payment Data
-			$payment_methods = $object->getPaymentMethod();		
-			
+			$payment_methods = $object->getPaymentMethod();
+
 			foreach ($payment_methods as $value)
 			{
 				if ($value['delete']!=1)
-				{				
+				{
 					$data = array(
 						'magebid_auction_id' =>$object->getId(),
-						'code' => $value['payment_method'],		 
+						'code' => $value['payment_method'],
 						);
-						
+
 						Mage::getModel('magebid/payments')
 								->setData($data)
 									->save();
 				}
 				else
 				{
-					
+
 				}
-			}	
+			}
 	}
-	
+
     /**
      * Save Shipping Methods for auction
-     * 
+     *
      * @param object $object Auction Object
      *
      * @return void
-     */	 	
+     */
 	protected function _saveShipping($object)
 	{
 			//Delete old Shipping
 	        $condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
-	        $this->_getWriteAdapter()->delete($this->getTable('magebid/shipping'), $condition);		
-			
+	        $this->_getWriteAdapter()->delete($this->getTable('magebid/shipping'), $condition);
+
 			//Save Shipping Data
-			$shipping_methods = $object->getShippingMethod();		
-			
+			$shipping_methods = $object->getShippingMethod();
+
 			foreach ($shipping_methods as $value)
 			{
 				if ($value['delete']!=1)
@@ -236,24 +236,24 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
 					$data = array(
 						'magebid_auction_id' =>$object->getId(),
 						'code' => $value['shipping_method'],
-						'price' => $value['price'],	
-						'add_price' => $value['add_price'],					 
+						'price' => $value['price'],
+						'add_price' => $value['add_price'],
 						);
-						
+
 						Mage::getModel('magebid/shipping')
 								->setData($data)
 									->save();
 				}
-			}		
+			}
 	}
-	
+
     /**
      * Save Listing Enhancements (Layoutoptionen)
-     * 
+     *
      * @param object $object Auction Object
      *
      * @return object
-     */	 		
+     */
     protected function _afterSave(Mage_Core_Model_Abstract $object)
     {
         $condition = $this->_getWriteAdapter()->quoteInto('magebid_auction_id = ?', $object->getId());
@@ -266,22 +266,22 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
 	            $listing_enhancement_data = array();
 	            $listing_enhancement_data['magebid_auction_id'] = $object->getId();
 	            $listing_enhancement_data['code'] = $listing_enhancement;
-	            $this->_getWriteAdapter()->insert($this->getTable('magebid/listing_enhancement'), $listing_enhancement_data);			
-	        }			
+	            $this->_getWriteAdapter()->insert($this->getTable('magebid/listing_enhancement'), $listing_enhancement_data);
+	        }
 		}
 
         return parent::_afterSave($object);
-    }	
-    			
+    }
+
     /**
      * Prepare Start-Date for auction detail data
-     * 
+     *
      * Possibility of wrong behaviour, see Jira NRMB-91
-     * 
+     *
      * @param object $object Auction Object
      *
      * @return void
-     */	 		
+     */
 	protected function _prepareAuctionDetailsData($object)
 	{
 		//calculate Auction Life Time
@@ -295,86 +295,160 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
 		else
 		{
 			$object->setStartDate(NULL);
-			$object->setEndDate(NULL);			
-		}		
-		
+			$object->setEndDate(NULL);
+		}
+
 		return $object;
 	}
-	
+
     /**
-     * Format Date Time 
-     * 
+     * Format Date Time
+     *
      * Candidate for moving this function into the Magebid Helper
-     * 
+     *
      * @param string $date
      *
      * @return string
-     */		
+     */
 	protected function _formatDateTime($date)
 	{
 		$format = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM);
 		$date = Mage::app()->getLocale()->date($date, $format);
 		$time = $date->getTimestamp();
 		return Mage::getModel('core/date')->gmtDate(null, $time);
-	}	
-	
+	}
+
     /**
      * Get oldest Start-Date, used for the eBay-Call getSellerList
-     * 
+     *
      * @return string
-     */		
+     */
 	public function getOldestStartDate()
 	{
-		$select = $this->_getReadAdapter()
-			->select()
-			->from($this->getMainTable())
-			->columns('min('.$this->getMainTable().'.date_created) as min_date_created')            
-		    ->join(
-                array('mad' => $this->getTable('magebid/auction_detail')), 
-                $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')	                          	
-            ->where('magebid_ebay_status_id = ?',Mbid_Magebid_Model_Auction::AUCTION_STATUS_ACTIVE)
-            ->group('magebid_ebay_status_id'); 
-       
-        $data = $this->_getReadAdapter()->fetchAll($select);
-        
-        if (!empty($data) && $data[0]['min_date_created']!="")
-        {
-        	return $data[0]['min_date_created'];
-        }    
-        else
-        {
-        	return Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');
-        }  
+		//@TODO	TODO for testing purpose
+		//$days = 119;
+		$days = 90;
+    	$time = Mage::getModel('core/date')->timestamp();
+		$time = $time-(60*60*24)*$days;
+		//return Mage::getModel('core/date')->gmtDate(null, $time);
+
+		//@TODO	TODO	create a configuration for this
+		if('useEndTime')
+		{
+			$defaultDaysBack = 1;
+			$time = Mage::getModel('magebid/auction_detail')->getResource()->getOldestLastUpdated();
+			if($time)
+				return $time;
+		}
+		else
+		{
+			$defaultDaysBack = 1;
+			$select = $this->_getReadAdapter()
+				->select()
+				->from($this->getMainTable())
+				->columns('min('.$this->getMainTable().'.date_created) as min_date_created')
+			    ->join(
+	                array('mad' => $this->getTable('magebid/auction_detail')),
+	                $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')
+	            ->where('magebid_ebay_status_id = ?',Mbid_Magebid_Model_Auction::AUCTION_STATUS_ACTIVE)
+	            ->group('magebid_ebay_status_id');
+
+			$data = $this->_getReadAdapter()->fetchAll($select);
+
+	        if (!empty($data) && $data[0]['min_date_created']!="")
+	        {
+	        	return $data[0]['min_date_created'];
+	        }
+		}
+
+		//no db entry found so return default oldest start date
+    	$time = Mage::getModel('core/date')->timestamp();
+		$time = $time-(60*60*24)*$defaultDaysBack;
+		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}
-	
+
     /**
      * Get "Future" Start-Date, used for the eBay-Call getSellerList
-     * 
+     *
      * @return string
-     */		
+     */
 	public function getFutureStartDate()
 	{
+		//@TODO	TODO	create a configuration for this
+		if('useEndTime')
+		{
+			//Add 90 days from today (longest listingduration is 90 days)
+			$days = 90;
+			$time = Mage::getModel('core/date')->timestamp();
+			$time = $time+(60*60*24)*$days;
+			return Mage::getModel('core/date')->gmtDate(null, $time);
+		}
 		$select = $this->_getReadAdapter()
 			->select()
 			->from($this->getMainTable())
-			->columns('max(mad.start_date) as max_start_date')            
+			->columns('max(mad.start_date) as max_start_date')
 		    ->join(
-                array('mad' => $this->getTable('magebid/auction_detail')), 
-                $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')	                          	
+                array('mad' => $this->getTable('magebid/auction_detail')),
+                $this->getMainTable().'.magebid_auction_detail_id = mad.magebid_auction_detail_id')
             ->where('magebid_ebay_status_id = ?',Mbid_Magebid_Model_Auction::AUCTION_STATUS_ACTIVE)
-            ->group('magebid_ebay_status_id'); 
-       
+            ->group('magebid_ebay_status_id');
+
         $data = $this->_getReadAdapter()->fetchAll($select);
-        
+
         if (!empty($data))
         {
         	$max_start_date = $data[0]['max_start_date'];
-        	
+
         	//Add 1 day
 			$time = Mage::getModel('core/date')->timestamp($max_start_date);
 			$time = $time+(60*60*24);
 			return Mage::getModel('core/date')->gmtDate(null, $time);
-        }      
+        }
+        else
+        {
+        	return Mage::getModel('core/date')->gmtDate();
+        }
+	}
+
+	/**
+	 * get the time difference in days
+	 *
+	 * @param timestamp $from
+	 * @param timestamp $to
+	 *
+	 * @return int	difference in days
+	 */
+	public function getTimeDifference($from,$to)
+	{
+		$from = Mage::getModel('core/date')->timestamp($from);
+		$to = Mage::getModel('core/date')->timestamp($to);
+		$diff = ($to-$from) / (60*60*24);
+		return (int) $diff;
+	}
+
+	/**
+	 * check the time difference for ebay requests (normally restriced to a maximal period of 120 days)
+	 *
+	 * @param timestamp $from
+	 * @param timestamp $to
+	 * @param int $max maximal difference in days, default 120
+	 *
+	 * @return array	correct period of maxiaml $max days: 0 => $from 1 => $to
+	 */
+	public function checkTimeDifference($from,$to,$max = 120)
+	{
+		if($this->getTimeDifference($from,Mage::getModel('core/date')->timestamp()) > $max)
+		{
+			//add 10 seconds to get no error on next time check
+			$from = Mage::getModel('core/date')->timestamp() - (60*60*24)*$max + 10;
+			$from = Mage::getModel('core/date')->gmtDate(null, $from);
+		}
+		if($this->getTimeDifference($from,$to) > $max)
+		{
+			$to = Mage::getModel('core/date')->timestamp($from) + (60*60*24)*$max;
+			$to = Mage::getModel('core/date')->gmtDate(null, $to);
+		}
+		return array($from,$to);
 	}
 }
 ?>
