@@ -9,9 +9,51 @@
 */
 -->
 
-<p><?php echo Mage::helper('magebid')->__('Please select only one category and a category which has no child categories anymore'); ?></p>
+<?php
+
+//load trees that we can show the errors after loading the trees above (getEbayChildTreeErrors())
+$ebayTreeJson1 = $this->getEbayTreeJson('ebay_category_1');
+$ebayTreeErrors1 = $this->getEbayChildTreeErrors();
+$ebayTreeJson2 = $this->getEbayTreeJson('ebay_category_2');
+$ebayTreeErrors2 = $this->getEbayChildTreeErrors();
+
+?>
+
+<p><?php echo Mage::helper('magebid')->__('Please select only one category and a category which has no child categories anymore. If there is an error message that the old category exists no longer, you can select eBay as category to set no category.'); ?></p>
 
 <table>
+	<tr>
+		<td>
+			<?php if($ebayTreeErrors1): ?>
+			<div id="messages">
+				<ul class="messages">
+					<?php foreach($ebayTreeErrors1 as $error): ?>
+					<li class="error-msg">
+						<ul>
+							<li><?php echo $error; ?></li>
+						</ul>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
+		</td>
+		<td>
+			<?php if($ebayTreeErrors2): ?>
+			<div id="messages">
+				<ul class="messages">
+					<?php foreach($ebayTreeErrors2 as $error): ?>
+					<li class="error-msg">
+						<ul>
+							<li><?php echo $error; ?></li>
+						</ul>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<div class="entry-edit" style="width:350px;">
@@ -22,7 +64,7 @@
 			        <input type="hidden" name="ebay_category_1" id="ebay-category-1" value="<?php echo $this->getEbayCategory('ebay_category_1') ?>">
 			        <div id="ebay-categories-1" class="tree"></div>
 			    </fieldset>
-			</div>			
+			</div>
 		</td>
 		<td>
 			<div class="entry-edit" style="width:350px;">
@@ -33,9 +75,9 @@
 			        <input type="hidden" name="ebay_category_2" id="ebay-category-2" value="<?php echo $this->getEbayCategory('ebay_category_2') ?>">
 			        <div id="ebay-categories-2" class="tree"></div>
 			    </fieldset>
-			</div>					
+			</div>
 		</td>
-		<!--  
+		<!--
 		<td>
 			<div class="entry-edit" style="width:200px;">
 			    <div class="entry-edit-head">
@@ -43,12 +85,12 @@
 			    </div>
 			    <fieldset id="grop_fields">
 					<div id="form_condition">
-						
+
 					</div>
 			    </fieldset>
-			</div>					
-		</td>	
-		-->				
+			</div>
+		</td>
+		-->
 	</tr>
 </table>
 
@@ -56,12 +98,12 @@
 
 
 <script type="text/javascript">
-	
+
 Ext.EventManager.onDocumentReady(function() {
     var categoryLoader = new Ext.tree.TreeLoader({
        dataUrl: '<?php echo $this->getLoadTreeUrl()?>'
     });
-	
+
     categoryLoader.createNode = function(config) {
         config.uiProvider = Ext.tree.CheckboxNodeUI;
         var node;
@@ -96,7 +138,7 @@ Ext.EventManager.onDocumentReady(function() {
 	tree.on('check', function(node) {
 	    if(node.attributes.checked) {
             categoryAdd(node.id);
-	    } else {		    
+	    } else {
             categoryRemove(node.id);
 	    }
 	}, tree);
@@ -111,7 +153,7 @@ Ext.EventManager.onDocumentReady(function() {
     });
 
 	tree.setRootNode(root);
-	bildCategoryTree(root, <?php echo $this->getEbayTreeJson('ebay_category_1') ?>);
+	bildCategoryTree(root, <?php echo $ebayTreeJson1 ?>);
     tree.addListener('click', categoryClick.createDelegate(this));
 
     // render the tree
@@ -148,7 +190,7 @@ Ext.EventManager.onDocumentReady(function() {
     var categoryLoader = new Ext.tree.TreeLoader({
        dataUrl: '<?php echo $this->getLoadTreeUrl()?>'
     });
-	
+
     categoryLoader.createNode = function(config) {
         config.uiProvider = Ext.tree.CheckboxNodeUI;
         var node;
@@ -196,7 +238,7 @@ Ext.EventManager.onDocumentReady(function() {
     });
 
 	tree.setRootNode(root);
-	bildCategoryTree(root, <?php echo $this->getEbayTreeJson('ebay_category_2') ?>);
+	bildCategoryTree(root, <?php echo $ebayTreeJson2 ?>);
     tree.addListener('click', categoryClick.createDelegate(this));
 
     // render the tree
@@ -217,11 +259,11 @@ function categoryClick(node, e){
     node.getUI().check(!node.getUI().checked())
     varienElementMethods.setHasChanges(Event.element(e), e);
 };
-function categoryAdd(id) {	
+function categoryAdd(id) {
     $('ebay-category-1').value = id;
     resetConditions(id);
 }
-function categoryRemove(id) {    
+function categoryRemove(id) {
 	if ($('ebay-category-1').value == id)
 	{
 		 $('ebay-category-1').value = '';
@@ -239,7 +281,7 @@ function categoryRemove2(id) {
 function resetConditions(ebay_category_id)
 {
 	var conditions_reset_url = '<?php echo $this->getCategoryFeaturesUrl()?>' + 'category_id/'+ebay_category_id+'/';
-	
+
     request = new Ajax.Request(
     		conditions_reset_url,
             {
@@ -249,7 +291,7 @@ function resetConditions(ebay_category_id)
 				updateConditionsInputField(conditions_array);
     		  }
              }
-        );	
+        );
 }
 
 function updateConditionsInputField(conditions_array)

@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `magebid_profile` (
   `returns_description` text,
   `use_tax_table` tinyint(1) NOT NULL DEFAULT '0',
   `vat_percent` decimal(11,3) DEFAULT NULL,
-  `condition_id` int(11) DEFAULT NULL,  
+  `condition_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`magebid_profile_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -294,5 +294,5 @@ INSERT INTO `magebid_shipping_methods` (`magebid_shipping_methods_id`, `magebid_
 (2, 1, NULL, NULL, 'DE_DHLPaket', 5.00, 3.00);
 
 ");
-
-$installer->endSetup(); 
+//@TODO	TODO	perhabs we can add StoresFixedPrice here, is important to import products!
+$installer->endSetup();

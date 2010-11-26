@@ -15,24 +15,24 @@ class Mbid_Magebid_Model_Mysql4_Transaction_Collection extends Mage_Core_Model_M
      * Construct
      *
      * @return void
-     */	
+     */
     protected function _construct()
     {
         parent::_construct();
         $this->_init('magebid/transaction');
-	}	
-	
+	}
+
     /**
      * Manipulation SQL: for every Transaction Collection, Load the Transaction-User-Data as well
      *
      * @return void
-     */		
+     */
     public function joinFields()
     {
 		$this->getSelect()
             ->join(
-                array('mtu' => $this->getTable('magebid/transaction_user')), 
+                array('mtu' => $this->getTable('magebid/transaction_user')),
                 'mtu.magebid_transaction_id = main_table.magebid_transaction_id');
-    }	
+    }
 }
 ?>

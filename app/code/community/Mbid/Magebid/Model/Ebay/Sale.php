@@ -14,22 +14,22 @@ class Mbid_Magebid_Model_Ebay_Sale extends Mage_Core_Model_Abstract
     /**
      * Handler for Calls to eBay
      * @var object Mbid_Magebid_Model_Ebay_Ebat_Sale
-     */	
+     */
 	protected $_handler;
-	
+
     /**
      * Construct
      *
      * @return void
-     */		
+     */
 	protected function _construct()
     {
         $this->_init('magebid/ebay_sale');
-		
+
 		//set Request Handler
 		$this->_handler = Mage::getModel('magebid/ebay_ebat_sale');
-    }	
-	
+    }
+
     /**
      * Change Status of Orders in eBay
      *
@@ -37,14 +37,15 @@ class Mbid_Magebid_Model_Ebay_Sale extends Mage_Core_Model_Abstract
      * @param string $tasks Which feedbacks should be given f.e. 'payment_received'
      *
      * @return object
-     */		
+     */
 	public function setCompleteSale($transaction,$tasks)
 	{
 		//Daily Log
-		Mage::getModel('magebid/daily_log')->logCall();			
-		
-		return $this->_handler->setCompleteSale($transaction,$tasks);	
-	}			
-	
+		Mage::getModel('magebid/daily_log')->logCall();
+
+		//@TODO TODO	for live production disabled in testing mode!
+		//return $this->_handler->setCompleteSale($transaction,$tasks);
+	}
+
 }
 ?>
