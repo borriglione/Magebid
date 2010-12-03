@@ -38,11 +38,13 @@
                 <?php endif; ?>
                 </td>
                 <td>
+                <?php if (count($this->getMagentoShippingMethods())>0): ?>
 	            <select  disabled="no-template" class="<?php echo $_htmlClass ?> magento_shipping required-entry" name="<?php echo $_htmlName ?>[__index__][magento_shipping_method]" id="magento_shipping_method_row___index___shipping_methods">
 	                    <?php foreach ($this->getMagentoShippingMethods() as $_shippingCode=>$_shippingDescription): ?>
 	                    <option value="<?php echo $_shippingCode ?>"><?php echo htmlspecialchars($_shippingDescription) ?></option>
 	                    <?php endforeach ?>
 	             </select>
+	             <?php endif; ?>
                 </td>
                 <?php if ($_allowEdit): ?><td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[__index__][delete]" class="delete" disabled="no-template" value="" /><button title="Delete Shipping Mapping" class="scalable delete icon-btn delete-shipping-method" onclick="shippingMethodControl.deleteItem(event);return false"><span>Delete</span></button></td><?php endif; ?>
             </tr>

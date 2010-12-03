@@ -88,28 +88,32 @@ class Mbid_Magebid_Block_Adminhtml_Configuration_Edit_Tab_Shipping_Mapping exten
      * @return array
      */	
 	public function getMagentoShippingMethods($shippingCode=null)
-	{
-		$carriers = new Mage_Shipping_Model_Config();		
-		$carriers = $carriers->getAllCarriers();
-		
+	{	
 		$magento_shipping_methods = array();
-		
-		foreach ($carriers as $carrier)
+					
+		try
 		{
-			 $className = Mage::getStoreConfig('carriers/'.$carrier->getId().'/model');
-			 if ($className)
-			 {
-		         $obj = Mage::getModel($className);
-		         //$obj->setStore(2);			//FoTix	
-	
-				 foreach ($obj->getAllowedMethods() as $key=>$method)
-				 {
-				 	$magento_shipping_methods[$carrier->getId()."_".$key] = $method." (".$carrier->getId().")";
-				 }			 	
-			 }
-		}		
-		return $magento_shipping_methods;
-		
+			$carriers = new Mage_Shipping_Model_Config();
+			$carriers = $carriers->getAllCarriers();			
+			
+			foreach ($carriers as $carrier)
+			{			
+				 $className = Mage::getStoreConfig('carriers/'.$carrier->getId().'/model');
+				 if ($className)
+				 {				 	
+			         $obj = Mage::getModel($className);
+					 foreach ($obj->getAllowedMethods() as $key=>$method)
+					 {
+					 	$magento_shipping_methods[$carrier->getId()."_".$key] = $method." (".$carrier->getId().")";
+					 }					 		 	
+				 }			 
+			}	
+		}	
+		catch (Exception $e)
+		{
+			Mage::getSingleton('core/session')->addWarning($e->getMessage());
+		}	
+		return $magento_shipping_methods;		
 	}	
 	
     /**
