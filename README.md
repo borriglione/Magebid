@@ -11,3 +11,13 @@ Feature Request?
 ----------
 
 [http://www.magentocommerce.com/boards/viewchild/27997](http://www.magentocommerce.com/boards/viewchild/27997)
+
+Documentation
+----------
+
+[http://www.magebid.com/doku/](http://www.magebid.com/doku/)
+
+Demo - Site
+----------
+
+[http://www.magebid.com/demo/](http://www.magebid.com/demo/)
