@@ -83,8 +83,19 @@ class Mbid_Magebid_Model_Ebay_Ebat_Transaction extends Mage_Core_Model_Abstract
 		
 		//Params
 		$req->setDetailLevel('ReturnAll');
-		$req->setModTimeFrom($from);
-		$req->setModTimeTo($to);	
+		
+		//Test is Range between ModTimeFrom and ModTimeTo is greater then 30
+		if (Mage::helper('magebid')->calculateDaysBetweenTwoDatetimes($from,$to)<30)
+		{
+			$req->setModTimeFrom($from);
+			$req->setModTimeTo($to);
+		}
+		else
+		{
+			$req->setNumberOfDays(30);
+			Mage::getSingleton('adminhtml/session')->addNotice('The time since the last update is longer then 30 days. Only the transactions of the last 30 days were imported.');
+		}
+		
 		$req->setIncludeContainingOrder(1);	
 		
 		//Pagination

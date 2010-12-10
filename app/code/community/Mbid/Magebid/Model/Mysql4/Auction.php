@@ -350,7 +350,7 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
     /**
      * Get "Future" Start-Date, used for the eBay-Call getSellerList
      * 
-     * @return string
+     * @return string|boolean
      */		
 	public function getFutureStartDate()
 	{
@@ -368,13 +368,18 @@ class Mbid_Magebid_Model_Mysql4_Auction extends Mage_Core_Model_Mysql4_Abstract
         
         if (!empty($data))
         {
-        	$max_start_date = $data[0]['max_start_date'];
-        	
-        	//Add 1 day
-			$time = Mage::getModel('core/date')->timestamp($max_start_date);
-			$time = $time+(60*60*24);
-			return Mage::getModel('core/date')->gmtDate(null, $time);
+        	$futureDatetime = $data[0]['max_start_date'];
         }      
+        else
+        {
+        	$futureDatetime = Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s');
+        	
+        }
+        
+        //Add 1 day
+		$time = Mage::getModel('core/date')->timestamp($futureDatetime);
+		$time = $time+(60*60*24);
+		return Mage::getModel('core/date')->gmtDate(null, $time);
 	}
 }
 ?>
