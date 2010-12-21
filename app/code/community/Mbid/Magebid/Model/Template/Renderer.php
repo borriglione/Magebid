@@ -73,7 +73,7 @@ class Mbid_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
     /**
      * Rendering templates
      * 
-     * This functions renders the template and search/replace the placehlders with the values
+     * This functions renders the template and search/replace the placeholders with the values
      * 
      * @param string $template Template with placeholders
      * 
@@ -89,10 +89,10 @@ class Mbid_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
 			$attribute_code = $attribute->getAttributeCode();
 
 			if (!is_array($value) && !is_object($value))
-			{	
+			{
 				$search = "{{var product_".$attribute_code."}}";
 				$this->_search_array[] = $search;
-				$this->_replace_array[] = $value;					
+				$this->_replace_array[] = $this->_renderProductAttributeValue($value);					
 			}	
 		}
 		
@@ -202,5 +202,20 @@ class Mbid_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
 	{
 		$this->_product = $_product;
 	}	
+	
+    /**
+     * If activated, replace the \n in the product attributes text with <br />
+     *
+     * @return string
+     */	
+	protected function _renderProductAttributeValue($value)
+	{
+		if (Mage::getModel('magebid/setting')->newlineReplaceIsActive()):
+			$value = str_replace("\r\n","<br />",$value);
+			$value = str_replace("\n","<br />",$value);
+		endif;
+		
+		return $value;
+	}
 }
 ?>

@@ -234,3 +234,5 @@
 "%s Days","%s Tage"
 "Magebid - Select Products","Magebid - Produktauswahl"
 "Select Products","Produktauswahl"
+"Replace newline (\n) with html break (&lt;br /&gt;) for product values during the auction creation process","Ersetzte Zeilenumbrüche (\n) mit HTML-Breakes (&lt;br /&gt;) für Produktattribute bei der Auktionserstellung"
+"Replace newline","Zeilenumbrüche ersetzen"

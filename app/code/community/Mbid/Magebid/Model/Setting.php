@@ -110,5 +110,15 @@ class Mbid_Magebid_Model_Setting extends Mage_Core_Model_Abstract
     {
 		return Mage::getStoreConfig('magebid/magebid_order_status/add_comment');
     }			
+    
+    /**
+     * Return true if magebid should replace products attributes values \n with <br /> during the auction creation process
+     *
+     * @return int
+     */	    
+    public function newlineReplaceIsActive()
+    {
+    	return Mage::getStoreConfig('magebid/auction/replace_newline');
+    }
 }
 ?>

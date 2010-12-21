@@ -256,10 +256,7 @@
 				</magebid>
 			</updates>
 		</layout>		
-    </adminhtml>
-
-
-   
+    </adminhtml>   
     <frontend>
         <routers>
             <Mbid_Magebid>
@@ -270,30 +267,16 @@
                 </args>
             </Mbid_Magebid>
         </routers>
-    </frontend>
-	
-    <default>
-       <magebid>
-        <magebid_connection>
-             <app_mode>1</app_mode>
-			 <ebay_site_id>1</ebay_site_id>
-             <token_mode>1</token_mode>
-        </magebid_connection>
-	  
-
-	    <magebid_paypal>
-	    	<active>0</active>
-	  	</magebid_paypal>
-	    <magebid_banktransfer>
-	    	<active>0</active>
-	  	</magebid_banktransfer>				
-
-	    <magebid_dhl>
-	    	<active>0</active>
-	  	</magebid_dhl>
-	    <magebid_free_shipping>
-	    	<active>0</active>
-	  	</magebid_free_shipping>				
+    </frontend>	
+	<default>
+		<magebid>
+			<magebid_connection>
+				<app_mode>1</app_mode>
+				<ebay_site_id>77</ebay_site_id>
+       		</magebid_connection>
+			<auction>
+				<replace_newline>0</replace_newline>
+			</auction>
 	  </magebid>	  
     </default>
 		
