@@ -152,7 +152,7 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 
 		//get (if existing) transaction_id
 		//if there is no transaction_id existing, it is a single quantity item or an bid-auction
-		if ($raw_transaction->TransactionID!="") $ebay_transaction_id = $raw_transaction->TransactionID;
+		if ($raw_transaction->TransactionID!="" && $raw_transaction->TransactionID!="0") $ebay_transaction_id = $raw_transaction->TransactionID;
 		
 		//Try to load the transaction by transaction_id or item_id
 		if (isset($ebay_transaction_id)) $this->load($ebay_transaction_id,'ebay_transaction_id');
