@@ -378,7 +378,14 @@ class Mbid_Magebid_Model_Order_Create extends Mage_Adminhtml_Model_Sales_Order_C
 				}
 				else { //Catalog Prices include Tax
 					$this->_order_item->setPrice($item['single_price']);
-				} 			
+				} 	
+						
+				/*
+				 * Disable the special price for the product (fixed BUG with this setting. If the special price
+				 * isn't disabled, Magento takes the special price instead the item price we get from eBay
+				 */				
+				$this->_order_item->setSpecialPrice(false);
+				
 				
 				$this->_order_item->setSku($sku);
 			}
