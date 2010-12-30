@@ -128,7 +128,10 @@ class Mbid_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
 		$i = 1;
 		if ($this->_product->getImage()!="")
 		{
-			$image_path = Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$this->_product->getImage();
+			$image_path = Mage::helper('magebid')->replaceHttps(
+				Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$this->_product->getImage()
+			);
+			
 			$this->_search_array[] = "{{var product_image".$i."}}";
 			$this->_replace_array[] = '<img src="'.$image_path.'" alt="image'.$i.'" class="image'.$i.'" />';
 						
@@ -148,7 +151,9 @@ class Mbid_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
 				{
 					//Replace product_image
 					$this->_search_array[] = "{{var product_image".$i."}}";
-					$image_path = Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$value['file'];
+					$image_path = Mage::helper('magebid')->replaceHttps(
+						Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$value['file']
+					);
 					$this->_replace_array[] = '<img src="'.$image_path.'" alt="image'.$i.'" class="image'.$i.'" />';
 					
 					//Replace Link Product Image
@@ -172,23 +177,33 @@ class Mbid_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
 	{
 		//Product Media URL
 		$this->_search_array[] = "{{product_media_url}}";
-		$this->_replace_array[] = Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl();
+		$this->_replace_array[] = Mage::helper('magebid')->replaceHttps(
+				Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl()
+				);
 		
 		//Media URL
 		$this->_search_array[] = "{{media_url}}";
-		$this->_replace_array[] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);		
+		$this->_replace_array[] = Mage::helper('magebid')->replaceHttps(
+				Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
+				);		
 		
 		//Store URL
 		$this->_search_array[] = "{{store_url}}";
-		$this->_replace_array[] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);	
+		$this->_replace_array[] = Mage::helper('magebid')->replaceHttps(
+				Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+				);	
 
 		//Link URL
 		$this->_search_array[] = "{{link_url}}";
-		$this->_replace_array[] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);	
+		$this->_replace_array[] = Mage::helper('magebid')->replaceHttps(
+				Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK)
+				);	
 		
 		//Skin URL
 		$this->_search_array[] = "{{skin_url}}";
-		$this->_replace_array[] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);	
+		$this->_replace_array[] = Mage::helper('magebid')->replaceHttps(
+				Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN)
+				);	
 		
 					
 	}
@@ -216,6 +231,6 @@ class Mbid_Magebid_Model_Template_Renderer extends Mage_Core_Model_Abstract
 		endif;
 		
 		return $value;
-	}
+	}	
 }
 ?>

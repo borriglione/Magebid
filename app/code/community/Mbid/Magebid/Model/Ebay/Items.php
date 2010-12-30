@@ -48,7 +48,9 @@ class Mbid_Magebid_Model_Ebay_Items extends Mage_Core_Model_Abstract
 		if ($auction_data['is_image']==1)
 		{
 			//$gallery_images['main'] = Mage::helper('catalog/image')->init($product, 'image')->__toString();
-			$gallery_images['main'] = Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$product->getImage();
+			$gallery_images['main'] = Mage::helper('magebid')->replaceHttps(
+				Mage::getSingleton('catalog/product_media_config')->getBaseMediaUrl().$product->getImage()
+			);
 		}			
 		
 		if ($response = $this->_handler->addEbayItem($auction_data,$gallery_images))

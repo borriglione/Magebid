@@ -41,6 +41,20 @@ class Mbid_Magebid_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		return strtotime($datetime);
 	}
+	
+    /**
+     * Replace https with http to avoid SSL-Problems
+     * 
+     * eBay only allow http or ftp but not https
+     * 
+     * @param string $url
+     *
+     * @return string
+     */	
+	public function replaceHttps($url)
+	{
+		return str_replace("https","http",$url);
+	}
 }
 
 ?>
