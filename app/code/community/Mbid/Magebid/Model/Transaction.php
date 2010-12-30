@@ -202,12 +202,15 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
      * If the transaction is complete, the order not already created and consists only of one item->create it
      * Save the Magento Order ID to the transaction and set a success-message
      * 
+     * @param boolean $manualMode If the order should be created manually
+     * 
      * @return boolean
      */		
-	protected function _tryCreateOrder()
+	protected function _tryCreateOrder($manualMode = false)
 	{		
 		//if checkout_status is complete, not already created and if it is a single-item order		
-		if ($this->getCompleteStatus()=='Complete' && $this->getOrderCreated()==0 && $this->getEbayOrderId()=='')
+		if (($this->getCompleteStatus()=='Complete' || $manualMode===true) 
+				&& $this->getOrderCreated()==0 && $this->getEbayOrderId()=='')
 		{
 			if ($order = Mage::getModel('magebid/order_create')->createImportOrder($this->load($this->getId())))
 			{
@@ -231,6 +234,19 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 			else return false;
 		}			
 	}
+	
+    /**
+     * Create an order manually
+     * 
+     * @param int $id transaction id
+     * 
+     * @return void
+     */		
+	public function tryCreateOrder($id)
+	{
+		$this->load($id);
+		$this->_tryCreateOrder(true);
+	}
 
     /**
      * Method to check if there is a new multiple item order to create
@@ -252,7 +268,7 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 			$transactions = $this->getCollection();
 			$transactions->addFieldToFilter('ebay_order_id', $order['ebay_order_id']);		
 			$transactions->load();
-			
+			 
 			//If a Magento Order can be created
 			if ($order = Mage::getModel('magebid/order_create')->createImportOrder($transactions->getItems()))
 			{
@@ -391,6 +407,20 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 			$transactions->addFieldToFilter('order_id', $magento_order_id);		
 			$transactions->load();
 			return $transactions;
+	}
+	
+    /**
+     * Check if an Magento Order for this transaction was already created
+     * 
+     * @return boolean
+     */
+	public function isOrderCreated()
+	{
+		if ($this->getOrderCreated()==0):
+			return false;
+		else:
+			return true;
+		endif;
 	}
 }
 ?>

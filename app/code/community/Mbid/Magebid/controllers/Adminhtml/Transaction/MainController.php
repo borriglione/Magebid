@@ -120,6 +120,56 @@ class Mbid_Magebid_Adminhtml_Transaction_MainController extends Mage_Adminhtml_C
             }
         }		
         $this->indexAction();			
-	}				
+	}		
+
+    /**
+     * Mass Create Orders (manually)
+     *
+     * @return void
+     */	 
+	public function massCreateOrdersAction()
+	{
+	    $ids = $this->getRequest()->getParam('id');
+        if (!is_array($ids)):
+			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')
+			    ->__('Please select at least one item')
+		    );
+		else:
+            try 
+			{
+                foreach ($ids as $id):
+					Mage::getModel('magebid/transaction')
+						->tryCreateOrder($id);
+                endforeach;
+            } 
+			catch (Exception $e)
+			{
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
+        endif;	
+        $this->indexAction();	
+        
+	}
+	
+    /**
+     * Create Order (manually)
+     *
+     * @return void
+     */	 
+	public function createOrderAction()
+	{
+		$id = $this->getRequest()->getParam('id');
+		
+	    try 
+		{
+			Mage::getModel('magebid/transaction')
+				->tryCreateOrder($id);
+        } 
+		catch (Exception $e)
+		{
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+        $this->indexAction();	
+	}
 }
 ?>

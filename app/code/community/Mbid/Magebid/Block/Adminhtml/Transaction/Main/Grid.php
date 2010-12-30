@@ -57,6 +57,11 @@ class Mbid_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adminhtml_
              'label'    => Mage::helper('adminhtml')->__('Delete'),
              'url'      => $this->getUrl('*/*/massDelete')
         ));				
+        
+        $this->getMassactionBlock()->addItem('create_order', array(
+             'label'    => Mage::helper('adminhtml')->__('Create orders manually'),
+             'url'      => $this->getUrl('*/*/massCreateOrders')
+        ));			       
 		
         return $this;
     }		
@@ -95,16 +100,7 @@ class Mbid_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adminhtml_
             'align'         => 'left',
             'filter_index'  => 'order_id',
             'index'         => 'order_id',
-        ));        
-		
-		/*
-		$this->addColumn('name', array(
-            'header'        => Mage::helper('magebid')->__('Status'),
-            'align'         => 'left',
-            'width'         => '150px',
-            'filter_index'  => 'name',
-            'index'         => 'name',
-        ));	*/		
+        ));     
 		
         /*
         $this->addColumn('checkout_status', array(
@@ -114,13 +110,13 @@ class Mbid_Magebid_Block_Adminhtml_Transaction_Main_Grid extends Mage_Adminhtml_
             'index'         => 'checkout_status',
         ));		*/
 		
-        /*
+        
         $this->addColumn('complete_status', array(
             'header'        => Mage::helper('magebid')->__('Complete'),
             'align'         => 'left',
             'filter_index'  => 'complete_status',
             'index'         => 'complete_status',
-        ));*/
+        ));
 		
         /*
         $this->addColumn('quantity', array(
