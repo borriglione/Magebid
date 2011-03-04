@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Mbid_Magebid>
-            <version>0.8.9</version>
+            <version>0.8.10</version>
         </Mbid_Magebid>
     </modules>
 	
@@ -268,6 +268,17 @@
             </Mbid_Magebid>
         </routers>
     </frontend>	
+    <admin>
+        <routers>
+            <magebid>
+                <use>admin</use>
+                <args>
+                    <module>Mbid_Magebid</module>
+                    <frontName>magebid</frontName>
+                </args>
+            </magebid>
+        </routers>
+    </admin>
 	<default>
 		<magebid>
 			<magebid_connection>
