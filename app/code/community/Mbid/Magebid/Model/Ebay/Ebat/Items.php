@@ -113,8 +113,11 @@ class Mbid_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
 		$this->_setAuctionTypeAndPrice();		
 		
 		//set categories
-		$this->_setPrimaryCategorie();
-		if ($this->_auction_data['ebay_category_2']!="" && $this->_auction_data['ebay_category_2']!=0) $this->_setSecondaryCategorie();
+		$this->_setPrimaryCategory();
+		if ($this->_auction_data['ebay_category_2']!="" && $this->_auction_data['ebay_category_2']!=0) $this->_setSecondaryCategory();
+		
+		//set store categories
+		$this->_setStoreCategory();
 		
 		//set Images
 		$this->_setImage();		
@@ -198,7 +201,7 @@ class Mbid_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
      * 
      * @return void
      */		
-	protected function _setPrimaryCategorie()
+	protected function _setPrimaryCategory()
 	{
         $primaryCategory = new CategoryType();
         $primaryCategory->setCategoryID($this->_auction_data['ebay_category_1']);
@@ -210,12 +213,28 @@ class Mbid_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
      * 
      * @return void
      */	
-	protected function _setSecondaryCategorie()
+	protected function _setSecondaryCategory()
 	{
 		$secondaryCategory = new CategoryType();
 		$secondaryCategory->setCategoryID($this->_auction_data['ebay_category_2']);
 		$this->_ebay_item->setSecondaryCategory($secondaryCategory);		
 	}	
+	
+    /**
+     * Set store categories
+     * 
+     * @return void
+     */		
+	protected function _setStoreCategory()
+	{
+	    if ($this->_auction_data['ebay_store_category_1'] != ""):
+            $shopCategory = new StorefrontType();
+            $shopCategory->setStoreCategoryID($this->_auction_data['ebay_store_category_1']);
+            if ($this->_auction_data['ebay_store_category_2'] != "") $shopCategory->setStoreCategory2ID($this->_auction_data['ebay_store_category_2']);
+            $this->_ebay_item->setStorefront($shopCategory);	
+        endif;	
+	}
+	
 
     /**
      * Set Return Policy
