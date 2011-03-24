@@ -203,15 +203,21 @@ function categoryClick(node, e){
 function categoryAdd(id) {	
     $('ebay-store-category-1').value = id;
 }
-function categoryRemove(id) {    
-    $('ebay-store-category-1').value = '';
+function categoryRemove(id) {  
+	if ($('ebay-store-category-1').value == id)
+	{
+    	$('ebay-store-category-1').value = '';
+	}
 }
 
 function categoryAdd2(id) {
     $('ebay-store-category-2').value = id;
 }
 function categoryRemove2(id) {
-    $('ebay-store-category-2').value = id;
+	if ($('ebay-store-category-2').value == id)
+	{
+    	$('ebay-store-category-2').value = '';
+	}
 }
 
 </script>

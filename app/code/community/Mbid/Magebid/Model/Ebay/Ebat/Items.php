@@ -227,10 +227,10 @@ class Mbid_Magebid_Model_Ebay_Ebat_Items extends Mage_Core_Model_Abstract
      */		
 	protected function _setStoreCategory()
 	{
-	    if ($this->_auction_data['ebay_store_category_1'] != ""):
+	    if ($this->_auction_data['ebay_store_category_1'] != "" && $this->_auction_data['ebay_store_category_1'] != 0):
             $shopCategory = new StorefrontType();
             $shopCategory->setStoreCategoryID($this->_auction_data['ebay_store_category_1']);
-            if ($this->_auction_data['ebay_store_category_2'] != "") $shopCategory->setStoreCategory2ID($this->_auction_data['ebay_store_category_2']);
+            if ($this->_auction_data['ebay_store_category_2'] != "" && $this->_auction_data['ebay_store_category_2'] != 0) $shopCategory->setStoreCategory2ID($this->_auction_data['ebay_store_category_2']);
             $this->_ebay_item->setStorefront($shopCategory);	
         endif;	
 	}
