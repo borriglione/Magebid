@@ -245,3 +245,4 @@
 "eBay Order ID","eBay Bestellnummer"
 "eBay Order Status","eBay Bestellstatus"
 "Automatic synchronisation (hourly)","Automatische Synchronisierung (stündlich)"
+"This feature requires Magento Cronjobs","Dieses Feature benötigt Magento Cronjobs"
