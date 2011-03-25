@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Mbid_Magebid>
-            <version>0.8.14</version>
+            <version>0.9.0</version>
         </Mbid_Magebid>
     </modules>
 	
@@ -279,6 +279,28 @@
             </magebid>
         </routers>
     </admin>
+    <crontab>
+        <jobs>
+            <magebid_updateAuctions>
+                <schedule>
+                    <cron_expr>30 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>magebid/observer::updateAuctions</model>
+                </run>
+            </magebid_updateAuctions>
+        </jobs>
+        <jobs>
+            <magebid_updateTransactions>
+                <schedule>
+                    <cron_expr>45 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>magebid/observer::updateTransactions</model>
+                </run>
+            </magebid_updateTransactions>
+        </jobs>
+    </crontab>
 	<default>
 		<magebid>
 			<magebid_connection>
@@ -288,6 +310,10 @@
 			<auction>
 				<replace_newline>0</replace_newline>
 			</auction>
+			<synchronisation>
+			      <auction>0</auction>
+                  <transaction>0</transaction>
+			</synchronisation>
 	  </magebid>	  
     </default>
 		
