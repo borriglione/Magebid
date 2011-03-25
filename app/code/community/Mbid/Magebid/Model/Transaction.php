@@ -182,12 +182,12 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 		if (!$new_transaction && Mage::getStoreConfig('magebid/magebid_notices/transaction_notice'))
 		{
 	        Mage::getSingleton('adminhtml/session')->addSuccess(
-	                    Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully updated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
+	        Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully updated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
 		}
 		else if ($new_transaction && Mage::getStoreConfig('magebid/magebid_notices/transaction_notice')) //if it is a new transaction
 		{
 	        Mage::getSingleton('adminhtml/session')->addSuccess(
-	                    Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully generated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
+	        Mage::helper('magebid')->__('A transaction (%s) for auction %s was successfully generated',$this->getEbayTransactionId(),$this->getEbayItemId()));		
 		}		
 		
 		//Try to create a Magento Order
@@ -291,10 +291,7 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
 				
 				//Check if order state should be changed
 				Mage::getModel('magebid/order_status')->setEbayStatus($order,$order->getStatus(),'',true); 	
-
-				return true;
 			}	
-			else return false;
 		}
 	}
 	
