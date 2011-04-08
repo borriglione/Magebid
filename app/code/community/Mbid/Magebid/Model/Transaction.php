@@ -238,7 +238,7 @@ class Mbid_Magebid_Model_Transaction extends Mage_Core_Model_Abstract
     /**
      * Create an order manually
      * 
-     * @param int $id transaction id
+     * @param int $id magebid_transaction_id
      * 
      * @return void
      */		
