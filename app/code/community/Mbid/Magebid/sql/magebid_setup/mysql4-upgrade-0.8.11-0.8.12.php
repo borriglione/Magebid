@@ -14,17 +14,17 @@ $installer = $this;
 
 $installer->startSetup();
 $installer->run("
-ALTER TABLE `magebid_import_category` CHANGE `category_id` `category_id` BIGINT( 18 ) NOT NULL;
-ALTER TABLE `magebid_import_category` CHANGE `category_parent_id` `category_parent_id` BIGINT( 18 ) NOT NULL;
-ALTER TABLE `magebid_import_category_features` CHANGE `category_id` `category_id` BIGINT( 18 ) NOT NULL;
-ALTER TABLE `magebid_auction_detail` CHANGE `ebay_category_1` `ebay_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
-ALTER TABLE `magebid_auction_detail` CHANGE `ebay_category_2` `ebay_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
-ALTER TABLE `magebid_auction_detail` CHANGE `ebay_store_category_1` `ebay_store_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
-ALTER TABLE `magebid_auction_detail` CHANGE `ebay_store_category_2` `ebay_store_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
-ALTER TABLE `magebid_profile` CHANGE `ebay_category_1` `ebay_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
-ALTER TABLE `magebid_profile` CHANGE `ebay_category_2` `ebay_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
-ALTER TABLE `magebid_profile` CHANGE `ebay_store_category_1` `ebay_store_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
-ALTER TABLE `magebid_profile` CHANGE `ebay_store_category_2` `ebay_store_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/import_category')}` CHANGE `category_id` `category_id` BIGINT( 18 ) NOT NULL;
+ALTER TABLE `{$installer->getTable('magebid/import_category')}` CHANGE `category_parent_id` `category_parent_id` BIGINT( 18 ) NOT NULL;
+ALTER TABLE `{$installer->getTable('magebid/import_category_features')}` CHANGE `category_id` `category_id` BIGINT( 18 ) NOT NULL;
+ALTER TABLE `{$installer->getTable('magebid/auction_detail')}` CHANGE `ebay_category_1` `ebay_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/auction_detail')}` CHANGE `ebay_category_2` `ebay_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/auction_detail')}` CHANGE `ebay_store_category_1` `ebay_store_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/auction_detail')}` CHANGE `ebay_store_category_2` `ebay_store_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/profile')}` CHANGE `ebay_category_1` `ebay_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/profile')}` CHANGE `ebay_category_2` `ebay_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/profile')}` CHANGE `ebay_store_category_1` `ebay_store_category_1` BIGINT( 18 ) NULL DEFAULT NULL;
+ALTER TABLE `{$installer->getTable('magebid/profile')}` CHANGE `ebay_store_category_2` `ebay_store_category_2` BIGINT( 18 ) NULL DEFAULT NULL;
 
 ");
 
