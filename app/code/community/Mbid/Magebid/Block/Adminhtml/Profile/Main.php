@@ -33,16 +33,5 @@ class Mbid_Magebid_Block_Adminhtml_Profile_Main extends Mage_Adminhtml_Block_Wid
     {
         return Mage::helper('adminhtml')->__('Profile List');		
     }
-		
-    /**
-     * Before HTML
-     *
-     * @return string
-     */	
-    public function _beforeToHtml()
-    {		
-		$this->setChild('grid', $this->getLayout()->createBlock('adminhtml/admin_profile_main_grid', 'auction.main.grid'));		
-        return parent::_beforeToHtml();
-    }	
 }
 ?>

@@ -43,9 +43,7 @@ class Mbid_Magebid_Block_Adminhtml_Auction_Main extends Mage_Adminhtml_Block_Wid
      * @return object
      */		
     public function _beforeToHtml()
-    {		
-		$this->setChild('grid', $this->getLayout()->createBlock('adminhtml/admin_auction_main_grid', 'auction.main.grid'));		
-
+    {
         $this->setChild('update_all_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
