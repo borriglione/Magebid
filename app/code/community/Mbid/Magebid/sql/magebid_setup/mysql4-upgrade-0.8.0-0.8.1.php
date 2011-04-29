@@ -14,12 +14,7 @@ $installer = $this;
 
 $installer->startSetup();
 $installer->run("
-ALTER TABLE `{$installer->getTable('magebid/auction_detail')}` CHANGE `life_time` `listing_duration` VARCHAR( 255 ) NULL DEFAULT NULL;
-ALTER TABLE `{$installer->getTable('magebid/profile')}` CHANGE `duration` `listing_duration` VARCHAR( 255 ) NULL DEFAULT NULL;
-TRUNCATE TABLE `{$installer->getTable('magebid/profile')}`; 
-INSERT INTO `{$installer->getTable('magebid/profile')}` (`magebid_profile_id`, `profile_name`, `start_price`, `fixed_price`, `listing_duration`, `quantity`, `country`, `currency`, `location`, `dispatch_time`, `ebay_category_1`, `ebay_category_2`, `ebay_store_category_1`, `ebay_store_category_2`, `is_image`, `is_more_images`, `is_galery_image`, `magebid_auction_type_id`, `hit_counter`, `header_templates_id`, `main_templates_id`, `footer_templates_id`, `refund_option`, `returns_accepted_option`, `returns_within_option`, `returns_description`, `use_tax_table`, `vat_percent`, `condition_id`) VALUES
-(1, 'Default', '-10%', '+20%', 'Days_7', 10, 'DE', 'EUR', 'Leipzig', 1, 9355, 12395, 0, 0, 1, 0, 1, 2, 'RetroStyle', 1, 3, 2, 'MoneyBack', 'ReturnsAccepted', 14, 'Information zum Rückgaberecht.', 0, 1.000, 1000);
-
-");
-
+ALTER TABLE {$installer->getTable('magebid/auction_detail')} CHANGE `life_time` `listing_duration` VARCHAR( 255 ) NULL DEFAULT NULL;
+ALTER TABLE {$installer->getTable('magebid/profile')} CHANGE `duration` `listing_duration` VARCHAR( 255 ) NULL DEFAULT NULL;
+TRUNCATE TABLE {$installer->getTable('magebid/profile')};");
 $installer->endSetup(); 
