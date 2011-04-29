@@ -14,7 +14,7 @@ $installer = $this;
 
 $installer->startSetup();
 $installer->run("
-DROP TABLE IF EXISTS `magebid_ebay_status`;
+DROP TABLE IF EXISTS {$installer->getTable(`magebid/ebay_status`)};
 ");
 
 $installer->endSetup(); 
