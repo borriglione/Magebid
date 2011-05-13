@@ -96,7 +96,7 @@ class Mbid_Magebid_Model_Import_Category extends Mage_Core_Model_Abstract
 		//Save the origin dataset category_id
 		$this->_dataset_stored_category_id = $selected_cat;
 	
-		if ($selected_cat=='' || $selected_cat==0)
+		if ($selected_cat=='' || $selected_cat==0 || $selected_cat==1) //1 = root-category (in case of empty trees)
 		{
 			$cat_array = array(
 						'text'=>'eBay',
