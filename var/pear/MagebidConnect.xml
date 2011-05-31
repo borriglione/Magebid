@@ -1,12 +1,12 @@
 <_>
-   <form_key>5ph6gWjvvjQ3g1Nl</form_key>
-   <name>Mbid_Magebid</name>
+   <form_key>zS44r0L7dLQXkM5y</form_key>
+   <name>MagebidConnect</name>
    <channel>connect.magentocommerce.com/community</channel>
    <summary>Magebid ermöglicht das Erstellen von Angeboten in eBay und den Import von Bestellungen aus eBay in Magento.</summary>
    <description>Magebid is a Free and Open-Source Extension to Connect Magento and eBay! Magento ist ein kostenloses Modul zur Verknüpfung von Magento und eBay!</description>
    <license>OSL 3.0</license>
    <license_uri>http://opensource.org/licenses/osl-3.0.php</license_uri>
-   <release_version>0.9.2</release_version>
+   <release_version>0.9.5</release_version>
    <api_version>1.4.0</api_version>
    <release_stability>beta</release_stability>
    <api_stability>beta</api_stability>
