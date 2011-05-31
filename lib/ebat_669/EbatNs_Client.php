@@ -376,13 +376,16 @@ class EbatNs_Client
 				$callback = null;
 			if ( $callback )
 			{
+			    /*
+			     * Removed deprecated functions to avoid errors in PHP 5.3.2+
+			     */
 				if ( is_object( $callback['object'] ) )
 				{
-					return call_user_method( $callback['method'], $callback['object'], $typeName, & $value, $mapName, & $this );
+					//return call_user_method( $callback['method'], $callback['object'], $typeName, & $value, $mapName, & $this );
 				} 
 				else
 				{
-					return call_user_func( $callback['method'], $typeName, & $value, $mapName, & $this );
+					//return call_user_func( $callback['method'], $typeName, & $value, $mapName, & $this );
 				} 
 			} 
 		} 
